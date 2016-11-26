@@ -26,6 +26,9 @@
 #include <QTimer>
 #include <QFile>
 
+#define LOG_DEBUG_MARK Logger::LogDebug(QString(__FILE__) + QString(", line ") + \
+					QString::number(__LINE__), true, true);
+
 class Logger : public QObject
 {
     Q_OBJECT
