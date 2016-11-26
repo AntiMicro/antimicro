@@ -176,18 +176,25 @@ void InputDevice::setActiveSetNumber(int index)
         SetJoystick *old_set = current_set;
         SetJoystick *tempSet = joystick_sets.value(index);
 
+	Logger::LogDebug(tr("curSet: %1").arg((ulong)current_set), true, true);
+	Logger::LogDebug(tr("oldSet: %1").arg((ulong)old_set), true, true);
+	Logger::LogDebug(tr("tempSet: %1").arg((ulong)tempSet), true, true);
+
         for (int i = 0; i < current_set->getNumberButtons(); i++)
         {
             JoyButton *button = current_set->getJoyButton(i);
+	    //Logger::LogDebug(tr("button %1: %2").arg(i,(ulong)button), true, true);
             buttonstates.append(button->getButtonState());
             tempSet->getJoyButton(i)->copyLastMouseDistanceFromDeadZone(button);
             tempSet->getJoyButton(i)->copyLastAccelerationDistance(button);
             tempSet->getJoyButton(i)->setUpdateInitAccel(false);
         }
+	LOG_DEBUG_MARK
 
         for (int i = 0; i < current_set->getNumberAxes(); i++)
         {
             JoyAxis *axis = current_set->getJoyAxis(i);
+	    //Logger::LogDebug(tr("axis %1: %2").arg(i,(ulong)axis), true, true);
             axesstates.append(axis->getCurrentRawValue());
             tempSet->getJoyAxis(i)->copyRawValues(axis);
             tempSet->getJoyAxis(i)->copyThrottledValues(axis);
@@ -197,42 +204,51 @@ void InputDevice::setActiveSetNumber(int index)
                 button->setUpdateInitAccel(false);
             }
         }
+	LOG_DEBUG_MARK
 
         for (int i = 0; i < current_set->getNumberHats(); i++)
         {
             JoyDPad *dpad = current_set->getJoyDPad(i);
+	    //Logger::LogDebug(tr("dpad %1: %2").arg(i,(ulong)dpad), true, true);
             dpadstates.append(dpad->getCurrentDirection());
             JoyDPadButton::JoyDPadDirections tempDir =
                     static_cast<JoyDPadButton::JoyDPadDirections>(dpad->getCurrentDirection());
             tempSet->getJoyDPad(i)->setDirButtonsUpdateInitAccel(tempDir, false);
             tempSet->getJoyDPad(i)->copyLastDistanceValues(dpad);
         }
+	LOG_DEBUG_MARK
 
         for (int i=0; i < current_set->getNumberSticks(); i++)
         {
             // Last distances for elements are taken from associated axes.
             // Copying is not required here.
             JoyControlStick *stick = current_set->getJoyStick(i);
+	    //Logger::LogDebug(tr("stick %1: %2").arg(i,(ulong)stick), true, true);
             stickstates.append(stick->getCurrentDirection());
             tempSet->getJoyStick(i)->setDirButtonsUpdateInitAccel(stick->getCurrentDirection(), false);
         }
+	LOG_DEBUG_MARK
 
         for (int i = 0; i < current_set->getNumberVDPads(); i++)
         {
             JoyDPad *dpad = current_set->getVDPad(i);
+	    //Logger::LogDebug(tr("dpad %1: %2").arg(i,(ulong)dpad), true, true);
             vdpadstates.append(dpad->getCurrentDirection());
             JoyDPadButton::JoyDPadDirections tempDir =
                     static_cast<JoyDPadButton::JoyDPadDirections>(dpad->getCurrentDirection());
             tempSet->getVDPad(i)->setDirButtonsUpdateInitAccel(tempDir, false);
             tempSet->getVDPad(i)->copyLastDistanceValues(dpad);
         }
+	LOG_DEBUG_MARK
 
         // Release all current pressed elements and change set number
         joystick_sets.value(active_set)->release();
         active_set = index;
+	LOG_DEBUG_MARK
 
         // Activate all buttons in the switched set
         current_set = joystick_sets.value(active_set);
+	LOG_DEBUG_MARK
 
         for (int i=0; i < current_set->getNumberSticks(); i++)
         {
@@ -243,6 +259,7 @@ void InputDevice::setActiveSetNumber(int index)
             QList<JoyControlStickButton*> oldButtonList;
             JoyControlStick *stick = current_set->getJoyStick(i);
             JoyControlStick *oldStick = old_set->getJoyStick(i);
+	    //Logger::LogDebug(tr("%1: stick=%2, oldstick=%3").arg(i,(ulong)stick, (ulong)oldStick), true, true);
 
             if (stick->getJoyMode() == JoyControlStick::StandardMode && value)
             {
@@ -292,6 +309,7 @@ void InputDevice::setActiveSetNumber(int index)
                 buttonList.append(stick->getDirectionButton(value));
                 oldButtonList.append(oldStick->getDirectionButton(value));
             }
+	    LOG_DEBUG_MARK
 
             QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton*> iter(*stick->getButtons());
             while (iter.hasNext())
@@ -302,6 +320,7 @@ void InputDevice::setActiveSetNumber(int index)
                     tempButton->setWhileHeldStatus(false);
                 }
             }
+	    LOG_DEBUG_MARK
 
             for (int j=0; j < buttonList.size(); j++)
             {
@@ -328,6 +347,7 @@ void InputDevice::setActiveSetNumber(int index)
                 }
             }
         }
+	LOG_DEBUG_MARK
 
         // Activate all dpad buttons in the switched set
         for (int i = 0; i < current_set->getNumberVDPads(); i++)
@@ -338,6 +358,7 @@ void InputDevice::setActiveSetNumber(int index)
             JoyDPad *dpad = current_set->getVDPad(i);
             QList<JoyDPadButton*> buttonList;
             QList<JoyDPadButton*> oldButtonList;
+	    //Logger::LogDebug(tr("dpad %1: %2").arg(i,(ulong)dpad), true, true);
 
             if (dpad->getJoyMode() == JoyDPad::StandardMode && value)
             {
@@ -388,6 +409,7 @@ void InputDevice::setActiveSetNumber(int index)
                 buttonList.append(dpad->getJoyButton(value));
                 oldButtonList.append(old_set->getVDPad(i)->getJoyButton(value));
             }
+	    LOG_DEBUG_MARK
 
             QHashIterator<int, JoyDPadButton*> iter(*dpad->getJoyButtons());
             while (iter.hasNext())
@@ -399,6 +421,7 @@ void InputDevice::setActiveSetNumber(int index)
                     button->setWhileHeldStatus(false);
                 }
             }
+	    LOG_DEBUG_MARK
 
             for (int j=0; j < buttonList.size(); j++)
             {
@@ -432,6 +455,7 @@ void InputDevice::setActiveSetNumber(int index)
                 }
             }
         }
+	LOG_DEBUG_MARK
 
         for (int i = 0; i < current_set->getNumberButtons(); i++)
         {
@@ -440,6 +464,7 @@ void InputDevice::setActiveSetNumber(int index)
             bool tempignore = false;
             JoyButton *button = current_set->getJoyButton(i);
             JoyButton *oldButton = old_set->getJoyButton(i);
+	    //Logger::LogDebug(tr("%1: button %2, oldbutton %3").arg(i,(ulong)button, (ulong)oldButton), true, true);
             if (button->getChangeSetCondition() == JoyButton::SetChangeWhileHeld)
             {
                 if (value)
@@ -468,6 +493,7 @@ void InputDevice::setActiveSetNumber(int index)
             //button->joyEvent(value, tempignore);
             button->queuePendingEvent(value, tempignore);
         }
+	LOG_DEBUG_MARK
 
         // Activate all axis buttons in the switched set
         for (int i = 0; i < current_set->getNumberAxes(); i++)
@@ -478,6 +504,7 @@ void InputDevice::setActiveSetNumber(int index)
             JoyAxis *axis = current_set->getJoyAxis(i);
             JoyAxisButton *oldButton = old_set->getJoyAxis(i)->getAxisButtonByValue(value);
             JoyAxisButton *button = axis->getAxisButtonByValue(value);
+	    //Logger::LogDebug(tr("axis %1: %2").arg(i,(ulong)axis), true, true);
 
             if (button && oldButton)
             {
@@ -507,6 +534,7 @@ void InputDevice::setActiveSetNumber(int index)
             //axis->joyEvent(value, tempignore);
             axis->queuePendingEvent(value, tempignore, false);
         }
+	LOG_DEBUG_MARK
 
         // Activate all dpad buttons in the switched set
         for (int i = 0; i < current_set->getNumberHats(); i++)
@@ -517,6 +545,7 @@ void InputDevice::setActiveSetNumber(int index)
             JoyDPad *dpad = current_set->getJoyDPad(i);
             QList<JoyDPadButton*> buttonList;
             QList<JoyDPadButton*> oldButtonList;
+	    //Logger::LogDebug(tr("dpad %1: %2").arg(i,(ulong)dpad), true, true);
 
             if (dpad->getJoyMode() == JoyDPad::StandardMode && value)
             {
@@ -567,6 +596,7 @@ void InputDevice::setActiveSetNumber(int index)
                 buttonList.append(dpad->getJoyButton(value));
                 oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(value));
             }
+	    LOG_DEBUG_MARK
 
             QHashIterator<int, JoyDPadButton*> iter(*dpad->getJoyButtons());
             while (iter.hasNext())
@@ -578,6 +608,7 @@ void InputDevice::setActiveSetNumber(int index)
                     button->setWhileHeldStatus(false);
                 }
             }
+	    LOG_DEBUG_MARK
 
             for (int j=0; j < buttonList.size(); j++)
             {
@@ -616,11 +647,17 @@ void InputDevice::setActiveSetNumber(int index)
             dpad->queuePendingEvent(value, tempignore);
         }
 
+	Logger::LogDebug(tr("Pre sticks"), true, true);
         activatePossibleControlStickEvents();
+	Logger::LogDebug(tr("Pre Axis"), true, true);
         activatePossibleAxisEvents();
+	Logger::LogDebug(tr("Pre Dpad"), true, true);
         activatePossibleDPadEvents();
+	Logger::LogDebug(tr("Pre VDpad"), true, true);
         activatePossibleVDPadEvents();
+	Logger::LogDebug(tr("Pre buttons"), true, true);
         activatePossibleButtonEvents();
+	Logger::LogDebug(tr("post activate"), true, true);
         /*if (JoyButton::shouldInvokeMouseEvents())
         {
             // Run mouse events early if needed.
@@ -628,6 +665,7 @@ void InputDevice::setActiveSetNumber(int index)
         }
         */
     }
+    Logger::LogDebug(tr("End setActiveSetNumber"), true, true);
 }
 
 int InputDevice::getActiveSetNumber()
