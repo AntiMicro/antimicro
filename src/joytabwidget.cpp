@@ -1221,13 +1221,13 @@ QString JoyTabWidget::getConfigName(int index)
 
 void JoyTabWidget::changeCurrentSet(int index)
 {
-    Logger::LogDebug(tr("Attempting to activate set %1").arg(index));
-
+  Logger::LogDebug(tr("Attempting to activate set %1").arg(index), true, true);
+  
     int currentPage = stackedWidget_2->currentIndex();
     QPushButton *oldSetButton = 0;
     QPushButton *activeSetButton = 0;
 
-    Logger::LogDebug(tr("Current page: %1").arg(currentPage));
+    Logger::LogDebug(tr("Current page: %1").arg(currentPage), true, true);
 
     switch (currentPage)
     {
@@ -1242,15 +1242,18 @@ void JoyTabWidget::changeCurrentSet(int index)
         default: break;
     }
 
-    Logger::LogDebug(tr("oldSetButton: %1").arg((ulong)oldSetButton));
+    Logger::LogDebug(tr("oldSetButton: %1").arg((ulong)oldSetButton), true, true);
     if (oldSetButton)
     {
         oldSetButton->setProperty("setActive", false);
         oldSetButton->style()->unpolish(oldSetButton);
         oldSetButton->style()->polish(oldSetButton);
     }
-    return; // no crash
+
+    Logger::LogDebug(tr("Pre setActiveSetNumber"), true, true);
+    //return; // no crash
     joystick->setActiveSetNumber(index);
+    Logger::LogDebug(tr("Post setActiveSetNumber"), true, true);
     //return; // crash!    
     stackedWidget_2->setCurrentIndex(index);
 
@@ -1267,7 +1270,7 @@ void JoyTabWidget::changeCurrentSet(int index)
         default: break;
     }
 
-    Logger::LogDebug(tr("activateSetButton %1").arg((ulong)activeSetButton));
+    Logger::LogDebug(tr("activateSetButton %1").arg((ulong)activeSetButton), true, true);
 
     if (activeSetButton)
     {
@@ -1275,7 +1278,7 @@ void JoyTabWidget::changeCurrentSet(int index)
         activeSetButton->style()->unpolish(activeSetButton);
         activeSetButton->style()->polish(activeSetButton);
     }
-    Logger::LogDebug(tr("Fini!"));
+    Logger::LogDebug(tr("Fini!"), true, true);
 }
 
 void JoyTabWidget::changeSetOne()
