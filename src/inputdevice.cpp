@@ -223,9 +223,12 @@ void InputDevice::setActiveSetNumber(int index)
             // Last distances for elements are taken from associated axes.
             // Copying is not required here.
             JoyControlStick *stick = current_set->getJoyStick(i);
-	    //Logger::LogDebug(tr("stick %1: %2").arg(i,(ulong)stick), true, true);
+	    Logger::LogDebug(tr("stick %1: %2").arg(i,(ulong)stick), true, true);
+	    Logger::LogDebug(tr("tempSet stick %1: %2").arg(i,(ulong)tempSet->getJoyStick(i)), true, true);
             stickstates.append(stick->getCurrentDirection());
+	    LOG_DEBUG_MARK
             tempSet->getJoyStick(i)->setDirButtonsUpdateInitAccel(stick->getCurrentDirection(), false);
+	    LOG_DEBUG_MARK
         }
 	LOG_DEBUG_MARK
 
