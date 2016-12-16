@@ -1541,6 +1541,7 @@ void MainSettingsDialog::openEditAutoProfileDialog()
         QTableWidgetItem *item = ui->autoProfileTableWidget->item(selectedRow, 7);
         //QTableWidgetItem *itemDefault = ui->autoProfileTableWidget->item(selectedRow, 4);
         AutoProfileInfo *info = item->data(Qt::UserRole).value<AutoProfileInfo*>();
+	// \/\/\/ This logic may need to change to resolve issue #44 \/\/\/
         if (info != allDefaultProfile)
         {
             QList<QString> reservedGUIDs = defaultAutoProfiles.keys();
