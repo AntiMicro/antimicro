@@ -895,7 +895,6 @@ void MainSettingsDialog::populateAutoProfiles()
 
     settings->beginGroup("DefaultAutoProfiles");
     QStringList registeredGUIDs = settings->value("GUIDs", QStringList()).toStringList();
-    //QStringList defaultkeys = settings->allKeys();
     settings->endGroup();
 
     QString allProfile = settings->value(QString("DefaultAutoProfileAll/Profile"), "").toString();
@@ -910,7 +909,6 @@ void MainSettingsDialog::populateAutoProfiles()
     {
         QString tempkey = iter.next();
         QString guid = tempkey;
-        //QString guid = QString(tempkey).replace("GUID", "");
 
         QString profile = settings->value(QString("DefaultAutoProfile-%1/Profile").arg(guid), "").toString();
         QString active = settings->value(QString("DefaultAutoProfile-%1/Active").arg(guid), "0").toString();
@@ -936,7 +934,6 @@ void MainSettingsDialog::populateAutoProfiles()
     settings->beginGroup("AutoProfiles");
     bool quitSearch = false;
 
-    //QHash<QString, QList<QString> > tempAssociation;
     for (int i = 1; !quitSearch; i++)
     {
         QString exe = settings->value(QString("AutoProfile%1Exe").arg(i), "").toString();
@@ -982,47 +979,6 @@ void MainSettingsDialog::populateAutoProfiles()
                 deviceAutoProfiles.insert(guid, templist);
             }
         }
-        /*if (!exe.isEmpty() && !guid.isEmpty())
-        {
-            bool profileActive = active == "1" ? true : false;
-            QList<AutoProfileInfo*> templist;
-            if (exeAutoProfiles.contains(exe))
-            {
-                templist = exeAutoProfiles.value(exe);
-            }
-
-            QList<QString> tempguids;
-            if (tempAssociation.contains(exe))
-            {
-                tempguids = tempAssociation.value(exe);
-            }
-
-            if (!tempguids.contains(guid))
-            {
-                AutoProfileInfo *info = new AutoProfileInfo(guid, profile, exe, profileActive, this);
-                if (!deviceName.isEmpty())
-                {
-                    info->setDeviceName(deviceName);
-                }
-
-                tempguids.append(guid);
-                tempAssociation.insert(exe, tempguids);
-                templist.append(info);
-                exeAutoProfiles.insert(exe, templist);
-                profileList.append(info);
-                QList<AutoProfileInfo*> templist;
-                if (guid != "all")
-                {
-                    if (deviceAutoProfiles.contains(guid))
-                    {
-                        templist = deviceAutoProfiles.value(guid);
-                    }
-                    templist.append(info);
-                    deviceAutoProfiles.insert(guid, templist);
-                }
-            }
-        }
-        */
         else
         {
             quitSearch = true;
