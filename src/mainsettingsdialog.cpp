@@ -924,6 +924,7 @@ void MainSettingsDialog::populateAutoProfiles()
         QString profile = settings->value(QString("DefaultAutoProfile-%1/Profile").arg(guid), "").toString();
         QString active = settings->value(QString("DefaultAutoProfile-%1/Active").arg(guid), "0").toString();
         QString deviceName = settings->value(QString("DefaultAutoProfile-%1/DeviceName").arg(guid), "").toString();
+        QString instsStr = settings->value(QString("DefaultAutoProfile-%1/Instances").arg(guid), "").toString();
 
         if (!guid.isEmpty() && !profile.isEmpty() && !deviceName.isEmpty())
         {
@@ -933,6 +934,7 @@ void MainSettingsDialog::populateAutoProfiles()
                 AutoProfileInfo *info = new AutoProfileInfo(guid, profile, profileActive, this);
                 info->setDefaultState(true);
                 info->setDeviceName(deviceName);
+		info->setValidInstancesStr(instsStr);
                 defaultAutoProfiles.insert(guid, info);
                 defaultList.append(info);
                 QList<AutoProfileInfo*> templist;
@@ -959,6 +961,7 @@ void MainSettingsDialog::populateAutoProfiles()
         QString profile = settings->value(QString("AutoProfile%1Profile").arg(i), "").toString();
         QString active = settings->value(QString("AutoProfile%1Active").arg(i), 0).toString();
         QString deviceName = settings->value(QString("AutoProfile%1DeviceName").arg(i), "").toString();
+        QString instsStr = settings->value(QString("AutoProfile%1Instances").arg(i), "").toString();
 
         // Check if all required elements exist. If not, assume that the end of the
         // list has been reached.
@@ -977,7 +980,9 @@ void MainSettingsDialog::populateAutoProfiles()
 #ifdef Q_OS_UNIX
             info->setWindowClass(windowClass);
 #endif
-
+	    
+	    info->setValidInstancesStr(instsStr);
+	    
             profileList.append(info);
             QList<AutoProfileInfo*> templist;
             if (guid != "all")
