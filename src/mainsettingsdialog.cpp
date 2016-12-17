@@ -1157,6 +1157,8 @@ void MainSettingsDialog::saveAutoProfileSettings()
         settings->setValue(QString("DefaultAutoProfile-%1/Profile").arg(guid), info->getProfileLocation());
         settings->setValue(QString("DefaultAutoProfile-%1/Active").arg(guid), profileActive);
         settings->setValue(QString("DefaultAutoProfile-%1/DeviceName").arg(guid), deviceName);
+	settings->setValue(QString("DefaultAutoProfile-%1/Instances").arg(guid),
+			   info->getValidInstancesStr());
     }
 
     if (!registeredGUIDs.isEmpty())
@@ -1193,6 +1195,7 @@ void MainSettingsDialog::saveAutoProfileSettings()
         settings->setValue(QString("AutoProfile%1Profile").arg(i), info->getProfileLocation());
         settings->setValue(QString("AutoProfile%1Active").arg(i), defaultActive);
         settings->setValue(QString("AutoProfile%1DeviceName").arg(i), info->getDeviceName());
+	settings->setValue(QString("AutoProfile%1Instances").arg(i), info->getValidInstancesStr());
         i++;
     }
     settings->endGroup();
