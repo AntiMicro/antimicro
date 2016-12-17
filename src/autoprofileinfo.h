@@ -20,6 +20,7 @@
 
 #include <QObject>
 #include <QMetaType>
+#include <QVector>
 
 class AutoProfileInfo : public QObject
 {
@@ -56,6 +57,9 @@ public:
     void setDefaultState(bool value);
     bool isCurrentDefault();
 
+    void setValidInstances(QVector<int> instances);
+    QVector<int> getValidInstances();
+
 protected:
     QString guid;
     QString profileLocation;
@@ -65,6 +69,7 @@ protected:
     QString windowName;
     bool active;
     bool defaultState;
+    QVector<int> instances;
 
 signals:
 

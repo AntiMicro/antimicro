@@ -156,3 +156,11 @@ QString AutoProfileInfo::getDeviceName()
 {
     return deviceName;
 }
+
+void AutoProfileInfo::setValidInstances(QVector<int> instances) {
+  this->instances = instances;
+}
+
+QVector<int> AutoProfileInfo::getValidInstances() {
+  return instances;
+}
