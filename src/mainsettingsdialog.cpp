@@ -1214,6 +1214,10 @@ void MainSettingsDialog::fillAllAutoProfilesTable()
     ui->autoProfileTableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 #endif
 
+#ifdef Q_OS_WIN
+    ui->autoProfileTableWidget->hideColumn(AUTOPROFILE_TABLE_WIN_CLASS_COL);
+#endif
+
     ui->autoProfileTableWidget->hideColumn(AUTOPROFILE_TABLE_REFERENCE_COL);
 
     int i = 0;
