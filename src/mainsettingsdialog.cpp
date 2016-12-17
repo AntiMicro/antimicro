@@ -1781,6 +1781,7 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     item->setCheckState( info->isActive() ? Qt::Checked : Qt::Unchecked );
     
     ui->autoProfileTableWidget->setItem( row, 0, item );
+    QBrush grayBrush(Qt::lightGray);
 
     QString deviceName = info->getDeviceName();
     QString guidDisplay = info->getGUID();
@@ -1805,12 +1806,18 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     item->setFlags( item->flags() & ~Qt::ItemIsEditable );
     item->setData( Qt::UserRole, info->getWindowClass() );
     item->setToolTip( info->getWindowClass() );
+    if( bDefault) {
+      item->setForeground( grayBrush );
+    }
     ui->autoProfileTableWidget->setItem( row, 3, item );
     
     item = new QTableWidgetItem( info->getWindowName() );
     item->setFlags( item->flags() & ~Qt::ItemIsEditable );
     item->setData( Qt::UserRole, info->getWindowName() );
     item->setToolTip( info->getWindowName() );
+    if( bDefault) {
+      item->setForeground( grayBrush );
+    }
     ui->autoProfileTableWidget->setItem( row, 4, item );
     
     QFileInfo exeInfo( info->getExe() );
@@ -1818,6 +1825,9 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     item->setFlags( item->flags() & ~Qt::ItemIsEditable );
     item->setData( Qt::UserRole, info->getExe() );
     item->setToolTip( info->getExe() );
+    if( bDefault) {
+      item->setForeground( grayBrush );
+    }
     ui->autoProfileTableWidget->setItem( row, 5, item );
 
     if( bDefault ) {
