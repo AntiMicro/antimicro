@@ -1018,60 +1018,9 @@ void MainSettingsDialog::fillAutoProfilesTable(QString guid)
         {
             AutoProfileInfo *info = defaultAutoProfiles.value(guid);
             defaultForGUID = info;
-            ui->autoProfileTableWidget->insertRow(i);
 
-            QTableWidgetItem *item = new QTableWidgetItem();
-            item->setCheckState(info->isActive() ? Qt::Checked : Qt::Unchecked);
-
-            ui->autoProfileTableWidget->setItem(i, 0, item);
-
-            QString deviceName = info->getDeviceName();
-            QString guidDisplay = info->getGUID();
-            if (!deviceName.isEmpty())
-            {
-                guidDisplay = QString("%1 ").arg(info->getDeviceName());
-                guidDisplay.append(QString("(%1)").arg(info->getGUID()));
-            }
-            item = new QTableWidgetItem(guidDisplay);
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-            item->setData(Qt::UserRole, info->getGUID());
-            item->setToolTip(info->getGUID());
-            ui->autoProfileTableWidget->setItem(i, 1, item);
-
-            QFileInfo profilePath(info->getProfileLocation());
-            item = new QTableWidgetItem(profilePath.fileName());
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-            item->setData(Qt::UserRole, info->getProfileLocation());
-            item->setToolTip(info->getProfileLocation());
-            ui->autoProfileTableWidget->setItem(i, 2, item);
-
-            item = new QTableWidgetItem(info->getWindowClass());
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-            item->setData(Qt::UserRole, info->getWindowClass());
-            item->setToolTip(info->getWindowClass());
-            ui->autoProfileTableWidget->setItem(i, 3, item);
-
-            item = new QTableWidgetItem(info->getWindowName());
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-            item->setData(Qt::UserRole, info->getWindowName());
-            item->setToolTip(info->getWindowName());
-            ui->autoProfileTableWidget->setItem(i, 4, item);
-
-            QFileInfo exeInfo(info->getExe());
-            item = new QTableWidgetItem(exeInfo.fileName());
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-            item->setData(Qt::UserRole, info->getExe());
-            item->setToolTip(info->getExe());
-            ui->autoProfileTableWidget->setItem(i, 5, item);
-
-            item = new QTableWidgetItem("Default");
-            item->setData(Qt::UserRole, "default");
-            ui->autoProfileTableWidget->setItem(i, 6, item);
-
-            item = new QTableWidgetItem("Instance");
-            item->setData(Qt::UserRole, QVariant::fromValue<AutoProfileInfo*>(info));
-            ui->autoProfileTableWidget->setItem(i, 7, item);
-
+	    insertAutoProfileRow( info, i, true );
+	    
             i++;
         }
 
