@@ -164,3 +164,22 @@ void AutoProfileInfo::setValidInstances(QVector<int> instances) {
 QVector<int> AutoProfileInfo::getValidInstances() {
   return instances;
 }
+
+void AutoProfileInfo::setValidInstancesStr(QString instances) {
+  QStringList tmpStrList = instances.split(",", QString::SkipEmptyParts);
+  QVector<int> tmpInst;
+  for( int i=0; i < tmpStrList.size(); i++ ) {
+    tmpInst.append(tmpStrList.at(i).toInt());
+  }
+  
+  setValidInstances(tmpInst);
+}
+
+QString AutoProfileInfo::getValidInstancesStr() {
+  QStringList tmpStrList;
+  for( int k = 0; k < instances.size(); i++ ) {
+    tmpStrList += QString::number( instances.at(i) );
+  }
+
+  return tmpStrList.join(",");
+}

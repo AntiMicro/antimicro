@@ -60,6 +60,19 @@ public:
     void setValidInstances(QVector<int> instances);
     QVector<int> getValidInstances();
 
+    /*!
+     * \brief Helper version of setValidInstances() that takes a
+     * comma-delimited QString of valid instances.
+     *
+     * An empty string = empty set = match all.
+     */
+    void setValidInstancesStr(QString instances);
+    /*!
+     * \brief Helper version of getValidInstances() that returns a
+     * comma-delimited QString of valid instances.
+     */
+    QString getValidInstancesStr();
+    
 protected:
     QString guid;
     QString profileLocation;
