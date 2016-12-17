@@ -1209,7 +1209,7 @@ void MainSettingsDialog::fillAllAutoProfilesTable()
 
     AutoProfileInfo *info = allDefaultProfile;
 
-    insertAutoProfileRow( info, row, true );
+    insertAutoProfileRow( info, i, true );
 
     i++;
 
