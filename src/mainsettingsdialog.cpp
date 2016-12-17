@@ -1833,8 +1833,13 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     if( bDefault ) {
       item = new QTableWidgetItem( "Default" );
       item->setData( Qt::UserRole, "default" );
-      ui->autoProfileTableWidget->setItem( row, 6, item );
+    } else {
+      item = new QTableWidgetItem( "" );
+      item->setData( Qt::UserRole, "" );
     }
+    item->setFlags( item->flags() & ~Qt::ItemIsEditable );
+    ui->autoProfileTableWidget->setItem( row, 6, item );
+    
 
     item = new QTableWidgetItem( "Instance" );
     item->setData( Qt::UserRole, QVariant::fromValue<AutoProfileInfo*>(info) );
