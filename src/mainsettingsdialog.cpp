@@ -66,6 +66,17 @@ static const QString RUNATSTARTUPLOCATION(
         QString("%0\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\antimicro.lnk")
         .arg(QString::fromUtf8(qgetenv("AppData"))));
 
+// Labels to refer to columns in the AutoProfile table. Need to be kept in
+// sync with header!
+static const int AUTOPROFILE_TABLE_ACTIVE_COL = 0;
+static const int AUTOPROFILE_TABLE_DEVICE_COL = 1;
+static const int AUTOPROFILE_TABLE_PROFILE_PATH_COL = 2;
+static const int AUTOPROFILE_TABLE_WIN_CLASS_COL = 3;
+static const int AUTOPROFILE_TABLE_WIN_NAME_COL = 4;
+static const int AUTOPROFILE_TABLE_EXE_COL = 5;
+static const int AUTOPROFILE_TABLE_DEFAULT_COL = 6;
+static const int AUTOPROFILE_TABLE_REFERENCE_COL = 7;
+
 MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings,
                                        QList<InputDevice *> *devices,
                                        QWidget *parent) :
@@ -114,10 +125,10 @@ MainSettingsDialog::MainSettingsDialog(AntiMicroSettings *settings,
     changePresetLanguage();
 
 #ifdef Q_OS_WIN
-    ui->autoProfileTableWidget->hideColumn(3);
+    ui->autoProfileTableWidget->hideColumn(AUTOPROFILE_TABLE_WIN_CLASS_COL);
 #endif
 
-    ui->autoProfileTableWidget->hideColumn(7);
+    ui->autoProfileTableWidget->hideColumn(AUTOPROFILE_TABLE_REFERENCE_COL);
 
 #ifdef Q_OS_UNIX
     #if defined(USE_SDL_2) && defined(WITH_X11)
@@ -1203,7 +1214,7 @@ void MainSettingsDialog::fillAllAutoProfilesTable()
     ui->autoProfileTableWidget->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 #endif
 
-    ui->autoProfileTableWidget->hideColumn(7);
+    ui->autoProfileTableWidget->hideColumn(AUTOPROFILE_TABLE_REFERENCE_COL);
 
     int i = 0;
 
@@ -1238,7 +1249,8 @@ void MainSettingsDialog::processAutoProfileActiveClick(QTableWidgetItem *item)
 {
     if (item && item->column() == 0)
     {
-        QTableWidgetItem *infoitem = ui->autoProfileTableWidget->item(item->row(), 7);
+        QTableWidgetItem *infoitem = ui->autoProfileTableWidget->item(item->row(),
+								      AUTOPROFILE_TABLE_REFERENCE_COL);
         AutoProfileInfo *info = infoitem->data(Qt::UserRole).value<AutoProfileInfo*>();
         Qt::CheckState active = item->checkState();
         if (active == Qt::Unchecked)
@@ -1267,8 +1279,7 @@ void MainSettingsDialog::openEditAutoProfileDialog()
     int selectedRow = ui->autoProfileTableWidget->currentRow();
     if (selectedRow >= 0)
     {
-        QTableWidgetItem *item = ui->autoProfileTableWidget->item(selectedRow, 7);
-        //QTableWidgetItem *itemDefault = ui->autoProfileTableWidget->item(selectedRow, 4);
+        QTableWidgetItem *item = ui->autoProfileTableWidget->item(selectedRow, AUTOPROFILE_TABLE_REFERENCE_COL);
         AutoProfileInfo *info = item->data(Qt::UserRole).value<AutoProfileInfo*>();
         if (info != allDefaultProfile)
         {
@@ -1306,8 +1317,8 @@ void MainSettingsDialog::openDeleteAutoProfileConfirmDialog()
         int selectedRow = ui->autoProfileTableWidget->currentRow();
         if (selectedRow >= 0)
         {
-            QTableWidgetItem *item = ui->autoProfileTableWidget->item(selectedRow, 7);
-            //QTableWidgetItem *itemDefault = ui->autoProfileTableWidget->item(selectedRow, 4);
+            QTableWidgetItem *item = ui->autoProfileTableWidget->item(selectedRow,
+								      AUTOPROFILE_TABLE_REFERENCE_COL);
             AutoProfileInfo *info = item->data(Qt::UserRole).value<AutoProfileInfo*>();
             if (info->isCurrentDefault())
             {
@@ -1356,8 +1367,8 @@ void MainSettingsDialog::changeAutoProfileButtonsState()
     int selectedRow = ui->autoProfileTableWidget->currentRow();
     if (selectedRow >= 0)
     {
-        QTableWidgetItem *item = ui->autoProfileTableWidget->item(selectedRow, 7);
-        //QTableWidgetItem *itemDefault = ui->autoProfileTableWidget->item(selectedRow, 4);
+        QTableWidgetItem *item = ui->autoProfileTableWidget->item(selectedRow,
+								  AUTOPROFILE_TABLE_REFERENCE_COL);
         AutoProfileInfo *info = item->data(Qt::UserRole).value<AutoProfileInfo*>();
 
         if (info == allDefaultProfile)
@@ -1780,7 +1791,7 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     QTableWidgetItem *item = new QTableWidgetItem();
     item->setCheckState( info->isActive() ? Qt::Checked : Qt::Unchecked );
     
-    ui->autoProfileTableWidget->setItem( row, 0, item );
+    ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_ACTIVE_COL, item );
     QBrush grayBrush(Qt::lightGray);
 
     QString deviceName = info->getDeviceName();
@@ -1793,14 +1804,14 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     item->setFlags( item->flags() & ~Qt::ItemIsEditable );
     item->setData( Qt::UserRole, info->getGUID() );
     item->setToolTip( info->getGUID() );
-    ui->autoProfileTableWidget->setItem( row, 1, item );
+    ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_DEVICE_COL, item );
     
     QFileInfo profilePath( info->getProfileLocation() );
     item = new QTableWidgetItem( profilePath.fileName() );
     item->setFlags( item->flags() & ~Qt::ItemIsEditable );
     item->setData( Qt::UserRole, info->getProfileLocation() );
     item->setToolTip( info->getProfileLocation() );
-    ui->autoProfileTableWidget->setItem( row, 2, item );
+    ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_PROFILE_PATH_COL, item );
     
     item = new QTableWidgetItem( info->getWindowClass() );
     item->setFlags( item->flags() & ~Qt::ItemIsEditable );
@@ -1809,7 +1820,7 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     if( bDefault) {
       item->setForeground( grayBrush );
     }
-    ui->autoProfileTableWidget->setItem( row, 3, item );
+    ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_WIN_CLASS_COL, item );
     
     item = new QTableWidgetItem( info->getWindowName() );
     item->setFlags( item->flags() & ~Qt::ItemIsEditable );
@@ -1818,7 +1829,7 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     if( bDefault) {
       item->setForeground( grayBrush );
     }
-    ui->autoProfileTableWidget->setItem( row, 4, item );
+    ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_WIN_NAME_COL, item );
     
     QFileInfo exeInfo( info->getExe() );
     item = new QTableWidgetItem( exeInfo.fileName() );
@@ -1828,16 +1839,16 @@ void MainSettingsDialog::insertAutoProfileRow( AutoProfileInfo* info, int row, b
     if( bDefault) {
       item->setForeground( grayBrush );
     }
-    ui->autoProfileTableWidget->setItem( row, 5, item );
+    ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_EXE_COL, item );
 
     if( bDefault ) {
       item = new QTableWidgetItem( "Default" );
       item->setData( Qt::UserRole, "default" );
-      ui->autoProfileTableWidget->setItem( row, 6, item );
+      ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_DEFAULT_COL, item );
     }
 
     item = new QTableWidgetItem( "Instance" );
     item->setData( Qt::UserRole, QVariant::fromValue<AutoProfileInfo*>(info) );
-    ui->autoProfileTableWidget->setItem( row, 7, item );
+    ui->autoProfileTableWidget->setItem( row, AUTOPROFILE_TABLE_REFERENCE_COL, item );
   }
 }
