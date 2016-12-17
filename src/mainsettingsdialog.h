@@ -52,6 +52,7 @@ protected:
     void changePresetLanguage();
     void fillSpringScreenPresets();
     void refreshExtraMouseInfo();
+    void insertAutoProfileRow( AutoProfileInfo* info, int row, bool bDefault );
 
     AntiMicroSettings *settings;
 
