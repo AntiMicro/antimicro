@@ -158,7 +158,7 @@ private slots:
 #ifdef USE_SDL_2
     void openGameControllerMappingWindow(bool openAsMain=false);
     void propogateMappingUpdate(QString mapping, InputDevice *device);
-    void autoprofileLoad(AutoProfileInfo *info);
+    void autoprofileLoad(AutoProfileInfo *info, int joystickIndex);
     void checkAutoProfileWatcherTimer();
     void updateMenuOptions();
 #endif

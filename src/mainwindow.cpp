@@ -1568,8 +1568,7 @@ void MainWindow::addJoyTab(InputDevice *device)
     ui->stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::autoprofileLoad(AutoProfileInfo *info)
-{
+void MainWindow::autoprofileLoad(AutoProfileInfo *info, int joystickIndex) {
   if( info != NULL ) {
     Logger::LogDebug(QObject::tr("Auto-switching to profile \"%1\".").
 		     arg(info->getProfileLocation()));
@@ -1579,75 +1578,20 @@ void MainWindow::autoprofileLoad(AutoProfileInfo *info)
   
 #if defined(USE_SDL_2) && (defined(WITH_X11) || defined(Q_OS_WIN))
     #if defined(Q_OS_UNIX) && (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    if (QApplication::platformName() == QStringLiteral("xcb"))
-    {
+    if (QApplication::platformName() == QStringLiteral("xcb")) {
     #endif
-    for (int i = 0; i < ui->tabWidget->count(); i++)
-    {
+      if( joystickIndex < ui->tabWidget->count() ) {
         JoyTabWidget *widget = static_cast<JoyTabWidget*>(ui->tabWidget->widget(i));
-        if (widget)
-        {
-            if (info->getGUID() == "all")
-            {
-                // If the all option for a Default profile was found,
-                // first check for controller specific associations. If one exists,
-                // skip changing the profile on the controller. A later call will
-                // be used to switch the profile for that controller.
-                QList<AutoProfileInfo*> *customs = appWatcher->getCustomDefaults();
-                bool found = false;
-                QListIterator<AutoProfileInfo*> iter(*customs);
-                while (iter.hasNext())
-                {
-                    AutoProfileInfo *tempinfo = iter.next();
-                    if (tempinfo->getGUID() == widget->getJoystick()->getGUIDString() &&
-                        info->isCurrentDefault())
-                    {
-                        found = true;
-                        iter.toBack();
-                    }
-                }
-
-                delete customs;
-                customs = 0;
-
-                // Check if profile has already been switched for a particular
-                // controller.
-                if (!found)
-                {
-                    QString tempguid = widget->getJoystick()->getGUIDString();
-                    if (appWatcher->isGUIDLocked(tempguid))
-                    {
-                        found = true;
-                    }
-                }
-
-                if (!found)
-                {
-                    // If the profile location is empty, assume
-                    // that an empty profile should get loaded.
-                    if (info->getProfileLocation().isEmpty())
-                    {
-                        widget->setCurrentConfig(0);
-                    }
-                    else
-                    {
-                        widget->loadConfigFile(info->getProfileLocation());
-                    }
-                }
-            }
-            else if (info->getGUID() == widget->getJoystick()->getStringIdentifier())
-            {
-                if (info->getProfileLocation().isEmpty())
-                {
-                    widget->setCurrentConfig(0);
-                }
-                else
-                {
-                    widget->loadConfigFile(info->getProfileLocation());
-                }
-            }
-        }
-    }
+        if (widget) {
+	  // If the profile location is empty, assume
+	  // that an empty profile should get loaded.
+	  if( info == NULL || info->getProfileLocation().isEmpty() ) {
+	    widget->setCurrentConfig(0);
+	  } else {
+	    widget->loadConfigFile(info->getProfileLocation());
+	  }
+	}
+      }
     #if defined(Q_OS_UNIX) && (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     }
     #endif
