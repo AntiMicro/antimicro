@@ -140,7 +140,7 @@ namespace PadderCommon
 
     const QString programVersion =
       ( ANTIMICRO_GIT_SHA1[0] != 0 ) ?
-      QString("%1 (%2 %3)").arg(programVersionStr,
+      QString("%1 (%2: %3)").arg(programVersionStr,
 				QString(ANTIMICRO_GIT_REFSPEC).
 				replace(QRegExp(".*/"),""),
 				ANTIMICRO_GIT_SHA1) :
