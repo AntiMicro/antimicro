@@ -50,3 +50,9 @@ Default: OFF. Compile the program with support for the vmulti driver.
 Default: OFF. This option is only included for testing. It should not be used 
 currently.
 
+    -DTEST_CASE
+
+Default: OFF. This option is used for building official test cases. Requires
+rpavlik's CMake Modules be installed into cmake_lib/.
+
+
