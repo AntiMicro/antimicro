@@ -29,6 +29,7 @@
 #include <QReadWriteLock>
 #include <QThread>
 #include <QCoreApplication>
+#include <QRegExp>
 
 #include "config.h"
 #include "antimicrosettings.h"
@@ -139,7 +140,9 @@ namespace PadderCommon
 
     const QString programVersion =
       ( ANTIMICRO_GIT_SHA1[0] != 0 ) ?
-      QString("%1 (%2 %3)").arg(programVersionStr, ANTIMICRO_GIT_REFSPEC,
+      QString("%1 (%2 %3)").arg(programVersionStr,
+				QString(ANTIMICRO_GIT_REFSPEC).
+				replace(QRegExp(".*/"),""),
 				ANTIMICRO_GIT_SHA1) :
       programVersionStr;
 
