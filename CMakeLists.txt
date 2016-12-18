@@ -47,6 +47,8 @@ endif(UNIX)
 option(UPDATE_TRANSLATIONS "Call lupdate to update translation files from source." OFF)
 option(TRANS_KEEP_OBSOLETE "Do not specify -no-obsolete when calling lupdate." OFF)
 
+option(TEST_CASE "Used to generate debug test cases." OFF)
+
 if(WIN32)
     option(PORTABLE_PACKAGE "Create portable Windows package" OFF)
     #option(TARGET_ARCH "Choose which version of some libraries to use. (x86, x86_64)" "x86")
@@ -417,6 +419,18 @@ elseif(WIN32)
         )
     endif(WITH_VMULTI)
 endif(UNIX)
+
+# Test Case related items
+if(TEST_CASE)
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_lib/")
+    include(GetGitRevisionDescription)
+    get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+else()
+    set(GIT_SHA1 "")
+    set(GIT_REFSPEC "")
+endif(TEST_CASE)
+configure_file(src/GitInfo.cpp.in "${CMAKE_CURRENT_BINARY_DIR}/src/GitInfo.cpp" @ONLY)  
+list(APPEND antimicro_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/src/GitInfo.cpp")
 
 set(USE_QT5 OFF)
 set(USE_QT4 OFF)
