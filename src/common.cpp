@@ -23,6 +23,8 @@
 
 #include "common.h"
 
+#include "GitInfo.inc"
+
 namespace PadderCommon
 {
     QString preferredProfileDir(AntiMicroSettings *settings)
