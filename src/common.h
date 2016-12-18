@@ -129,8 +129,9 @@ namespace PadderCommon
     const int ANTIMICRO_PATCH_VERSION = PROJECT_PATCH_VERSION;
 
     // Defined in GitInfo.cpp / GitInfo.cpp.in. Data provided by CMake.
-    extern const char ANTIMICRO_GIT_SHA1[];
-    extern const char ANTIMICRO_GIT_REFSPEC[];
+    #include "GitInfo.inc"
+    //extern const char ANTIMICRO_GIT_SHA1[];
+    //extern const char ANTIMICRO_GIT_REFSPEC[];
 
     const QString programVersionStr = (ANTIMICRO_PATCH_VERSION > 0) ?
         QString("%1.%2.%3").arg(ANTIMICRO_MAJOR_VERSION)
@@ -139,7 +140,7 @@ namespace PadderCommon
             .arg(ANTIMICRO_MINOR_VERSION);
 
     const QString programVersion =
-      ( ANTIMICRO_GIT_SHA1[0] != NULL ) ?
+      ( ANTIMICRO_GIT_SHA1[0] != 0 ) ?
       QString("%1 (%2 %3)").arg(programVersionStr, ANTIMICRO_GIT_REFSPEC,
 				ANTIMICRO_GIT_SHA1) :
       programVersionStr;
