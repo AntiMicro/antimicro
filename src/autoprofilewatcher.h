@@ -60,9 +60,11 @@ protected:
     QString currentApplication;
     QString currentAppWindowTitle;
     QSet<QString> guidSet;
+    // Joystick index -> GUID
+    QStringList guidsByPosition;
 
 signals:
-    void foundApplicableProfile(AutoProfileInfo *info);
+    void applyProfile(AutoProfileInfo *info, int index);
 
 public slots:
     void syncProfileAssignment();

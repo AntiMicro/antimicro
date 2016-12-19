@@ -166,7 +166,7 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice*> *joysticks,
     connect(ui->actionGameController_Mapping, SIGNAL(triggered()), this, SLOT(openGameControllerMappingWindow()));
 
     if( appWatcher != NULL ) {
-      connect(appWatcher, SIGNAL(foundApplicableProfile(AutoProfileInfo*, int)), this, SLOT(autoprofileLoad(AutoProfileInfo*, int)));
+      connect(appWatcher, SIGNAL(applyProfile(AutoProfileInfo*, int)), this, SLOT(autoprofileLoad(AutoProfileInfo*, int)));
       connect(this, SIGNAL(deviceAdded(int, InputDevice*)), appWatcher, SLOT(addJoystick(int, InputDevice*)));
       connect(this, SIGNAL(deviceRemoved(int)), appWatcher, SLOT(removeJoystick(int)));
       connect(this, SIGNAL(allDevicesRemoved()), appWatcher, SLOT(removeAllJoysticks()));
