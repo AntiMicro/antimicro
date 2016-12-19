@@ -165,18 +165,12 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice*> *joysticks,
 #ifdef USE_SDL_2
     connect(ui->actionGameController_Mapping, SIGNAL(triggered()), this, SLOT(openGameControllerMappingWindow()));
 
-    #if defined(Q_OS_UNIX) && defined(WITH_X11)
-        #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    if (QApplication::platformName() == QStringLiteral("xcb"))
-    {
-        #endif
-    connect(appWatcher, SIGNAL(foundApplicableProfile(AutoProfileInfo*)), this, SLOT(autoprofileLoad(AutoProfileInfo*)));
-        #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+    if( appWatcher != NULL ) {
+      connect(appWatcher, SIGNAL(foundApplicableProfile(AutoProfileInfo*, int)), this, SLOT(autoprofileLoad(AutoProfileInfo*, int)));
+      connect(this, SIGNAL(deviceAdded(int, InputDevice*)), appWatcher, SLOT(addJoystick(int, InputDevice*)));
+      connect(this, SIGNAL(deviceRemoved(int)), appWatcher, SLOT(removeJoystick(int)));
+      connect(this, SIGNAL(allDevicesRemoved()), appWatcher, SLOT(removeAllJoysticks()));
     }
-        #endif
-    #elif defined(Q_OS_WIN)
-        connect(appWatcher, SIGNAL(foundApplicableProfile(AutoProfileInfo*)), this, SLOT(autoprofileLoad(AutoProfileInfo*)));
-    #endif
 
 #endif
 
@@ -1031,6 +1025,7 @@ void MainWindow::removeJoyTabs()
     }
 
     ui->tabWidget->clear();
+    emit allDevicesRemoved();
 }
 
 void MainWindow::handleInstanceDisconnect()
@@ -1504,6 +1499,7 @@ void MainWindow::removeJoyTab(SDL_JoystickID deviceID)
             delete tab;
             tab = 0;
             found = true;
+	    emit deviceRemoved(i);
         }
     }
 
@@ -1538,9 +1534,10 @@ void MainWindow::addJoyTab(InputDevice *device)
     JoyTabWidget *tabwidget = new JoyTabWidget(device, settings, this);
     QString joytabName = device->getSDLName();
     joytabName.append(" ").append(tr("(%1)").arg(device->getName()));
-    ui->tabWidget->addTab(tabwidget, joytabName);
+    int index = ui->tabWidget->addTab(tabwidget, joytabName);
     tabwidget->loadDeviceSettings();
     tabwidget->refreshButtons();
+    emit deviceAdded( index, device );
 
     // Refresh tab text to reflect new index values.
     for (int i=0; i < ui->tabWidget->count(); i++)

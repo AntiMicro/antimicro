@@ -66,6 +66,9 @@ signals:
 
 public slots:
     void syncProfileAssignment();
+    void addJoystick(int index, InputDevice* device);
+    void removeJoystick(int index);
+    void removeAllJoysticks();
 
 private slots:
     void runAppCheck();

@@ -102,6 +102,28 @@ signals:
     void mappingUpdated(QString mapping, InputDevice *device);
 #endif
 
+    /*!
+     * \brief Signal emitted whenever a new device is added.
+     *
+     * Index of new device as well as a pointer to that device
+     * are provided.
+     */
+    void deviceAdded(int index, InputDevice* device);
+
+    /*!
+     * \brief Signal emitted whenever a single joystick has been removed. 
+     * 
+     * Index of the controller that is being removed is provided.
+     */
+    void deviceRemoved(int index);
+
+    /*!
+     * \brief Signal emitted whenever all devices are removed.
+     * 
+     * Note: When this signal is emitted, deviceRemoved() will not be.
+     */
+    void allDevicesRemoved();
+
 public slots:
     void fillButtons();
     void makeJoystickTabs();
