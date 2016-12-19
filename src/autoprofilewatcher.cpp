@@ -487,3 +487,22 @@ bool AutoProfileWatcher::isGUIDLocked(QString guid)
 {
     return guidSet.contains(guid);
 }
+
+void AutoProfileWatcher::addJoystick(int index, InputDevice* device) {
+  if( device == NULL ) {
+    return;
+  }
+  while( guidsByPosition.size() < index ) {
+    guidsByPosition += "";
+  }
+  guidsByPosition[ index ] = device->getGUIDString();
+}
+void AutoProfileWatcher::removeJoystick(int index) {
+  if( guidsByPosition.size() < index ) {
+    return;
+  }
+  guidsByPosition.removeAt( index );
+}
+void AutoProfileWatcher::removeAllJoysticks() {
+  guidsByPosition.clear()
+}
