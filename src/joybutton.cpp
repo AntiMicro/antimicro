@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include <QDebug>
+#include <QDebug>
 #include <QThread>
 #include <QStringList>
 #include <cmath>
@@ -1130,6 +1130,7 @@ void JoyButton::mouseEvent()
                     }
 
                     double difference = getMouseDistanceFromDeadZone();
+                    //difference = (1.0 - 0.005) * difference + 0.005;
 
                     double mouse1 = 0;
                     double mouse2 = 0;
@@ -1175,19 +1176,19 @@ void JoyButton::mouseEvent()
                             if (temp <= 0.4)
                             {
                                 // Low slope value for really slow acceleration
-                                difference = difference * 0.37;
+                                difference = difference * 0.38;
                             }
                             else if (temp <= 0.75)
                             {
                                 // Perform Linear accleration with an appropriate
                                 // offset.
-                                difference = difference - 0.252;
+                                difference = difference - 0.248;
                             }
                             else if (temp > 0.75)
                             {
                                 // Perform mouse acceleration. Make up the difference
                                 // due to the previous two segments. Maxes out at 1.0.
-                                difference = (difference * 2.008) - 1.008;
+                                difference = (difference * 1.992) - 0.992;
                             }
 
                             break;
@@ -1274,6 +1275,9 @@ void JoyButton::mouseEvent()
 
                     double mintravel = minMouseDistanceAccelThreshold * 0.01;
                     double minstop = qMax(0.05, mintravel);
+                    //minstop = qMin(0.50, accelTravel);
+                    //minstop = 0.50;
+                    //double minstop = 1.0;
                     //double currentTravel = getAccelerationDistance() - lastAccelerationDistance;
 
                     // Last check ensures that acceleration is only applied for the same direction.
@@ -1290,7 +1294,10 @@ void JoyButton::mouseEvent()
                         double intermediateTravel = qMin(maxtravel, fabs(getAccelerationDistance() - lastAccelerationDistance));
                         if (currentAccelMulti > 1.0 && oldAccelMulti == 0.0)
                         {
-                            intermediateTravel = qMin(maxtravel, intermediateTravel + mintravel);
+                            //intermediateTravel = qMin(maxtravel, intermediateTravel + mintravel);
+                            //double oldintermediateTravel = qMin(maxtravel, intermediateTravel + mintravel);
+                            //intermediateTravel = qMin(maxtravel, intermediateTravel + accelTravel);
+                            //Logger::LogInfo(QString("KJLDSLDLK: %1 %2").arg(oldintermediateTravel).arg(intermediateTravel));;
                         }
 
                         double currentAccelMultiTemp = (slope * intermediateTravel + intercept);
@@ -1310,6 +1317,7 @@ void JoyButton::mouseEvent()
                             currentAccelMultiTemp = (extraAccelerationMultiplier - minfactor) * ((getMultiDiff) * (getMultiDiff) * (getMultiDiff) + 1) + minfactor;
                         }
 
+                        //currentAccelMultiTemp = extraAccelerationMultiplier;
                         difference = difference * currentAccelMultiTemp;
                         currentAccelMulti = currentAccelMultiTemp;
                         updateOldAccelMulti = currentAccelMulti;
@@ -1335,8 +1343,33 @@ void JoyButton::mouseEvent()
                         double intermediateTravel = accelTravel;
                         if ((getAccelerationDistance() - startingAccelerationDistance >= 0) != (getAccelerationDistance() >= 0))
                         {
+                            double minstop2 = qMin(minstop, intermediateTravel);
                             // Travelling towards dead zone. Decrease acceleration and duration.
-                            intermediateTravel = qMax(intermediateTravel - fabs(getAccelerationDistance() - startingAccelerationDistance), mintravel);
+                            //(maxstop - mintravel -
+                            //(intermediateTravel - fabs(getAccelerationDistance() - startingAccelerationDistance)) / maxstop;
+                            //intermediateTravel = (accelTravel - mintravel) * (intermediateTravel - fabs(getAccelerationDistance() - startingAccelerationDistance)) + mintravel;
+                            //double tempmix = fabs(getAccelerationDistance() - startingAccelerationDistance) / minstop;
+                            double tempmix2 = fabs(getAccelerationDistance() - startingAccelerationDistance);
+                            tempmix2 = qMin(tempmix2, minstop2);
+                            //double opman = qMax(intermediateTravel - fabs(getAccelerationDistance() - startingAccelerationDistance), mintravel);
+                            double tempmixslope = (mintravel - intermediateTravel) / (minstop2);
+                            double tempshitintercept = intermediateTravel;
+                            double finalmanham = (tempmixslope * tempmix2 + tempshitintercept);
+                            //double tempdisdiff = qMax(intermediateTravel * (1 - tempmix), mintravel);
+                            /*Logger::LogInfo(QString("IA M: %1 %2 ORIG: %3 %4 %5")
+                                            .arg(1 - tempmix)
+                                            .arg(tempdisdiff)
+                                            .arg(accelTravel)
+                                            .arg(tempmix2)
+                                            .arg(opman));
+                            Logger::LogInfo(QString("I'm Idaho %1").arg(finalmanham));
+                            */
+
+                            //intermediateTravel = tempdisdiff;
+                            intermediateTravel = finalmanham;
+                            //intermediateTravel = opman;
+                            //Logger::LogInfo(QString("IA M: %1 %2").arg(1 - tempmix).arg(tempdisdiff));
+                            //intermediateTravel = qMax(intermediateTravel - fabs(getAccelerationDistance() - startingAccelerationDistance), mintravel);
                         }
 
                         // Linear case
@@ -1366,8 +1399,15 @@ void JoyButton::mouseEvent()
                             currentAccelMultiTemp = (extraAccelerationMultiplier - minfactor) * temp + minfactor;
                         }
 
+
+                        //currentAccelMultiTemp = extraAccelerationMultiplier;
                         double tempAccel = currentAccelMultiTemp;
                         double elapsedDiff = 1.0;
+
+                        //elapsedDuration = accelDuration;
+                        //elapsedDuration = accelDuration;
+                        //Logger::LogInfo(QString("KJJ: %1 %2 %3").arg(elapsedDuration).arg(elapsedElapsed).arg(elapsedElapsed * 0.001));
+
                         if (elapsedDuration > 0.0 && (elapsedElapsed * 0.001) < elapsedDuration)
                         {
                             elapsedDiff = ((elapsedElapsed * 0.001) / elapsedDuration);
@@ -1397,8 +1437,12 @@ void JoyButton::mouseEvent()
                     }
 
                     sumDist += difference * (mousespeed * JoyButtonSlot::JOYSPEED * timeElapsed) * 0.001;
+                    //sumDist = (JoyButtonSlot::JOYSPEED - 0.05) * sumDist + 0.05;
                     //sumDist = difference * (nanoTimeElapsed * 0.000000001) * mousespeed * JoyButtonSlot::JOYSPEED;
-                    distance = sumDist;
+                    double currentoffset = 0.025;
+                    double predistance = sumDist + currentoffset;
+                    distance = (mousespeed * JoyButtonSlot::JOYSPEED * timeElapsed * .001 - currentoffset) * difference + currentoffset;
+                    //Logger::LogInfo(QString("COMPARE: %1 %2 %3").arg(sumDist).arg(predistance).arg(distance));
 
                     if (mousedirection == JoyButtonSlot::MouseRight)
                     {
@@ -4586,6 +4630,9 @@ QString JoyButton::getDefaultButtonName()
  */
 void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
 {
+
+    static QStringList lastMicesX;
+
     movedX = 0;
     movedY = 0;
     double finalx = 0.0;
@@ -4645,13 +4692,35 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
         {
             finalx += cursorRemainderX;
         }
+        cursorRemainderX = 0.0;
 
         // Cap maximum relative mouse movement.
         if (abs(finalx) > 127)
         {
+            Logger::LogInfo(QString("Xs: %1").arg(QString::number(finalx)));
             finalx = (finalx < 0) ? -127 : 127;
         }
 
+
+        //static float fucker = 1.0;
+        //finalx = 250 * fucker;
+        //fucker *= -1.0;
+
+        /*Logger::LogInfo(QString("Xs: %1").arg(QString::number(finalx)), false);
+        double originalX = finalx;
+        double dudeX = fmod(10.6 - static_cast<int>(10.6), 0.05);
+        if (dudeX != 0.05)
+        {
+            Logger::LogInfo(QString(" BACON %1").arg(dudeX), false);
+            //dudeX = 0.0;
+        }
+        finalx = finalx - dudeX;
+        Logger::LogInfo(QString(" %1").arg(QString::number(finalx)), false);
+        Logger::LogInfo(QString(" %1").arg(dudeX));
+        //Logger::LogInfo(QString(" %1").arg(QString::number(remainder(originalX - static_cast<int>(originalX), 0.05))));
+        //finalx = static_cast<int>(finalx);
+        */
+        finalx = finalx - (fmod(finalx * 100.0, 0.01) / 100.0);
         mouseHistoryX.prepend(finalx);
 
         // Only apply remainder if both current displacement and remainder
@@ -4660,6 +4729,7 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
         {
             finaly += cursorRemainderY;
         }
+        cursorRemainderY = 0.0;
 
         // Cap maximum relative mouse movement.
         if (abs(finaly) > 127)
@@ -4667,10 +4737,12 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
             finaly = (finaly < 0) ? -127 : 127;
         }
 
+        finaly = finaly - (fmod(finaly * 100.0, 0.01) / 100.0);
+        //finaly = static_cast<int>(finaly);
         mouseHistoryY.prepend(finaly);
 
-        cursorRemainderX = 0;
-        cursorRemainderY = 0;
+        //cursorRemainderX = 0;
+        //cursorRemainderY = 0;
 
         double adjustedX = 0;
         double adjustedY = 0;
@@ -4680,17 +4752,28 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
         double weightModifier = JoyButton::weightModifier;
         double finalWeight = 0.0;
 
+        QStringList twoDWaifuX;
+        QStringList twoDWaifuY;
         while (iterX.hasNext())
         {
             double temp = iterX.next();
             adjustedX += temp * currentWeight;
             finalWeight += currentWeight;
             currentWeight *= weightModifier;
+            twoDWaifuX.append(QString::number(temp));
         }
 
         if (fabs(adjustedX) > 0)
         {
+            //Logger::LogInfo("END UP HERE");
             adjustedX = adjustedX / static_cast<double>(finalWeight);
+            /*if ((cursorRemainderX >= 0) == (adjustedX >= 0))
+            {
+                adjustedX += cursorRemainderX;
+            }
+
+            cursorRemainderX = 0.0;
+            */
 
             if (adjustedX > 0)
             {
@@ -4706,8 +4789,14 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
                 //adjustedX = (int)ceil(adjustedX - 0.5); // Old rounding behavior
                 cursorRemainderX = oldX - adjustedX;
             }
-
         }
+        else
+        {
+            //Logger::LogInfo(QString("DO I END UP HERE %1").arg(QTime::currentTime().toString()));
+            //cursorRemainderX = 0.0;
+        }
+
+        //cursorRemainderX = cursorRemainderX - remainder(cursorRemainderX, 1.0);
 
         QListIterator<double> iterY(mouseHistoryY);
         currentWeight = 1.0;
@@ -4719,11 +4808,20 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
             adjustedY += temp * currentWeight;
             finalWeight += currentWeight;
             currentWeight *= weightModifier;
+            twoDWaifuY.append(QString::number(temp));
         }
 
         if (fabs(adjustedY) > 0)
         {
             adjustedY = adjustedY / static_cast<double>(finalWeight);
+            /*if ((cursorRemainderY >= 0) == (adjustedY >= 0))
+            {
+                adjustedY += cursorRemainderY;
+            }
+
+            cursorRemainderY = 0.0;
+            */
+
             if (adjustedY > 0)
             {
                 double oldY = adjustedY;
@@ -4739,6 +4837,16 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
                 cursorRemainderY = oldY - adjustedY;
             }
         }
+        else
+        {
+            //Logger::LogInfo(QString("Y DO I END UP HERE %1").arg(QTime::currentTime().toString()));
+            //cursorRemainderY = 0.0;
+        }
+
+        //cursorRemainderY = cursorRemainderY - remainder(cursorRemainderY, 1.0);
+
+        //Logger::LogInfo(QString("X BUF: [%1]").arg(twoDWaifuX.join(',')));
+        //Logger::LogInfo(QString("Y BUF: [%1]\n").arg(twoDWaifuY.join(',')));
 
         // This check is more of a precaution than anything. No need to cause
         // a sync to happen when not needed.
@@ -4746,6 +4854,13 @@ void JoyButton::moveMouseCursor(int &movedX, int &movedY, int &movedElapsed)
         {
             sendevent(adjustedX, adjustedY);
         }
+
+        if (lastMicesX.length() >= 10)
+        {
+            lastMicesX.removeLast();
+        }
+        lastMicesX.prepend(QString::number(adjustedX));
+        //Logger::LogInfo(QString("ADJUSTEDX: [%1]\n").arg(lastMicesX.join(',')));
 
         //Logger::LogInfo(QString("FINAL X: %1").arg(adjustedX));
         //Logger::LogInfo(QString("FINAL Y: %1\n").arg(adjustedY));
