@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include <QDebug>
+#include <QDebug>
 #include <QTime>
 #include <QTimer>
 #include <QEventLoop>
@@ -118,7 +118,7 @@ void InputDaemon::run ()
         firstInputPass(&sdlEventQueue);
 
 #ifdef USE_SDL_2
-        modifyUnplugEvents(&sdlEventQueue);
+        //modifyUnplugEvents(&sdlEventQueue);
 #endif
 
         secondInputPass(&sdlEventQueue);
@@ -1149,6 +1149,11 @@ void InputDaemon::secondInputPass(QQueue<SDL_Event> *sdlEventQueue)
                         if (!activeDevices.contains(event.caxis.which))
                         {
                             activeDevices.insert(event.caxis.which, joy);
+                        }
+
+                        if (event.caxis.axis == 3)
+                        {
+                            //qDebug() << "LKDJKLDLK: " << event.caxis.value;
                         }
                     }
                 }
