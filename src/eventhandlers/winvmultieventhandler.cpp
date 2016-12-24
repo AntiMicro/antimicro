@@ -112,8 +112,8 @@ void WinVMultiEventHandler::sendKeyboardEvent(JoyButtonSlot *slot, bool pressed)
     }
     else if (code >= 0xE0 && code <= 0xE7)
     {
-        //pendingShift = 1 << (code - 0xE0);
-        if (nativeKeyMapper)
+        pendingShift = 1 << (code - 0xE0);
+        /*if (nativeKeyMapper)
         {
             unsigned int nativeKey = nativeKeyMapper->returnVirtualKey(slot->getSlotCodeAlias());
             if (nativeKey > 0)
@@ -122,6 +122,7 @@ void WinVMultiEventHandler::sendKeyboardEvent(JoyButtonSlot *slot, bool pressed)
                 useSendInput = true;
             }
         }
+        */
     }
     else if (code > QtVMultiKeyMapper::consumerUsagePagePrefix)
     {
@@ -265,7 +266,7 @@ void WinVMultiEventHandler::sendKeyboardEvent(JoyButtonSlot *slot, bool pressed)
         //qDebug() << "CURRENT: " << trying.join(",");
         //qDebug() << keykeyArray;
 
-        if (pendingKey > 0x0)
+        if (pendingKey > 0x0 || pendingShift > 0x0)
         {
             vmulti_update_keyboard(vmulti, shiftKeys, keykeyArray);
         }
