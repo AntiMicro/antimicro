@@ -56,13 +56,13 @@ SDLEventReader::~SDLEventReader()
 void SDLEventReader::initSDL()
 {
 #ifdef USE_SDL_2
-    SDL_Init(SDL_INIT_GAMECONTROLLER);
+    SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_JOYSTICK);
 #else
     // Video support is required to use event system in SDL 1.2.
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK);
 #endif
 
-    SDL_JoystickEventState(SDL_ENABLE);
+    //SDL_JoystickEventState(SDL_ENABLE);
     sdlIsOpen = true;
 
 #ifdef USE_SDL_2
