@@ -409,7 +409,7 @@ elseif(WIN32)
     if(WITH_VMULTI)
         list(APPEND antimicro_SOURCES src/qtvmultikeymapper.cpp
              src/eventhandlers/winvmultieventhandler.cpp
-#            vmulti/client/client.c
+             vmulti/client/client.c
         )
         list(APPEND antimicro_HEADERS src/qtvmultikeymapper.h
              src/eventhandlers/winvmultieventhandler.h
@@ -548,6 +548,7 @@ elseif(WIN32)
     find_package(Qt5Gui REQUIRED)
     find_package(Qt5Network REQUIRED)
     find_package(Qt5LinguistTools REQUIRED)
+    find_package(Qt5Test REQUIRED)
 
     QT5_WRAP_CPP(antimicro_HEADERS_MOC ${antimicro_HEADERS})
     QT5_WRAP_UI(antimicro_FORMS_HEADERS ${antimicro_FORMS})
@@ -888,3 +889,15 @@ if(WIN32)
     install(FILES gpl.txt Changelog README.md ProfileTips.md
             DESTINATION ${CMAKE_INSTALL_PREFIX})
 endif(WIN32)
+
+
+set(antimicro_TESTSOURCES tests/foo.cpp)
+message(${antimicro_TESTSOURCES})
+set(TEST_LIBRARIES ${Qt5Test_LIBRARIES})
+message(${Qt5Test_LIBRARIES})
+add_executable(shitfuck EXCLUDE_FROM_ALL ${antimicro_TESTSOURCES})
+target_link_libraries(shitfuck ${TEST_LIBRARIES} ${Qt5Widgets_LIBRARIES}
+            ${Qt5Core_LIBRARIES}
+            ${Qt5Gui_LIBRARIES}
+            ${Qt5Network_LIBRARIES})
+
