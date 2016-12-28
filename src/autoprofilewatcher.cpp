@@ -492,6 +492,10 @@ void AutoProfileWatcher::addJoystick(int index, InputDevice* device) {
   if( device == NULL ) {
     return;
   }
+
+  Logger::LogDebug(QObject::tr("[AutoProfileWatcher] Inserting device %1 (%2)").
+		   arg(device->getGUIDString(), index));
+
   while( guidsByPosition.size() < index ) {
     guidsByPosition += "";
   }
@@ -501,8 +505,15 @@ void AutoProfileWatcher::removeJoystick(int index) {
   if( guidsByPosition.size() < index ) {
     return;
   }
+
+  Logger::LogDebug(QObject::tr("[AutoProfileWatcher] Removing device %1 (%2)").
+		   arg(guidsByPosition.at(index), index));
+
   guidsByPosition.removeAt( index );
 }
 void AutoProfileWatcher::removeAllJoysticks() {
+  Logger::LogDebug(QObject::tr("[AutoProfileWatcher] Clearing all devices").
+		   arg(index, device->getGUIDString()));
+
   guidsByPosition.clear()
 }
