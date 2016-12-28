@@ -58,6 +58,11 @@ void AutoProfileWatcher::stopTimer()
 
 void AutoProfileWatcher::runAppCheck()
 {
+    struct match_count_t {
+      int numMatched;
+      AutoProfileInfo* info;
+    }
+    
     //qDebug() << qApp->applicationFilePath();
     QString appLocation;
     QString baseAppFileName;
@@ -82,6 +87,7 @@ void AutoProfileWatcher::runAppCheck()
     // More portable check for whether antimicro is the current application
     // with focus.
     QWidget *focusedWidget = qApp->activeWindow();
+
 
     QString nowWindow;
     QString nowWindowClass;
@@ -161,8 +167,11 @@ void AutoProfileWatcher::runAppCheck()
             fullSet = fullSet.unite(tempSet);
         }
 
-        QHash<QString, int> highestMatchCount;
-        QHash<QString, AutoProfileInfo*> highestMatches;
+	QVector<match_count_t> matches(guidsByPosition.size());
+	for( int joyIdx = 0; joyIdx < guidsByPosition.size(); joyIdx++ ) {
+	  matches.at(joyIdx).numMatched = -1;
+	  matches.at(joyIdx).info = NULL;
+	}
 
         QSetIterator<AutoProfileInfo*> fullSetIter(fullSet);
         while (fullSetIter.hasNext())
@@ -170,11 +179,15 @@ void AutoProfileWatcher::runAppCheck()
             AutoProfileInfo *info = fullSetIter.next();
             if (info->isActive())
             {
+	        // First, tabulate the number of program-related properties
+	        // specified
                 int numProps = 0;
                 numProps += !info->getExe().isEmpty() ? 1 : 0;
                 numProps += !info->getWindowClass().isEmpty() ? 1 : 0;
                 numProps += !info->getWindowName().isEmpty() ? 1 : 0;
 
+		// Second, tabulate the number of program-related properties
+		// matched
                 int numMatched = 0;
                 numMatched += (!info->getExe().isEmpty() &&
                                (info->getExe() == appLocation ||
@@ -184,56 +197,74 @@ void AutoProfileWatcher::runAppCheck()
                 numMatched += (!info->getWindowName().isEmpty() &&
                                info->getWindowName() == nowWindowName) ? 1 : 0;
 
-                if (numProps == numMatched)
-                {
-                    if (highestMatchCount.contains(info->getGUID()))
-                    {
-                        int currentHigh = highestMatchCount.value(info->getGUID());
-                        if (numMatched > currentHigh)
-                        {
-                            highestMatchCount.insert(info->getGUID(), numMatched);
-                            highestMatches.insert(info->getGUID(), info);
-                        }
-                    }
-                    else
-                    {
-                        highestMatchCount.insert(info->getGUID(), numMatched);
-                        highestMatches.insert(info->getGUID(), info);
-                    }
-                }
+		QVector<int> profileInstances = info->getValidInstances();
+
+		// Now, iterate over list of joysticks. For each joystick:
+		for( int joyIdx = 0; joyIdx < guidsByPosition.size(); joyIdx++) {
+		  // Make temporary copies of program-related score, so that
+		  // we don't screw up the other controllers
+		  int lclNumProps = numProps;
+		  int lclNumMatched = numMatched;
+
+		  // Verify that this profile applies to this type of controller
+		  QString tmpGUID = info->getGUID();
+		  lclNumProps += (!tmpGUID.isEmpty()) ? 1 : 0;
+		  lclNumMatches += (tmpGUID == guidsByPosition.at( joyIdx )) ? 1 : 0;
+
+		  // Check to see if this this joystick is in the list of
+		  // applicable instances
+		  lclNumProps += (!profileInstances.empty()) ? 1 : 0;
+		  lclNumMatched += (!profileInstances.contains( joyIdx )) ? 1 : 0;
+		  
+		  // If all specified properties match, compare against the
+		  // previous highest match
+		  if ( lclNumProps == lclNumMatched ) {
+		    
+		    if( matches.at(joyIdx).numMatched < lclNumMatched ) {
+		      // Update leading profile for this joystick
+		      matches.at(joyIdx).numMatched = lclNumMatched;
+		      matches.at(joyIdx).info = info;
+		    }
+		  }
+		}
             }
         }
 
-        QHashIterator<QString, AutoProfileInfo*> highIter(highestMatches);
-        while (highIter.hasNext())
-        {
-            AutoProfileInfo *info = highIter.next().value();
-            guidSet.insert(info->getGUID());
-            emit foundApplicableProfile(info);
-        }
-
-        if ((!defaultProfileAssignments.isEmpty() || allDefaultInfo) && !focusedWidget)
-             //antiProgramLocation != appLocation)
-        {
-            if (allDefaultInfo)
-            {
-                if (allDefaultInfo->isActive() && !guidSet.contains("all"))
-                {
-                    emit foundApplicableProfile(allDefaultInfo);
-                }
-            }
-
-            QHashIterator<QString, AutoProfileInfo*> iter(defaultProfileAssignments);
-            while (iter.hasNext())
-            {
+	// For any instances that don't have a matching profile, determine
+	// which default to use
+	for( int joyIdx = 0; joyIdx < guidsByPosition.size(); joyIdx++) {
+	  // First, check the GUID-specific defaults
+	  if( matches.at(joyIdx).info == NULL ) {
+	    if( !defaultProfileAssignments.isEmpty() ) {
+//TODO: Replace with a lookup table!
+	      QHashIterator<QString, AutoProfileInfo*> iter(defaultProfileAssignments);
+	      while (iter.hasNext()) {
                 iter.next();
                 AutoProfileInfo *info = iter.value();
-                if (info->isActive() && !guidSet.contains(info->getGUID()))
-                {
-                    emit foundApplicableProfile(info);
+                if (info->isActive() && !guidSet.contains(info->getGUID())) {
+		  if( guidsByPosition.at(joyIdx) == info->getGUID() ) {
+		    matches.at(joyIdx).numMatched = 0;
+		    matches.at(joyIdx).info = info;
+		  }
                 }
-            }
+	      }
+	    }
+	    
+	    // Still if no match, try the "all" default
+	    if( matches.at(joyIdx).info == NULL && allDefaultInfo ) {
+	      if( allDefaultInfo->isActive() && !guidSet.contains("all") ) {
+		matches.at(joyIdx).numMatched = 0;
+		matches.at(joyIdx).info = allDefaultInfo;
+	      }
+	    }
+	  }
+	}
+
+	// Update profiles
+	for( int joyIdx = 0; joyIdx < guidsByPosition.size(); joyIdx++) {
+	  emit applyProfile(matches.at(joyIdx).info, joyIdx);
         }
+
     }
 }
 
