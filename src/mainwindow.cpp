@@ -1567,10 +1567,11 @@ void MainWindow::addJoyTab(InputDevice *device)
 
 void MainWindow::autoprofileLoad(AutoProfileInfo *info, int joystickIndex) {
   if( info != NULL ) {
-    Logger::LogDebug(QObject::tr("Auto-switching to profile \"%1\".").
-		     arg(info->getProfileLocation()));
+    Logger::LogDebug(QObject::tr("Auto-switching controller %1 to profile \"%2\".").
+		     arg(index, info->getProfileLocation()));
   } else {
-    Logger::LogError(QObject::tr("Auto-switching to NULL profile!"));    
+    Logger::LogError(QObject::tr("Auto-switching controller %1 to NULL profile!").
+		     arg(index));    
   }
   
 #if defined(USE_SDL_2) && (defined(WITH_X11) || defined(Q_OS_WIN))
