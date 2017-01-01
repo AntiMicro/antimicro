@@ -177,7 +177,7 @@ void AutoProfileInfo::setValidInstancesStr(QString instances) {
 
 QString AutoProfileInfo::getValidInstancesStr() {
   QStringList tmpStrList;
-  for( int k = 0; k < instances.size(); i++ ) {
+  for( int i = 0; i < instances.size(); i++ ) {
     tmpStrList += QString::number( instances.at(i) );
   }
 
