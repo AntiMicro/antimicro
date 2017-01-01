@@ -26,7 +26,7 @@
 
 #include "autoprofileinfo.h"
 #include "antimicrosettings.h"
-
+#include "inputdevice.h"
 
 class AutoProfileWatcher : public QObject
 {
