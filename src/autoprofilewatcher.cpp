@@ -61,7 +61,7 @@ void AutoProfileWatcher::runAppCheck()
     struct match_count_t {
       int numMatched;
       AutoProfileInfo* info;
-    }
+    };
     
     //qDebug() << qApp->applicationFilePath();
     QString appLocation;
@@ -166,11 +166,12 @@ void AutoProfileWatcher::runAppCheck()
             tempSet = windowNameProfileAssignments.value(nowWindowName).toSet();
             fullSet = fullSet.unite(tempSet);
         }
-
-	QVector<match_count_t> matches(guidsByPosition.size());
+	// TODO: need to lock  out guidsByPosition in case addDevice or
+	// removeDevice is called while inside this function..
+	match_count_t matches[guidsByPosition.size()];
 	for( int joyIdx = 0; joyIdx < guidsByPosition.size(); joyIdx++ ) {
-	  matches.at(joyIdx).numMatched = -1;
-	  matches.at(joyIdx).info = NULL;
+	  matches[joyIdx].numMatched = -1;
+	  matches[joyIdx].info = NULL;
 	}
 
         QSetIterator<AutoProfileInfo*> fullSetIter(fullSet);
@@ -209,7 +210,7 @@ void AutoProfileWatcher::runAppCheck()
 		  // Verify that this profile applies to this type of controller
 		  QString tmpGUID = info->getGUID();
 		  lclNumProps += (!tmpGUID.isEmpty()) ? 1 : 0;
-		  lclNumMatches += (tmpGUID == guidsByPosition.at( joyIdx )) ? 1 : 0;
+		  lclNumMatched += (tmpGUID == guidsByPosition.at( joyIdx )) ? 1 : 0;
 
 		  // Check to see if this this joystick is in the list of
 		  // applicable instances
@@ -220,10 +221,10 @@ void AutoProfileWatcher::runAppCheck()
 		  // previous highest match
 		  if ( lclNumProps == lclNumMatched ) {
 		    
-		    if( matches.at(joyIdx).numMatched < lclNumMatched ) {
+		    if( matches[joyIdx].numMatched < lclNumMatched ) {
 		      // Update leading profile for this joystick
-		      matches.at(joyIdx).numMatched = lclNumMatched;
-		      matches.at(joyIdx).info = info;
+		      matches[joyIdx].numMatched = lclNumMatched;
+		      matches[joyIdx].info = info;
 		    }
 		  }
 		}
@@ -234,7 +235,7 @@ void AutoProfileWatcher::runAppCheck()
 	// which default to use
 	for( int joyIdx = 0; joyIdx < guidsByPosition.size(); joyIdx++) {
 	  // First, check the GUID-specific defaults
-	  if( matches.at(joyIdx).info == NULL ) {
+	  if( matches[joyIdx].info == NULL ) {
 	    if( !defaultProfileAssignments.isEmpty() ) {
 //TODO: Replace with a lookup table!
 	      QHashIterator<QString, AutoProfileInfo*> iter(defaultProfileAssignments);
@@ -243,18 +244,18 @@ void AutoProfileWatcher::runAppCheck()
                 AutoProfileInfo *info = iter.value();
                 if (info->isActive() && !guidSet.contains(info->getGUID())) {
 		  if( guidsByPosition.at(joyIdx) == info->getGUID() ) {
-		    matches.at(joyIdx).numMatched = 0;
-		    matches.at(joyIdx).info = info;
+		    matches[joyIdx].numMatched = 0;
+		    matches[joyIdx].info = info;
 		  }
                 }
 	      }
 	    }
 	    
 	    // Still if no match, try the "all" default
-	    if( matches.at(joyIdx).info == NULL && allDefaultInfo ) {
+	    if( matches[joyIdx].info == NULL && allDefaultInfo ) {
 	      if( allDefaultInfo->isActive() && !guidSet.contains("all") ) {
-		matches.at(joyIdx).numMatched = 0;
-		matches.at(joyIdx).info = allDefaultInfo;
+		matches[joyIdx].numMatched = 0;
+		matches[joyIdx].info = allDefaultInfo;
 	      }
 	    }
 	  }
@@ -262,7 +263,7 @@ void AutoProfileWatcher::runAppCheck()
 
 	// Update profiles
 	for( int joyIdx = 0; joyIdx < guidsByPosition.size(); joyIdx++) {
-	  emit applyProfile(matches.at(joyIdx).info, joyIdx);
+	  emit applyProfile(matches[joyIdx].info, joyIdx);
         }
 
     }
@@ -543,8 +544,7 @@ void AutoProfileWatcher::removeJoystick(int index) {
   guidsByPosition.removeAt( index );
 }
 void AutoProfileWatcher::removeAllJoysticks() {
-  Logger::LogDebug(QObject::tr("[AutoProfileWatcher] Clearing all devices").
-		   arg(index, device->getGUIDString()));
+  Logger::LogDebug(QObject::tr("[AutoProfileWatcher] Clearing all devices"));
 
-  guidsByPosition.clear()
+  guidsByPosition.clear();
 }
