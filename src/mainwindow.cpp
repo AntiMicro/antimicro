@@ -1568,10 +1568,11 @@ void MainWindow::addJoyTab(InputDevice *device)
 void MainWindow::autoprofileLoad(AutoProfileInfo *info, int joystickIndex) {
   if( info != NULL ) {
     Logger::LogDebug(QObject::tr("Auto-switching controller %1 to profile \"%2\".").
-		     arg(index, info->getProfileLocation()));
+		     arg(QString::number(joystickIndex),
+			 info->getProfileLocation()));
   } else {
     Logger::LogError(QObject::tr("Auto-switching controller %1 to NULL profile!").
-		     arg(index));    
+		     arg(QString::number(joystickIndex)));
   }
   
 #if defined(USE_SDL_2) && (defined(WITH_X11) || defined(Q_OS_WIN))
@@ -1579,7 +1580,8 @@ void MainWindow::autoprofileLoad(AutoProfileInfo *info, int joystickIndex) {
     if (QApplication::platformName() == QStringLiteral("xcb")) {
     #endif
       if( joystickIndex < ui->tabWidget->count() ) {
-        JoyTabWidget *widget = static_cast<JoyTabWidget*>(ui->tabWidget->widget(i));
+        JoyTabWidget *widget =
+	  static_cast<JoyTabWidget*>(ui->tabWidget->widget(joystickIndex));
         if (widget) {
 	  // If the profile location is empty, assume
 	  // that an empty profile should get loaded.
