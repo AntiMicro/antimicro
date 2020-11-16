@@ -8,13 +8,17 @@ But not all is lost, `antimicro` has a future!
 
 ## Linux users
 
-We are maintaining an extended and updated Linux version, `antimicrox` at https://github.com/AntiMicroX/antimicroX. **Please use that version instead of this!**
+We are maintaining an extended and updated Linux version, `antimicrox` at https://github.com/AntiMicroX/antimicroX.
+
+**Please use `antimicrox` instead of `antimicro`!**
 
 See the README  for download options, there are RPM, DEB, AUR packages and flatpaks available.
 
 ## Windows users
 
-The currently maintained version, `antimicrox` fails to build for Windows. We are planning to fix it, but help is greatly appreciated! See this issue: https://github.com/AntiMicroX/antimicrox/issues/4
+The currently maintained version, `antimicrox` fails to build for Windows. We are planning to fix it, but help is greatly appreciated!
+
+**We are looking for Windows developers!** See this issue: https://github.com/AntiMicroX/antimicrox/issues/4
 
 In the meantime, continue using the current Windows binaries, and keep an eye out on here!
 
