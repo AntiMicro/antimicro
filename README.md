@@ -1,5 +1,36 @@
 # antimicro
 
+# 🚨 Important update 🚨
+
+This repo is currently unmaintained. The code hasn't been updated for a while.
+
+But not all is lost, `antimicro` has a future!
+
+## Linux users
+
+We are maintaining an extended and updated Linux version, `antimicrox` at https://github.com/AntiMicroX/antimicroX.
+
+**Please use `antimicrox` instead of `antimicro`!**
+
+See the README  for download options, there are RPM, DEB, AUR packages and flatpaks available.
+
+## Windows users
+
+The currently maintained version, `antimicrox` fails to build for Windows. We are planning to fix it, but help is greatly appreciated!
+
+**We are looking for Windows developers!** See this issue: https://github.com/AntiMicroX/antimicrox/issues/4
+
+In the meantime, continue using the current Windows binaries, and keep an eye out on here!
+
+## What happens to this repo?
+
+- Old issues will be triaged/cleaned up: https://github.com/AntiMicro/antimicro/issues/350
+- We will either bring `antimicrox` to feature parity and eventually replace `antimicro` with `antimicrox`, or somehow backport fixes. Participate in the discussion here: https://github.com/AntiMicro/antimicro/issues/351
+
+---
+
+# Old README
+
 ## We've Moved!
 
 As of May 24, 2016, antimicro has moved from
@@ -22,7 +53,7 @@ following GitHub users who have helped us make the transition:
 
 antimicro is a graphical program used to map keyboard keys and mouse controls
 to a gamepad. This program is useful for playing PC games using a gamepad that
-do not have any form of built-in gamepad support. However, you can use this 
+do not have any form of built-in gamepad support. However, you can use this
 program to control any desktop application with a gamepad; on Linux, this
 means that your system has to be running an X environment in order to run
 this program.
@@ -71,10 +102,10 @@ https://slackbuilds.org/result/?search=antimicro&sv=
 
 Ubuntu users may also check the antimicro page on Launchpad:
 
-Latest:  
+Latest:
 https://launchpad.net/~mdeguzis/+archive/ubuntu/libregeek
 
-Deprecated:  
+Deprecated:
 https://launchpad.net/~ryochan7/+archive/ubuntu/antimicro
 
 ## Command line
@@ -351,23 +382,23 @@ Travis Nickles <nickles.travis@gmail.com>
 
 ### Contributors
 
-Zerro Alvein  
-aybe  
-Jeff Backus <jeff@jsbackus.com>  
-Arthur Moore  
+Zerro Alvein
+aybe
+Jeff Backus <jeff@jsbackus.com>
+Arthur Moore
 Anton Tornqvist <antont@inbox.lv>
 mtdeguzis
 
 ### Translators
 
-VaGNaroK <vagnarokalkimist@gmail.com> - Brazilian Portuguese  
-zzpxyx - Chinese  
-Belleguic Terence <hizo@free.fr> - French  
-Leonard Koenig <leonard.r.koenig@googlemail.com> - German  
-phob - German  
-tou omiya - Japanese  
-Dmitriy Koshel <form.eater@gmail.com> - Russian  
-Jay Alexander Fleming <tito.nehru.naser@gmail.com> - Serbian  
-burunduk - Ukrainian  
-Flavio HR <flavio.hrx@gmail.com> - Spanish  
-WAZAAAAA - wazaaaaa00<@>gmail<.>com - Italian  
+VaGNaroK <vagnarokalkimist@gmail.com> - Brazilian Portuguese
+zzpxyx - Chinese
+Belleguic Terence <hizo@free.fr> - French
+Leonard Koenig <leonard.r.koenig@googlemail.com> - German
+phob - German
+tou omiya - Japanese
+Dmitriy Koshel <form.eater@gmail.com> - Russian
+Jay Alexander Fleming <tito.nehru.naser@gmail.com> - Serbian
+burunduk - Ukrainian
+Flavio HR <flavio.hrx@gmail.com> - Spanish
+WAZAAAAA - wazaaaaa00<@>gmail<.>com - Italian
