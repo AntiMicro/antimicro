@@ -113,6 +113,11 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice*> *joysticks,
     showTrayIcon = !cmdutility->isTrayHidden() && graphical &&
                    !cmdutility->shouldListControllers() && !cmdutility->shouldMapController();
 
+#ifdef WITH_COCOA
+    showTrayIcon = 0;
+    ui->menuBar->removeAction(ui->menuQuit->menuAction());
+#endif
+
     this->joysticks = joysticks;
 
     if (showTrayIcon)
@@ -214,7 +219,6 @@ void MainWindow::alterConfigFromSettings()
     if (cmdutility->shouldListControllers())
     {
         graphical = false;
-        this->graphical = graphical;
     }
     else if (cmdutility->hasProfile())
     {
@@ -300,7 +304,6 @@ void MainWindow::controllerMapOpening()
     if (cmdutility->shouldMapController())
     {
         graphical = false;
-        this->graphical = graphical;
 
         QList<ControllerOptionsInfo> *tempList = cmdutility->getControllerOptionsList();
         ControllerOptionsInfo temp = tempList->at(0);
@@ -366,7 +369,7 @@ void MainWindow::makeJoystickTabs()
         ui->tabWidget->addTab(tabwidget, joytabName);
     }
 
-    if (joysticks > 0)
+    if (joysticks != 0)
     {
         ui->tabWidget->setCurrentIndex(0);
         ui->stackedWidget->setCurrentIndex(1);

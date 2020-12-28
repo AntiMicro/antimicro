@@ -56,7 +56,7 @@
 #ifdef Q_OS_WIN
   #include "eventhandlerfactory.h"
   #include "winextras.h"
-#elif defined(Q_OS_UNIX)
+#elif defined(Q_OS_UNIX) && defined(WITH_X11)
   #include "x11extras.h"
 #endif
 
@@ -1997,7 +1997,7 @@ void MainSettingsDialog::refreshExtraMouseInfo()
     {
     #endif
         struct X11Extras::ptrInformation temp;
-        if (handler == "uinput")
+        if (handler == "uinput" || handler == "cocoa")
         {
             temp = X11Extras::getInstance()->getPointInformation();
         }
