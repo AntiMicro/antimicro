@@ -182,7 +182,7 @@ support)
 In order to build this program, open a terminal and cd into the antimicro
 directory. Enter the following commands in order to build the program:
 
-    cd antimicro
+    cd antimicro*
     mkdir build && cd build
     cmake ..
     make
