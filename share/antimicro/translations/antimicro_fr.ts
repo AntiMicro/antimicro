@@ -5673,7 +5673,7 @@ E</translation>
         <location filename="../../../src/keyboard/virtualkeyboardmousewidget.cpp" line="358"/>
         <source>Wheel Up</source>
         <comment>Mouse</comment>
-        <translation type="unfinished">Molette bas</translation>
+        <translation type="unfinished">Molette haut</translation>
     </message>
     <message>
         <location filename="../../../src/keyboard/virtualkeyboardmousewidget.cpp" line="362"/>
