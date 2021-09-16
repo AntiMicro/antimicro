@@ -19,8 +19,8 @@
 
 #include "xmlconfigwriter.h"
 
-XMLConfigWriter::XMLConfigWriter(QObject *parent) :
-    QObject(parent)
+XMLConfigWriter::XMLConfigWriter(QObject *parent)
+    : QObject(parent)
 {
     xml = new QXmlStreamWriter();
     xml->setAutoFormatting(true);
@@ -57,8 +57,7 @@ void XMLConfigWriter::write(InputDevice *joystick)
     {
         configFile->open(QFile::WriteOnly | QFile::Text);
         xml->setDevice(configFile);
-    }
-    else
+    } else
     {
         writerError = true;
         writerErrorString = tr("Could not write to profile at %1.").arg(configFile->fileName());
@@ -84,12 +83,6 @@ void XMLConfigWriter::setFileName(QString filename)
     configFile = temp;
 }
 
-bool XMLConfigWriter::hasError()
-{
-    return writerError;
-}
+bool XMLConfigWriter::hasError() { return writerError; }
 
-QString XMLConfigWriter::getErrorString()
-{
-    return writerErrorString;
-}
+QString XMLConfigWriter::getErrorString() { return writerErrorString; }

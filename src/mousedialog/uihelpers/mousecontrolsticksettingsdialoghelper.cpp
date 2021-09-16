@@ -17,9 +17,8 @@
 
 #include "mousecontrolsticksettingsdialoghelper.h"
 
-MouseControlStickSettingsDialogHelper::MouseControlStickSettingsDialogHelper(JoyControlStick *stick,
-                                                                             QObject *parent) :
-    QObject(parent)
+MouseControlStickSettingsDialogHelper::MouseControlStickSettingsDialogHelper(JoyControlStick *stick, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(stick);
 

@@ -32,21 +32,32 @@ class AdvanceButtonDialog;
 class AdvanceButtonDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
-    explicit AdvanceButtonDialog(JoyButton *button, QWidget *parent=0);
+
+  public:
+    explicit AdvanceButtonDialog(JoyButton *button, QWidget *parent = 0);
     ~AdvanceButtonDialog();
 
-private:
+  private:
     Ui::AdvanceButtonDialog *ui;
 
-    enum SlotTypeComboIndex {
-        KBMouseSlot = 0, CycleSlot, DelaySlot, DistanceSlot, ExecuteSlot,
-        HoldSlot, LoadSlot, MouseModSlot, PauseSlot, PressTimeSlot,
-        ReleaseSlot, SetChangeSlot, TextEntry,
+    enum SlotTypeComboIndex
+    {
+        KBMouseSlot = 0,
+        CycleSlot,
+        DelaySlot,
+        DistanceSlot,
+        ExecuteSlot,
+        HoldSlot,
+        LoadSlot,
+        MouseModSlot,
+        PauseSlot,
+        PressTimeSlot,
+        ReleaseSlot,
+        SetChangeSlot,
+        TextEntry,
     };
 
-protected:
+  protected:
     void connectButtonEvents(SimpleKeyGrabberButton *button);
     void appendBlankKeyGrabber();
     int actionTimeConvert();
@@ -67,17 +78,17 @@ protected:
     AdvanceButtonDialogHelper helper;
     static const int MINIMUMTURBO;
 
-signals:
+  signals:
     void toggleChanged(bool state);
     void turboChanged(bool state);
     void slotsChanged();
     void turboButtonEnabledChange(bool state);
 
-public slots:
+  public slots:
     void placeNewSlot(JoyButtonSlot *slot);
     void clearAllSlots();
 
-private slots:
+  private slots:
     void changeTurboText(int value);
     void updateTurboIntervalValue(int value);
     void checkTurboSetting(bool state);

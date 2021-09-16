@@ -23,7 +23,7 @@
 class AxisValueBox : public QWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit AxisValueBox(QWidget *parent = 0);
 
     int getDeadZone();
@@ -31,7 +31,7 @@ public:
     int getJoyValue();
     int getThrottle();
 
-protected:
+  protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void paintEvent(QPaintEvent *event);
 
@@ -48,14 +48,13 @@ protected:
     int singlewidth;
     int singleend;
 
-signals:
-    
-public slots:
+  signals:
+
+  public slots:
     void setThrottle(int throttle);
     void setValue(int value);
     void setDeadZone(int deadZone);
     void setMaxZone(int maxZone);
-
 };
 
 #endif // AXISVALUEBOX_H

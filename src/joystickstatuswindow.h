@@ -30,17 +30,17 @@ class JoystickStatusWindow : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     explicit JoystickStatusWindow(InputDevice *joystick, QWidget *parent = 0);
     ~JoystickStatusWindow();
 
-protected:
+  protected:
     InputDevice *joystick;
 
-private:
+  private:
     Ui::JoystickStatusWindow *ui;
 
-private slots:
+  private slots:
     void restoreButtonStates(int code);
     void obliterate();
 };

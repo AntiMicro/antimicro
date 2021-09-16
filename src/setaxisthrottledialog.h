@@ -29,23 +29,22 @@ class SetAxisThrottleDialog;
 class SetAxisThrottleDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
+
+  public:
     explicit SetAxisThrottleDialog(JoyAxis *axis, QWidget *parent = 0);
     ~SetAxisThrottleDialog();
-    
-private:
+
+  private:
     Ui::SetAxisThrottleDialog *ui;
 
-protected:
+  protected:
     JoyAxis *axis;
 
-signals:
+  signals:
     void initiateSetAxisThrottleChange();
 
-private slots:
+  private slots:
     void propogateThrottleChange();
-
 };
 
 #endif // SETAXISTHROTTLEDIALOG_H

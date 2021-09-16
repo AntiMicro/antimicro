@@ -23,15 +23,16 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
-#include <inputdevice.h>
 #include "gamecontrollerdpad.h"
 #include "gamecontrollerset.h"
+#include <inputdevice.h>
 
 class GameController : public InputDevice
 {
     Q_OBJECT
-public:
-    explicit GameController(SDL_GameController *controller, int deviceIndex, AntiMicroSettings *settings, QObject *parent = 0);
+  public:
+    explicit GameController(SDL_GameController *controller, int deviceIndex, AntiMicroSettings *settings,
+                            QObject *parent = 0);
 
     virtual QString getName();
     virtual QString getSDLName();
@@ -49,8 +50,8 @@ public:
     virtual int getNumberRawAxes();
     virtual int getNumberRawHats();
 
-    QString getBindStringForAxis(int index, bool trueIndex=true);
-    QString getBindStringForButton(int index, bool trueIndex=true);
+    QString getBindStringForAxis(int index, bool trueIndex = true);
+    QString getBindStringForButton(int index, bool trueIndex = true);
 
     SDL_GameControllerButtonBind getBindForAxis(int index);
     SDL_GameControllerButtonBind getBindForButton(int index);
@@ -66,19 +67,18 @@ public:
 
     static const QString xmlName;
 
-protected:
+  protected:
     void readJoystickConfig(QXmlStreamReader *xml);
 
     SDL_GameController *controller;
 
-signals:
+  signals:
 
-
-public slots:
+  public slots:
     virtual void readConfig(QXmlStreamReader *xml);
     virtual void writeConfig(QXmlStreamWriter *xml);
 
-protected slots:
+  protected slots:
     virtual void axisActivatedEvent(int setindex, int axisindex, int value);
     virtual void buttonClickEvent(int buttonindex);
     virtual void buttonReleaseEvent(int buttonindex);

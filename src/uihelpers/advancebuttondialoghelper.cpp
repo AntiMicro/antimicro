@@ -17,9 +17,8 @@
 
 #include "advancebuttondialoghelper.h"
 
-AdvanceButtonDialogHelper::AdvanceButtonDialogHelper(JoyButton *button,
-                                                     QObject *parent) :
-    QObject(parent)
+AdvanceButtonDialogHelper::AdvanceButtonDialogHelper(JoyButton *button, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(button);
 
@@ -27,7 +26,7 @@ AdvanceButtonDialogHelper::AdvanceButtonDialogHelper(JoyButton *button,
 }
 
 void AdvanceButtonDialogHelper::insertAssignedSlot(int code, unsigned int alias, int index,
-                                                    JoyButtonSlot::JoySlotInputAction mode)
+                                                   JoyButtonSlot::JoySlotInputAction mode)
 {
     button->eventReset();
     button->insertAssignedSlot(code, alias, index, mode);

@@ -25,7 +25,7 @@
 class XTestEventHandler : public BaseEventHandler
 {
     Q_OBJECT
-public:
+  public:
     explicit XTestEventHandler(QObject *parent = 0);
 
     virtual bool init();
@@ -40,10 +40,9 @@ public:
 
     virtual void sendTextEntryEvent(QString maintext);
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // XTESTEVENTHANDLER_H

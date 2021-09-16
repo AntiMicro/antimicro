@@ -17,23 +17,18 @@
 
 #include "baseeventhandler.h"
 
-BaseEventHandler::BaseEventHandler(QObject *parent) :
-    QObject(parent)
+BaseEventHandler::BaseEventHandler(QObject *parent)
+    : QObject(parent)
 {
 }
 
-QString BaseEventHandler::getErrorString()
-{
-    return lastErrorString;
-}
+QString BaseEventHandler::getErrorString() { return lastErrorString; }
 
 /**
  * @brief Do nothing by default. Allow child classes to specify text to output
  *     to a text stream.
  */
-void BaseEventHandler::printPostMessages()
-{
-}
+void BaseEventHandler::printPostMessages() {}
 
 /**
  * @brief Do nothing by default. Useful for child classes to define behavior.
@@ -55,8 +50,7 @@ void BaseEventHandler::sendMouseAbsEvent(int xDis, int yDis, int screen)
  * @param Bounding box width
  * @param Bounding box height
  */
-void BaseEventHandler::sendMouseSpringEvent(unsigned int xDis, unsigned int yDis,
-                                            unsigned int width, unsigned int height)
+void BaseEventHandler::sendMouseSpringEvent(unsigned int xDis, unsigned int yDis, unsigned int width, unsigned int height)
 {
     Q_UNUSED(xDis);
     Q_UNUSED(yDis);
@@ -69,12 +63,6 @@ void BaseEventHandler::sendMouseSpringEvent(unsigned int xDis, unsigned int yDis
  * @param Displacement of X coordinate
  * @param Displacement of Y coordinate
  */
-void BaseEventHandler::sendMouseSpringEvent(int xDis, int yDis)
-{
+void BaseEventHandler::sendMouseSpringEvent(int xDis, int yDis) {}
 
-}
-
-void BaseEventHandler::sendTextEntryEvent(QString maintext)
-{
-
-}
+void BaseEventHandler::sendTextEntryEvent(QString maintext) {}

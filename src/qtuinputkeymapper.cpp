@@ -26,8 +26,8 @@
 
 #include "qtuinputkeymapper.h"
 
-QtUInputKeyMapper::QtUInputKeyMapper(QObject *parent) :
-    QtKeyMapperBase(parent)
+QtUInputKeyMapper::QtUInputKeyMapper(QObject *parent)
+    : QtKeyMapperBase(parent)
 {
     identifier = "uinput";
     populateMappingHashes();
@@ -68,19 +68,19 @@ void QtUInputKeyMapper::populateAlphaHashes()
 void QtUInputKeyMapper::populateFKeyHashes()
 {
     // Map F1 - F10
-    for (int i=0; i <= (KEY_F10 - KEY_F1); i++)
+    for (int i = 0; i <= (KEY_F10 - KEY_F1); i++)
     {
         qtKeyToVirtualKey[Qt::Key_F1 + i] = KEY_F1 + i;
     }
 
     // Map F11 and F12
-    for (int i=0; i <= (KEY_F12 - KEY_F11); i++)
+    for (int i = 0; i <= (KEY_F12 - KEY_F11); i++)
     {
         qtKeyToVirtualKey[Qt::Key_F11 + i] = KEY_F11 + i;
     }
 
     // Map F13 - F24
-    for (int i=0; i <= (KEY_F24 - KEY_F13); i++)
+    for (int i = 0; i <= (KEY_F24 - KEY_F13); i++)
     {
         qtKeyToVirtualKey[Qt::Key_F13 + i] = KEY_F13 + i;
     }
@@ -92,19 +92,19 @@ void QtUInputKeyMapper::populateNumPadHashes()
     qtKeyToVirtualKey[AntKey_KP_0] = KEY_KP0;
 
     // Map Numpad 1 - 3
-    for (int i=0; i <= (KEY_KP3 - KEY_KP1); i++)
+    for (int i = 0; i <= (KEY_KP3 - KEY_KP1); i++)
     {
         qtKeyToVirtualKey[AntKey_KP_1 + i] = KEY_KP1 + i;
     }
 
     // Map Numpad 4 - 6
-    for (int i=0; i <= (KEY_KP6 - KEY_KP4); i++)
+    for (int i = 0; i <= (KEY_KP6 - KEY_KP4); i++)
     {
         qtKeyToVirtualKey[AntKey_KP_4 + i] = KEY_KP4 + i;
     }
 
     // Map Numpad 7 - 9
-    for (int i=0; i <= (KEY_KP9 - KEY_KP7); i++)
+    for (int i = 0; i <= (KEY_KP9 - KEY_KP7); i++)
     {
         qtKeyToVirtualKey[AntKey_KP_7 + i] = KEY_KP7 + i;
     }
@@ -146,10 +146,10 @@ void QtUInputKeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_Refresh] = KEY_REFRESH;
         qtKeyToVirtualKey[Qt::Key_Copy] = KEY_COPY;
         qtKeyToVirtualKey[Qt::Key_Paste] = KEY_PASTE;
-        //qtKeyToVirtualKey[Qt::Key_Search] = KEY_FIND;
+        // qtKeyToVirtualKey[Qt::Key_Search] = KEY_FIND;
         qtKeyToVirtualKey[Qt::Key_Cut] = KEY_CUT;
         qtKeyToVirtualKey[Qt::Key_Sleep] = KEY_SLEEP;
-        //qtKeyToVirtualKey[Qt::Key_Calculator] = KEY_CALC;
+        // qtKeyToVirtualKey[Qt::Key_Calculator] = KEY_CALC;
         qtKeyToVirtualKey[Qt::Key_Launch0] = KEY_COMPUTER;
         qtKeyToVirtualKey[Qt::Key_Launch1] = KEY_CALC;
         qtKeyToVirtualKey[Qt::Key_Launch2] = KEY_PROG1;
@@ -163,7 +163,7 @@ void QtUInputKeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_Forward] = KEY_FORWARD;
         qtKeyToVirtualKey[Qt::Key_Suspend] = KEY_SUSPEND;
         qtKeyToVirtualKey[Qt::Key_Close] = KEY_CLOSE;
-        //qtKeyToVirtualKey[Qt::Key_Search] = KEY_SEARCH;
+        // qtKeyToVirtualKey[Qt::Key_Search] = KEY_SEARCH;
         qtKeyToVirtualKey[Qt::Key_Camera] = KEY_CAMERA;
         qtKeyToVirtualKey[Qt::Key_MonBrightnessUp] = KEY_BRIGHTNESSUP;
         qtKeyToVirtualKey[Qt::Key_MonBrightnessDown] = KEY_BRIGHTNESSDOWN;
@@ -177,7 +177,7 @@ void QtUInputKeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_WLAN] = KEY_WLAN;
         qtKeyToVirtualKey[Qt::Key_Cancel] = KEY_CANCEL;
         qtKeyToVirtualKey[Qt::Key_Shop] = KEY_SHOP;
-        qtKeyToVirtualKey[Qt::Key_Finance]  = KEY_FINANCE;
+        qtKeyToVirtualKey[Qt::Key_Finance] = KEY_FINANCE;
         qtKeyToVirtualKey[Qt::Key_Question] = KEY_QUESTION;
         qtKeyToVirtualKey[Qt::Key_BassBoost] = KEY_BASSBOOST;
 
@@ -216,7 +216,7 @@ void QtUInputKeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_LaunchMedia] = KEY_MEDIA;
 
         // Map 0-9 keys
-        for (unsigned int i=0; i <= (KEY_9 - KEY_1); i++)
+        for (unsigned int i = 0; i <= (KEY_9 - KEY_1); i++)
         {
             qtKeyToVirtualKey[Qt::Key_1 + i] = KEY_1 + i;
         }
@@ -372,7 +372,7 @@ void QtUInputKeyMapper::populateCharKeyInformation()
     temp.virtualkey = 0;
 
     // Map 0-9 keys
-    for (unsigned int i=QChar('1').unicode(); i <= QChar('9').unicode(); i++)
+    for (unsigned int i = QChar('1').unicode(); i <= QChar('9').unicode(); i++)
     {
         temp.virtualkey = KEY_1 + i;
         virtualkeyToCharKeyInformation.insert(i, temp);
@@ -499,7 +499,6 @@ void QtUInputKeyMapper::populateCharKeyInformation()
     temp.virtualkey = KEY_SLASH;
     unicodeTempValue = QChar('/').unicode();
     virtualkeyToCharKeyInformation.insert(unicodeTempValue, temp);
-
 
     temp.modifiers = Qt::ShiftModifier;
 

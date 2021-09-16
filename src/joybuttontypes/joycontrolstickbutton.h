@@ -16,7 +16,7 @@
  */
 
 #ifndef JOYCONTROLSTICKBUTTON_H
-#define JOYCONTROLSTICKBUTTON_H\
+#define JOYCONTROLSTICKBUTTON_H
 
 #include <QString>
 
@@ -28,12 +28,14 @@ class JoyControlStick;
 class JoyControlStickButton : public JoyGradientButton
 {
     Q_OBJECT
-public:
-    explicit JoyControlStickButton(JoyControlStick *stick, int index, int originset, SetJoystick *parentSet, QObject *parent = 0);
-    explicit JoyControlStickButton(JoyControlStick *stick, JoyStickDirectionsType::JoyStickDirections index, int originset, SetJoystick *parentSet, QObject *parent = 0);
+  public:
+    explicit JoyControlStickButton(JoyControlStick *stick, int index, int originset, SetJoystick *parentSet,
+                                   QObject *parent = 0);
+    explicit JoyControlStickButton(JoyControlStick *stick, JoyStickDirectionsType::JoyStickDirections index, int originset,
+                                   SetJoystick *parentSet, QObject *parent = 0);
 
     virtual int getRealJoyNumber();
-    virtual QString getPartialName(bool forceFullFormat=false, bool displayNames=false);
+    virtual QString getPartialName(bool forceFullFormat = false, bool displayNames = false);
     virtual QString getXmlName();
     QString getDirectionName();
     JoyStickDirectionsType::JoyStickDirections getDirection();
@@ -42,7 +44,7 @@ public:
     virtual double getMouseDistanceFromDeadZone();
     virtual double getLastMouseDistanceFromDeadZone();
 
-    virtual void setChangeSetCondition(SetChangeCondition condition, bool passive=false);
+    virtual void setChangeSetCondition(SetChangeCondition condition, bool passive = false);
     JoyControlStick *getStick();
     virtual void setTurboMode(TurboMode mode);
     virtual bool isPartRealAxis();
@@ -54,14 +56,13 @@ public:
 
     static const QString xmlName;
 
-protected:
+  protected:
     virtual double getCurrentSpringDeadCircle();
 
     JoyControlStick *stick;
 
-signals:
+  signals:
     void setAssignmentChanged(int current_button, int axis_index, int associated_set, int mode);
-
 };
 
 #endif // JOYCONTROLSTICKBUTTON_H

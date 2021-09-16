@@ -27,8 +27,8 @@
 class Joystick : public InputDevice
 {
     Q_OBJECT
-public:
-    explicit Joystick(SDL_Joystick *joyhandle, int deviceIndex, AntiMicroSettings *settings, QObject *parent=0);
+  public:
+    explicit Joystick(SDL_Joystick *joyhandle, int deviceIndex, AntiMicroSettings *settings, QObject *parent = 0);
 
     virtual QString getName();
     virtual QString getSDLName();
@@ -45,15 +45,14 @@ public:
 
     static const QString xmlName;
 
-protected:
+  protected:
     SDL_Joystick *joyhandle;
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
-Q_DECLARE_METATYPE(Joystick*)
+Q_DECLARE_METATYPE(Joystick *)
 
 #endif // JOYSTICK_H

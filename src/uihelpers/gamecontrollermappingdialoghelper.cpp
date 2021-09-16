@@ -17,13 +17,11 @@
 
 #include "gamecontrollermappingdialoghelper.h"
 
-GameControllerMappingDialogHelper::GameControllerMappingDialogHelper(InputDevice *device,
-                                                                     QObject *parent) :
-    QObject(parent)
+GameControllerMappingDialogHelper::GameControllerMappingDialogHelper(InputDevice *device, QObject *parent)
+    : QObject(parent)
 {
     this->device = device;
 }
-
 
 void GameControllerMappingDialogHelper::raiseDeadZones()
 {

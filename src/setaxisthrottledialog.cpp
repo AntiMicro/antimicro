@@ -20,9 +20,9 @@
 #include "setaxisthrottledialog.h"
 #include "ui_setaxisthrottledialog.h"
 
-SetAxisThrottleDialog::SetAxisThrottleDialog(JoyAxis *axis, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::SetAxisThrottleDialog)
+SetAxisThrottleDialog::SetAxisThrottleDialog(JoyAxis *axis, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::SetAxisThrottleDialog)
 {
     ui->setupUi(this);
 
@@ -36,12 +36,6 @@ SetAxisThrottleDialog::SetAxisThrottleDialog(JoyAxis *axis, QWidget *parent) :
     connect(this, SIGNAL(initiateSetAxisThrottleChange()), axis, SLOT(propogateThrottleChange()));
 }
 
-SetAxisThrottleDialog::~SetAxisThrottleDialog()
-{
-    delete ui;
-}
+SetAxisThrottleDialog::~SetAxisThrottleDialog() { delete ui; }
 
-void SetAxisThrottleDialog::propogateThrottleChange()
-{
-    emit initiateSetAxisThrottleChange();
-}
+void SetAxisThrottleDialog::propogateThrottleChange() { emit initiateSetAxisThrottleChange(); }

@@ -17,11 +17,11 @@
 
 #include <QListWidgetItem>
 
-#include "slotitemlistwidget.h"
 #include "simplekeygrabberbutton.h"
+#include "slotitemlistwidget.h"
 
-SlotItemListWidget::SlotItemListWidget(QWidget *parent) :
-    QListWidget(parent)
+SlotItemListWidget::SlotItemListWidget(QWidget *parent)
+    : QListWidget(parent)
 {
 }
 
@@ -33,19 +33,18 @@ void SlotItemListWidget::keyPressEvent(QKeyEvent *event)
     SimpleKeyGrabberButton *tempbutton = 0;
     if (currentItem)
     {
-        tempbutton = currentItem->data(Qt::UserRole).value<SimpleKeyGrabberButton*>();
+        tempbutton = currentItem->data(Qt::UserRole).value<SimpleKeyGrabberButton *>();
     }
 
     if (tempbutton && tempbutton->isGrabbing())
     {
         switch (event->key())
         {
-            case Qt::Key_Home:
-            case Qt::Key_End:
-            {
-                propogate = false;
-                break;
-            }
+        case Qt::Key_Home:
+        case Qt::Key_End: {
+            propogate = false;
+            break;
+        }
         }
     }
 

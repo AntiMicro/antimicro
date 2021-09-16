@@ -18,22 +18,22 @@
 #ifndef LOCALANTIMICROSERVER_H
 #define LOCALANTIMICROSERVER_H
 
-#include <QObject>
 #include <QLocalServer>
+#include <QObject>
 
 class LocalAntiMicroServer : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit LocalAntiMicroServer(QObject *parent = 0);
 
-protected:
+  protected:
     QLocalServer *localServer;
 
-signals:
+  signals:
     void clientdisconnect();
 
-public slots:
+  public slots:
     void startLocalServer();
     void handleOutsideConnection();
     void handleSocketDisconnect();

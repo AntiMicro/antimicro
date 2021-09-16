@@ -18,23 +18,23 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QMap>
-#include <QIcon>
-#include <QSystemTrayIcon>
 #include <QAction>
+#include <QCloseEvent>
 #include <QFileDialog>
 #include <QHideEvent>
-#include <QShowEvent>
-#include <QCloseEvent>
+#include <QIcon>
 #include <QLocalServer>
+#include <QMainWindow>
+#include <QMap>
+#include <QShowEvent>
+#include <QSystemTrayIcon>
 #include <QTranslator>
 
-#include "inputdevice.h"
 #include "aboutdialog.h"
-#include "commandlineutility.h"
 #include "antimicrosettings.h"
 #include "autoprofilewatcher.h"
+#include "commandlineutility.h"
+#include "inputdevice.h"
 
 namespace Ui {
 class MainWindow;
@@ -43,35 +43,33 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
-public:
-    MainWindow(QMap<SDL_JoystickID, InputDevice*> *joysticks,
-               CommandLineUtility *cmdutility,
-               AntiMicroSettings *settings,
-               bool graphical=true, QWidget *parent = 0);
+
+  public:
+    MainWindow(QMap<SDL_JoystickID, InputDevice *> *joysticks, CommandLineUtility *cmdutility, AntiMicroSettings *settings,
+               bool graphical = true, QWidget *parent = 0);
     ~MainWindow();
 
     bool getGraphicalStatus();
 
     void setTranslator(QTranslator *translator);
-    QTranslator* getTranslator();
+    QTranslator *getTranslator();
 
     void setAppTranslator(QTranslator *translator);
-    QTranslator* getAppTranslator();
+    QTranslator *getAppTranslator();
 
-protected:
+  protected:
     virtual void showEvent(QShowEvent *event);
     virtual void changeEvent(QEvent *event);
     virtual void closeEvent(QCloseEvent *event);
     void retranslateUi();
-    void loadConfigFile(QString fileLocation, int joystickIndex=0);
+    void loadConfigFile(QString fileLocation, int joystickIndex = 0);
     void loadConfigFile(QString fileLocation, QString controllerID);
-    void unloadCurrentConfig(int joystickIndex=0);
+    void unloadCurrentConfig(int joystickIndex = 0);
     void unloadCurrentConfig(QString controllerID);
     void changeStartSetNumber(unsigned int startSetNumber, QString controllerID);
-    void changeStartSetNumber(unsigned int startSetNumber, unsigned int joystickIndex=0);
+    void changeStartSetNumber(unsigned int startSetNumber, unsigned int joystickIndex = 0);
 
-    QMap<SDL_JoystickID, InputDevice*> *joysticks;
+    QMap<SDL_JoystickID, InputDevice *> *joysticks;
 
     QSystemTrayIcon *trayIcon;
     QAction *hideAction;
@@ -79,7 +77,7 @@ protected:
     QAction *closeAction;
     QAction *updateJoy;
     QMenu *trayIconMenu;
-    QMap<int, QList<QAction*> > profileActions;
+    QMap<int, QList<QAction *>> profileActions;
     AboutDialog *aboutDialog;
     bool signalDisconnect;
     bool showTrayIcon;
@@ -91,10 +89,10 @@ protected:
     QTranslator *appTranslator;
     AutoProfileWatcher *appWatcher;
 
-private:
+  private:
     Ui::MainWindow *ui;
 
-signals:
+  signals:
     void joystickRefreshRequested();
     void readConfig(int index);
 
@@ -102,16 +100,16 @@ signals:
     void mappingUpdated(QString mapping, InputDevice *device);
 #endif
 
-public slots:
+  public slots:
     void fillButtons();
     void makeJoystickTabs();
     void alterConfigFromSettings();
     void fillButtons(InputDevice *joystick);
-    void fillButtons(QMap<SDL_JoystickID, InputDevice*> *joysticks);
+    void fillButtons(QMap<SDL_JoystickID, InputDevice *> *joysticks);
     void startJoystickRefresh();
     void hideWindow();
     void saveAppConfig();
-    void loadAppConfig(bool forceRefresh=false);
+    void loadAppConfig(bool forceRefresh = false);
     void removeJoyTabs();
     void quitProgram();
     void changeWindowStatus();
@@ -126,7 +124,7 @@ public slots:
     void selectControllerJoyTab(unsigned int index);
 #endif
 
-private slots:
+  private slots:
     void refreshTrayIconMenu();
     void trayIconClickAction(QSystemTrayIcon::ActivationReason reason);
     void mainMenuChange();
@@ -156,7 +154,7 @@ private slots:
 #endif
 
 #ifdef USE_SDL_2
-    void openGameControllerMappingWindow(bool openAsMain=false);
+    void openGameControllerMappingWindow(bool openAsMain = false);
     void propogateMappingUpdate(QString mapping, InputDevice *device);
     void autoprofileLoad(AutoProfileInfo *info);
     void checkAutoProfileWatcherTimer();

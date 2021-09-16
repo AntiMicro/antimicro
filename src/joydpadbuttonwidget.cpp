@@ -17,8 +17,8 @@
 
 #include "joydpadbuttonwidget.h"
 
-JoyDPadButtonWidget::JoyDPadButtonWidget(JoyButton *button, bool displayNames, QWidget *parent) :
-    JoyButtonWidget(button, displayNames, parent)
+JoyDPadButtonWidget::JoyDPadButtonWidget(JoyButton *button, bool displayNames, QWidget *parent)
+    : JoyButtonWidget(button, displayNames, parent)
 {
     // Ensure that JoyDPadButtonWidget::generateLabel is called.
     refreshLabel();
@@ -34,8 +34,7 @@ QString JoyDPadButtonWidget::generateLabel()
     if (!button->getActionName().isEmpty() && displayNames)
     {
         temp = button->getActionName();
-    }
-    else
+    } else
     {
         temp = button->getCalculatedActiveZoneSummary();
     }

@@ -17,20 +17,20 @@
 
 #include "mousebuttonsettingsdialog.h"
 #include "ui_mousesettingsdialog.h"
-#include <QSpinBox>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QSpinBox>
 
 #include <inputdevice.h>
 #include <setjoystick.h>
 
-MouseButtonSettingsDialog::MouseButtonSettingsDialog(JoyButton *button, QWidget *parent) :
-    MouseSettingsDialog(parent),
-    helper(button)
+MouseButtonSettingsDialog::MouseButtonSettingsDialog(JoyButton *button, QWidget *parent)
+    : MouseSettingsDialog(parent)
+    , helper(button)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     resize(size().width(), 450);
-    //setGeometry(geometry().x(), geometry().y(), size().width(), 450);
+    // setGeometry(geometry().x(), geometry().y(), size().width(), 450);
 
     this->button = button;
     helper.moveToThread(button->thread());
@@ -49,10 +49,8 @@ MouseButtonSettingsDialog::MouseButtonSettingsDialog(JoyButton *button, QWidget 
 
     if (ui->mouseModeComboBox->currentIndex() == 2)
     {
-        springPreviewWidget = new SpringModeRegionPreview(ui->springWidthSpinBox->value(),
-                                                          ui->springHeightSpinBox->value());
-    }
-    else
+        springPreviewWidget = new SpringModeRegionPreview(ui->springWidthSpinBox->value(), ui->springHeightSpinBox->value());
+    } else
     {
         springPreviewWidget = new SpringModeRegionPreview(0, 0);
     }
@@ -76,8 +74,7 @@ MouseButtonSettingsDialog::MouseButtonSettingsDialog(JoyButton *button, QWidget 
         ui->minThresholdDoubleSpinBox->setValue(button->getMinAccelThreshold());
         ui->maxThresholdDoubleSpinBox->setValue(button->getMaxAccelThreshold());
         ui->accelExtraDurationDoubleSpinBox->setValue(button->getAccelExtraDuration());
-    }
-    else
+    } else
     {
         ui->extraAccelerationGroupBox->setVisible(false);
     }
@@ -112,11 +109,13 @@ MouseButtonSettingsDialog::MouseButtonSettingsDialog(JoyButton *button, QWidget 
     connect(ui->easingDoubleSpinBox, SIGNAL(valueChanged(double)), button, SLOT(setEasingDuration(double)));
 
     connect(ui->extraAccelerationGroupBox, SIGNAL(clicked(bool)), &helper, SLOT(updateExtraAccelerationStatus(bool)));
-    connect(ui->extraAccelDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateExtraAccelerationMultiplier(double)));
+    connect(ui->extraAccelDoubleSpinBox, SIGNAL(valueChanged(double)), &helper,
+            SLOT(updateExtraAccelerationMultiplier(double)));
     connect(ui->minMultiDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateStartMultiPercentage(double)));
     connect(ui->minThresholdDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateMinAccelThreshold(double)));
     connect(ui->maxThresholdDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateMaxAccelThreshold(double)));
-    connect(ui->accelExtraDurationDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateAccelExtraDuration(double)));
+    connect(ui->accelExtraDurationDoubleSpinBox, SIGNAL(valueChanged(double)), &helper,
+            SLOT(updateAccelExtraDuration(double)));
     connect(ui->releaseSpringRadiusspinBox, SIGNAL(valueChanged(int)), &helper, SLOT(updateReleaseSpringRadius(int)));
 
     connect(ui->extraAccelCurveComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateExtraAccelerationCurve(int)));
@@ -131,8 +130,7 @@ void MouseButtonSettingsDialog::changeMouseMode(int index)
         {
             springPreviewWidget->hide();
         }
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         button->setMouseMode(JoyButton::MouseSpring);
         if (!springPreviewWidget->isVisible())
@@ -180,8 +178,7 @@ void MouseButtonSettingsDialog::selectCurrentMouseModePreset()
     if (mode == JoyButton::MouseCursor)
     {
         ui->mouseModeComboBox->setCurrentIndex(1);
-    }
-    else if (mode == JoyButton::MouseSpring)
+    } else if (mode == JoyButton::MouseSpring)
     {
         ui->mouseModeComboBox->setCurrentIndex(2);
     }
@@ -212,10 +209,7 @@ void MouseButtonSettingsDialog::calculateMouseSpeedPreset()
     ui->verticalSpinBox->setValue(tempMouseSpeedY);
 }
 
-void MouseButtonSettingsDialog::updateSensitivity(double value)
-{
-    button->setSensitivity(value);
-}
+void MouseButtonSettingsDialog::updateSensitivity(double value) { button->setSensitivity(value); }
 
 void MouseButtonSettingsDialog::updateAccelerationCurvePresetComboBox()
 {
@@ -233,7 +227,6 @@ void MouseButtonSettingsDialog::updateWindowTitleButtonName()
 {
     QString temp;
     temp.append(tr("Mouse Settings - ")).append(button->getPartialName(false, true));
-
 
     if (button->getParentSet()->getIndex() != 0)
     {

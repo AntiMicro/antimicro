@@ -15,26 +15,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QString>
-#include <QLabel>
-#include <QDoubleSpinBox>
-#include <QSpinBox>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QDoubleSpinBox>
+#include <QLabel>
+#include <QSpinBox>
+#include <QString>
 
 #include "mousesettingsdialog.h"
 #include "ui_mousesettingsdialog.h"
 
-MouseSettingsDialog::MouseSettingsDialog(QWidget *parent) :
-    QDialog(parent, Qt::Window),
-    ui(new Ui::MouseSettingsDialog)
+MouseSettingsDialog::MouseSettingsDialog(QWidget *parent)
+    : QDialog(parent, Qt::Window)
+    , ui(new Ui::MouseSettingsDialog)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
 
     JoyButtonMouseHelper *mouseHelper = JoyButton::getMouseHelper();
-    connect(mouseHelper, SIGNAL(mouseCursorMoved(int,int,int)), this, SLOT(updateMouseCursorStatusLabels(int,int,int)));
-    connect(mouseHelper, SIGNAL(mouseSpringMoved(int,int)), this, SLOT(updateMouseSpringStatusLabels(int,int)));
+    connect(mouseHelper, SIGNAL(mouseCursorMoved(int, int, int)), this, SLOT(updateMouseCursorStatusLabels(int, int, int)));
+    connect(mouseHelper, SIGNAL(mouseSpringMoved(int, int)), this, SLOT(updateMouseSpringStatusLabels(int, int)));
     lastMouseStatUpdate.start();
 
     connect(ui->accelerationComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(changeSettingsWidgetStatus(int)));
@@ -57,10 +57,7 @@ MouseSettingsDialog::MouseSettingsDialog(QWidget *parent) :
     connect(ui->relativeSpringCheckBox, SIGNAL(clicked(bool)), this, SLOT(resetReleaseRadius(bool)));
 }
 
-MouseSettingsDialog::~MouseSettingsDialog()
-{
-    delete ui;
-}
+MouseSettingsDialog::~MouseSettingsDialog() { delete ui; }
 
 void MouseSettingsDialog::changeSettingsWidgetStatus(int index)
 {
@@ -70,18 +67,15 @@ void MouseSettingsDialog::changeSettingsWidgetStatus(int index)
     if (currentMouseMode == 1 && temp == JoyButton::PowerCurve)
     {
         ui->sensitivityDoubleSpinBox->setEnabled(true);
-    }
-    else
+    } else
     {
         ui->sensitivityDoubleSpinBox->setEnabled(false);
     }
 
-    if (currentMouseMode == 1 && (temp == JoyButton::EasingQuadraticCurve ||
-                                  temp == JoyButton::EasingCubicCurve))
+    if (currentMouseMode == 1 && (temp == JoyButton::EasingQuadraticCurve || temp == JoyButton::EasingCubicCurve))
     {
         ui->easingDoubleSpinBox->setEnabled(true);
-    }
-    else
+    } else
     {
         ui->easingDoubleSpinBox->setEnabled(false);
     }
@@ -96,8 +90,7 @@ void MouseSettingsDialog::changeSpringSectionStatus(int index)
         ui->relativeSpringCheckBox->setEnabled(true);
         bool enableSpringRadiusBox = !ui->relativeSpringCheckBox->isChecked();
         ui->releaseSpringRadiusspinBox->setEnabled(enableSpringRadiusBox);
-    }
-    else
+    } else
     {
         ui->springWidthSpinBox->setEnabled(false);
         ui->springHeightSpinBox->setEnabled(false);
@@ -108,7 +101,7 @@ void MouseSettingsDialog::changeSpringSectionStatus(int index)
 
 void MouseSettingsDialog::updateHorizontalSpeedConvertLabel(int value)
 {
-    QString label = QString (QString::number(value));
+    QString label = QString(QString::number(value));
 
     int currentCurveIndex = ui->accelerationComboBox->currentIndex();
     JoyButton::JoyMouseCurve tempCurve = getMouseCurveForIndex(currentCurveIndex);
@@ -120,7 +113,7 @@ void MouseSettingsDialog::updateHorizontalSpeedConvertLabel(int value)
 
 void MouseSettingsDialog::updateVerticalSpeedConvertLabel(int value)
 {
-    QString label = QString (QString::number(value));
+    QString label = QString(QString::number(value));
 
     int currentCurveIndex = ui->accelerationComboBox->currentIndex();
     JoyButton::JoyMouseCurve tempCurve = getMouseCurveForIndex(currentCurveIndex);
@@ -149,8 +142,7 @@ void MouseSettingsDialog::changeMouseSpeedBoxStatus(int index)
 
         ui->extraAccelerationGroupBox->setChecked(false);
         ui->extraAccelerationGroupBox->setEnabled(false);
-    }
-    else
+    } else
     {
         ui->horizontalSpinBox->setEnabled(true);
         ui->verticalSpinBox->setEnabled(true);
@@ -170,8 +162,7 @@ void MouseSettingsDialog::changeWheelSpeedBoxStatus(int index)
     {
         ui->wheelHoriSpeedSpinBox->setEnabled(false);
         ui->wheelVertSpeedSpinBox->setEnabled(false);
-    }
-    else
+    } else
     {
         ui->wheelHoriSpeedSpinBox->setEnabled(true);
         ui->wheelVertSpeedSpinBox->setEnabled(true);
@@ -199,32 +190,25 @@ void MouseSettingsDialog::updateAccelerationCurvePresetComboBox(JoyButton::JoyMo
     if (mouseCurve == JoyButton::EnhancedPrecisionCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(1);
-    }
-    else if (mouseCurve == JoyButton::LinearCurve)
+    } else if (mouseCurve == JoyButton::LinearCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(2);
-    }
-    else if (mouseCurve == JoyButton::QuadraticCurve)
+    } else if (mouseCurve == JoyButton::QuadraticCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(3);
-    }
-    else if (mouseCurve == JoyButton::CubicCurve)
+    } else if (mouseCurve == JoyButton::CubicCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(4);
-    }
-    else if (mouseCurve == JoyButton::QuadraticExtremeCurve)
+    } else if (mouseCurve == JoyButton::QuadraticExtremeCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(5);
-    }
-    else if (mouseCurve == JoyButton::PowerCurve)
+    } else if (mouseCurve == JoyButton::PowerCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(6);
-    }
-    else if (mouseCurve == JoyButton::EasingQuadraticCurve)
+    } else if (mouseCurve == JoyButton::EasingQuadraticCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(7);
-    }
-    else if (mouseCurve == JoyButton::EasingCubicCurve)
+    } else if (mouseCurve == JoyButton::EasingCubicCurve)
     {
         ui->accelerationComboBox->setCurrentIndex(8);
     }
@@ -237,32 +221,25 @@ JoyButton::JoyMouseCurve MouseSettingsDialog::getMouseCurveForIndex(int index)
     if (index == 1)
     {
         temp = JoyButton::EnhancedPrecisionCurve;
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         temp = JoyButton::LinearCurve;
-    }
-    else if (index == 3)
+    } else if (index == 3)
     {
         temp = JoyButton::QuadraticCurve;
-    }
-    else if (index == 4)
+    } else if (index == 4)
     {
         temp = JoyButton::CubicCurve;
-    }
-    else if (index == 5)
+    } else if (index == 5)
     {
         temp = JoyButton::QuadraticExtremeCurve;
-    }
-    else if (index == 6)
+    } else if (index == 6)
     {
         temp = JoyButton::PowerCurve;
-    }
-    else if (index == 7)
+    } else if (index == 7)
     {
         temp = JoyButton::EasingQuadraticCurve;
-    }
-    else if (index == 8)
+    } else if (index == 8)
     {
         temp = JoyButton::EasingCubicCurve;
     }
@@ -275,8 +252,7 @@ void MouseSettingsDialog::changeSensitivityStatusForMouseMode(int index)
     if (index == 2)
     {
         ui->sensitivityDoubleSpinBox->setEnabled(false);
-    }
-    else if (index == 1)
+    } else if (index == 1)
     {
         int currentCurveIndex = ui->accelerationComboBox->currentIndex();
         JoyButton::JoyMouseCurve temp = getMouseCurveForIndex(currentCurveIndex);
@@ -284,8 +260,7 @@ void MouseSettingsDialog::changeSensitivityStatusForMouseMode(int index)
         {
             ui->sensitivityDoubleSpinBox->setEnabled(true);
         }
-    }
-    else
+    } else
     {
         ui->sensitivityDoubleSpinBox->setEnabled(false);
     }
@@ -304,11 +279,11 @@ void MouseSettingsDialog::updateMouseCursorStatusLabels(int mouseX, int mouseY, 
     {
         QString tempX("%1 (%2 pps) (%3 ms)");
         QString tempY("%1 (%2 pps) (%3 ms)");
-        //QString tempPoll("%1 Hz");
+        // QString tempPoll("%1 Hz");
 
-        ui->mouseStatusXLabel->setText(tempX.arg(mouseX).arg(mouseX * (1000/elapsed)).arg(elapsed));
-        ui->mouseStatusYLabel->setText(tempY.arg(mouseY).arg(mouseY * (1000/elapsed)).arg(elapsed));
-        //ui->mouseStatusPollLabel->setText(tempPoll.arg(1000/elapsed));
+        ui->mouseStatusXLabel->setText(tempX.arg(mouseX).arg(mouseX * (1000 / elapsed)).arg(elapsed));
+        ui->mouseStatusYLabel->setText(tempY.arg(mouseY).arg(mouseY * (1000 / elapsed)).arg(elapsed));
+        // ui->mouseStatusPollLabel->setText(tempPoll.arg(1000/elapsed));
         lastMouseStatUpdate.start();
     }
 }
@@ -332,7 +307,6 @@ void MouseSettingsDialog::updateMouseSpringStatusLabels(int coordX, int coordY)
     }
 }
 
-
 void MouseSettingsDialog::refreshMouseCursorSpeedValues(int index)
 {
     Q_UNUSED(index);
@@ -341,10 +315,7 @@ void MouseSettingsDialog::refreshMouseCursorSpeedValues(int index)
     updateVerticalSpeedConvertLabel(ui->verticalSpinBox->value());
 }
 
-void MouseSettingsDialog::disableReleaseSpringBox(bool enable)
-{
-    ui->releaseSpringRadiusspinBox->setEnabled(!enable);
-}
+void MouseSettingsDialog::disableReleaseSpringBox(bool enable) { ui->releaseSpringRadiusspinBox->setEnabled(!enable); }
 
 void MouseSettingsDialog::resetReleaseRadius(bool enabled)
 {
@@ -361,16 +332,13 @@ JoyButton::JoyExtraAccelerationCurve MouseSettingsDialog::getExtraAccelCurveForI
     if (index == 1)
     {
         temp = JoyButton::LinearAccelCurve;
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         temp = JoyButton::EaseOutSineCurve;
-    }
-    else if (index == 3)
+    } else if (index == 3)
     {
         temp = JoyButton::EaseOutQuadAccelCurve;
-    }
-    else if (index == 4)
+    } else if (index == 4)
     {
         temp = JoyButton::EaseOutCubicAccelCurve;
     }
@@ -378,29 +346,23 @@ JoyButton::JoyExtraAccelerationCurve MouseSettingsDialog::getExtraAccelCurveForI
     return temp;
 }
 
-void
-MouseSettingsDialog::updateExtraAccelerationCurvePresetComboBox
-(JoyButton::JoyExtraAccelerationCurve curve)
+void MouseSettingsDialog::updateExtraAccelerationCurvePresetComboBox(JoyButton::JoyExtraAccelerationCurve curve)
 {
     int temp = 0;
 
     if (curve == JoyButton::LinearAccelCurve)
     {
         temp = 1;
-    }
-    else if (curve == JoyButton::EaseOutSineCurve)
+    } else if (curve == JoyButton::EaseOutSineCurve)
     {
         temp = 2;
-    }
-    else if (curve == JoyButton::EaseOutQuadAccelCurve)
+    } else if (curve == JoyButton::EaseOutQuadAccelCurve)
     {
         temp = 3;
-    }
-    else if (curve == JoyButton::EaseOutCubicAccelCurve)
+    } else if (curve == JoyButton::EaseOutCubicAccelCurve)
     {
         temp = 4;
     }
 
     ui->extraAccelCurveComboBox->setCurrentIndex(temp);
 }
-

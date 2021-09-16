@@ -18,13 +18,13 @@
 #ifndef QTKEYMAPPERBASE_H
 #define QTKEYMAPPERBASE_H
 
-#include <QObject>
 #include <QHash>
+#include <QObject>
 
 class QtKeyMapperBase : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit QtKeyMapperBase(QObject *parent = 0);
 
     typedef struct _charKeyInformation
@@ -34,7 +34,7 @@ public:
     } charKeyInformation;
 
     virtual unsigned int returnVirtualKey(unsigned int qkey);
-    virtual unsigned int returnQtKey(unsigned int key, unsigned int scancode=0);
+    virtual unsigned int returnQtKey(unsigned int key, unsigned int scancode = 0);
     virtual bool isModifier(unsigned int qkey);
     charKeyInformation getCharKeyInformation(QChar value);
     QString getIdentifier();
@@ -43,7 +43,8 @@ public:
     static const unsigned int customKeyPrefix = 0x20000000;
     static const unsigned int nativeKeyPrefix = 0x60000000;
 
-    enum {
+    enum
+    {
         AntKey_Shift_R = Qt::Key_Shift | customQtKeyPrefix,
         AntKey_Control_R = Qt::Key_Control | customQtKeyPrefix,
         AntKey_Shift_Lock = 0xffe6 | customKeyPrefix, // XK_Shift_Lock | 0x20000000
@@ -77,7 +78,7 @@ public:
         AntKey_KP_9 = Qt::Key_9 | customQtKeyPrefix
     };
 
-protected:
+  protected:
     virtual void populateMappingHashes() = 0;
     virtual void populateCharKeyInformation() = 0;
 
@@ -87,10 +88,9 @@ protected:
     QHash<unsigned int, charKeyInformation> virtualkeyToCharKeyInformation;
     QString identifier;
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // QTKEYMAPPERBASE_H

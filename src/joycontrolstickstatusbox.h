@@ -18,27 +18,27 @@
 #ifndef JOYCONTROLSTICKSTATUSBOX_H
 #define JOYCONTROLSTICKSTATUSBOX_H
 
-#include <QWidget>
 #include <QSize>
+#include <QWidget>
 
-#include "joycontrolstick.h"
 #include "joyaxis.h"
+#include "joycontrolstick.h"
 
 class JoyControlStickStatusBox : public QWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyControlStickStatusBox(QWidget *parent = 0);
     explicit JoyControlStickStatusBox(JoyControlStick *stick, QWidget *parent = 0);
 
     void setStick(JoyControlStick *stick);
 
-    JoyControlStick* getStick();
+    JoyControlStick *getStick();
 
     virtual int heightForWidth(int width) const;
     QSize sizeHint() const;
 
-protected:
+  protected:
     virtual void paintEvent(QPaintEvent *event);
     void drawEightWayBox();
     void drawFourWayCardinalBox();
@@ -46,10 +46,9 @@ protected:
 
     JoyControlStick *stick;
 
-signals:
-    
-public slots:
-    
+  signals:
+
+  public slots:
 };
 
 #endif // JOYCONTROLSTICKSTATUSBOX_H

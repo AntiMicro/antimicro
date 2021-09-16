@@ -21,27 +21,26 @@
 #include "qkeydisplaydialog.h"
 #include "ui_qkeydisplaydialog.h"
 
-#include "eventhandlerfactory.h"
 #include "antkeymapper.h"
+#include "eventhandlerfactory.h"
 
 #ifdef Q_OS_WIN
-  #include "winextras.h"
+    #include "winextras.h"
 #endif
 
 #ifdef Q_OS_UNIX
-  #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    #include <QApplication>
-  #endif
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+        #include <QApplication>
+    #endif
 
-  #ifdef WITH_X11
-    #include "x11extras.h"
-  #endif
+    #ifdef WITH_X11
+        #include "x11extras.h"
+    #endif
 #endif
 
-
-QKeyDisplayDialog::QKeyDisplayDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::QKeyDisplayDialog)
+QKeyDisplayDialog::QKeyDisplayDialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::QKeyDisplayDialog)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -56,11 +55,11 @@ QKeyDisplayDialog::QKeyDisplayDialog(QWidget *parent) :
     if (QApplication::platformName() == QStringLiteral("xcb"))
     {
         #endif
-    /*ui->formLayout->removeWidget(ui->nativeTitleLabel);
-    ui->formLayout->removeWidget(ui->nativeKeyLabel);
-    ui->nativeTitleLabel->setVisible(false);
-    ui->nativeKeyLabel->setVisible(false);
-    */
+            /*ui->formLayout->removeWidget(ui->nativeTitleLabel);
+            ui->formLayout->removeWidget(ui->nativeKeyLabel);
+            ui->nativeTitleLabel->setVisible(false);
+            ui->nativeKeyLabel->setVisible(false);
+            */
         #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
     }
         #endif
@@ -73,13 +72,9 @@ QKeyDisplayDialog::QKeyDisplayDialog(QWidget *parent) :
     ui->eventHandlerLabel->setVisible(false);
     */
 #endif
-
 }
 
-QKeyDisplayDialog::~QKeyDisplayDialog()
-{
-    delete ui;
-}
+QKeyDisplayDialog::~QKeyDisplayDialog() { delete ui; }
 
 void QKeyDisplayDialog::keyPressEvent(QKeyEvent *event)
 {
@@ -105,7 +100,7 @@ void QKeyDisplayDialog::keyReleaseEvent(QKeyEvent *event)
     unsigned int finalvirtual = WinExtras::correctVirtualKey(scancode, virtualkey);
     unsigned int tempvirtual = finalvirtual;
 
-  #ifdef WITH_VMULTI
+    #ifdef WITH_VMULTI
     if (handler->getIdentifier() == "vmulti")
     {
         QtKeyMapperBase *nativeWinKeyMapper = AntKeyMapper::getInstance()->getNativeKeyMapper();
@@ -118,7 +113,7 @@ void QKeyDisplayDialog::keyReleaseEvent(QKeyEvent *event)
             }
         }
     }
-  #endif
+    #endif
 #else
 
     unsigned int finalvirtual = 0;
@@ -142,8 +137,7 @@ void QKeyDisplayDialog::keyReleaseEvent(QKeyEvent *event)
         #endif
 
         #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    }
-    else
+    } else
     {
         finalvirtual = scancode;
     }
@@ -154,10 +148,9 @@ void QKeyDisplayDialog::keyReleaseEvent(QKeyEvent *event)
     if (QApplication::platformName() == QStringLiteral("xcb"))
     {
         #endif
-    finalvirtual = AntKeyMapper::getInstance()->returnVirtualKey(event->key());
+        finalvirtual = AntKeyMapper::getInstance()->returnVirtualKey(event->key());
         #if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
-    }
-    else
+    } else
     {
         finalvirtual = scancode;
     }

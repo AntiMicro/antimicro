@@ -19,19 +19,19 @@
 #include <QPainter>
 
 #include "virtualkeypushbutton.h"
-#include <event.h>
 #include <antkeymapper.h>
+#include <event.h>
 #include <eventhandlerfactory.h>
 
-QHash<QString, QString> VirtualKeyPushButton::knownAliases = QHash<QString, QString> ();
+QHash<QString, QString> VirtualKeyPushButton::knownAliases = QHash<QString, QString>();
 
-VirtualKeyPushButton::VirtualKeyPushButton(JoyButton *button, QString xcodestring, QWidget *parent) :
-    QPushButton(parent)
+VirtualKeyPushButton::VirtualKeyPushButton(JoyButton *button, QString xcodestring, QWidget *parent)
+    : QPushButton(parent)
 {
     populateKnownAliases();
 
-    //qDebug() << "Question: " << X11KeySymToKeycode("KP_7") << endl;
-    //qDebug() << "Question: " << X11KeySymToKeycode(79) << endl;
+    // qDebug() << "Question: " << X11KeySymToKeycode("KP_7") << endl;
+    // qDebug() << "Question: " << X11KeySymToKeycode(79) << endl;
     this->keycode = 0;
     this->qkeyalias = 0;
     this->xcodestring = "";
@@ -56,18 +56,18 @@ VirtualKeyPushButton::VirtualKeyPushButton(JoyButton *button, QString xcodestrin
     if (temp > 0)
     {
 #ifdef Q_OS_WIN
-        //static QtWinKeyMapper nativeWinKeyMapper;
+        // static QtWinKeyMapper nativeWinKeyMapper;
         BaseEventHandler *handler = EventHandlerFactory::getInstance()->handler();
 
-  #ifdef WITH_VMULTI
+    #ifdef WITH_VMULTI
         if (handler->getIdentifier() == "vmulti")
         {
             QtKeyMapperBase *nativeWinKeyMapper = AntKeyMapper::getInstance()->getNativeKeyMapper();
             this->qkeyalias = nativeWinKeyMapper->returnQtKey(temp);
             this->keycode = AntKeyMapper::getInstance()->returnVirtualKey(qkeyalias);
         }
-  #endif
-        BACKEND_ELSE_IF (handler->getIdentifier() == "sendinput")
+    #endif
+        BACKEND_ELSE_IF(handler->getIdentifier() == "sendinput")
         {
             this->keycode = temp;
             this->qkeyalias = AntKeyMapper::getInstance()->returnQtKey(this->keycode);
@@ -80,9 +80,9 @@ VirtualKeyPushButton::VirtualKeyPushButton(JoyButton *button, QString xcodestrin
         }
 #else
         this->keycode = temp;
-        //this->keycode = X11KeyCodeToX11KeySym(temp);
+        // this->keycode = X11KeyCodeToX11KeySym(temp);
         this->qkeyalias = AntKeyMapper::getInstance()->returnQtKey(this->keycode);
-        //this->keycode = temp;
+        // this->keycode = temp;
 #endif
         this->xcodestring = xcodestring;
         this->displayString = setDisplayString(xcodestring);
@@ -93,10 +93,7 @@ VirtualKeyPushButton::VirtualKeyPushButton(JoyButton *button, QString xcodestrin
     connect(this, SIGNAL(clicked()), this, SLOT(processSingleSelection()));
 }
 
-void VirtualKeyPushButton::processSingleSelection()
-{
-    emit keycodeObtained(keycode, qkeyalias);
-}
+void VirtualKeyPushButton::processSingleSelection() { emit keycodeObtained(keycode, qkeyalias); }
 
 QString VirtualKeyPushButton::setDisplayString(QString xcodestring)
 {
@@ -104,11 +101,10 @@ QString VirtualKeyPushButton::setDisplayString(QString xcodestring)
     if (knownAliases.contains(xcodestring))
     {
         temp = knownAliases.value(xcodestring);
-    }
-    else
+    } else
     {
         temp = keycodeToKeyString(X11KeySymToKeycode(xcodestring));
-        //temp = keycodeToKeyString(X11KeySymToKeycode(xcodestring));
+        // temp = keycodeToKeyString(X11KeySymToKeycode(xcodestring));
     }
 
     if (temp.isEmpty() && !xcodestring.isEmpty())
@@ -189,9 +185,10 @@ int VirtualKeyPushButton::calculateFontSize()
     tempScaledFont.setPointSize(10);
     QFontMetrics fm(tempScaledFont);
 
-    while (((this->width()-4) < fm.boundingRect(this->rect(), Qt::AlignCenter, this->text()).width()) && tempScaledFont.pointSize() >= 6)
+    while (((this->width() - 4) < fm.boundingRect(this->rect(), Qt::AlignCenter, this->text()).width()) &&
+           tempScaledFont.pointSize() >= 6)
     {
-        tempScaledFont.setPointSize(tempScaledFont.pointSize()-1);
+        tempScaledFont.setPointSize(tempScaledFont.pointSize() - 1);
         fm = QFontMetrics(tempScaledFont);
     }
 

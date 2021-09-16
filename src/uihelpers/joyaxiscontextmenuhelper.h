@@ -26,19 +26,17 @@
 class JoyAxisContextMenuHelper : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyAxisContextMenuHelper(JoyAxis *axis, QObject *parent = 0);
 
-protected:
+  protected:
     JoyAxis *axis;
 
-signals:
+  signals:
 
-public slots:
-    void setNAssignedSlot(int code, unsigned int alias,
-                         JoyButtonSlot::JoySlotInputAction mode=JoyButtonSlot::JoyKeyboard);
-    void setPAssignedSlot(int code, unsigned int alias,
-                         JoyButtonSlot::JoySlotInputAction mode=JoyButtonSlot::JoyKeyboard);
+  public slots:
+    void setNAssignedSlot(int code, unsigned int alias, JoyButtonSlot::JoySlotInputAction mode = JoyButtonSlot::JoyKeyboard);
+    void setPAssignedSlot(int code, unsigned int alias, JoyButtonSlot::JoySlotInputAction mode = JoyButtonSlot::JoyKeyboard);
     void clearAndResetAxisButtons();
 };
 

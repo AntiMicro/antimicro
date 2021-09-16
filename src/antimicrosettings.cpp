@@ -22,8 +22,8 @@ const bool AntiMicroSettings::defaultAssociateProfiles = true;
 const int AntiMicroSettings::defaultSpringScreen = -1;
 const unsigned int AntiMicroSettings::defaultSDLGamepadPollRate = 10;
 
-AntiMicroSettings::AntiMicroSettings(const QString &fileName, Format format, QObject *parent) :
-    QSettings(fileName, format, parent)
+AntiMicroSettings::AntiMicroSettings(const QString &fileName, Format format, QObject *parent)
+    : QSettings(fileName, format, parent)
 {
 }
 
@@ -42,8 +42,7 @@ QVariant AntiMicroSettings::runtimeValue(const QString &key, const QVariant &def
     if (cmdSettings.contains(fullKey))
     {
         settingValue = cmdSettings.value(fullKey, defaultValue);
-    }
-    else
+    } else
     {
         settingValue = value(key, defaultValue);
     }
@@ -72,7 +71,4 @@ void AntiMicroSettings::importFromCommandLine(CommandLineUtility &cmdutility)
     }
 }
 
-QMutex* AntiMicroSettings::getLock()
-{
-    return &lock;
-}
+QMutex *AntiMicroSettings::getLock() { return &lock; }

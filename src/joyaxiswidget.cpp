@@ -19,8 +19,8 @@
 
 #include "joyaxiscontextmenu.h"
 
-JoyAxisWidget::JoyAxisWidget(JoyAxis *axis, bool displayNames, QWidget *parent) :
-    FlashButtonWidget(displayNames, parent)
+JoyAxisWidget::JoyAxisWidget(JoyAxis *axis, bool displayNames, QWidget *parent)
+    : FlashButtonWidget(displayNames, parent)
 {
     this->axis = axis;
 
@@ -28,7 +28,7 @@ JoyAxisWidget::JoyAxisWidget(JoyAxis *axis, bool displayNames, QWidget *parent) 
     enableFlashes();
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showContextMenu(const QPoint &)));
 
     JoyAxisButton *nAxisButton = axis->getNAxisButton();
     JoyAxisButton *pAxisButton = axis->getPAxisButton();
@@ -38,8 +38,8 @@ JoyAxisWidget::JoyAxisWidget(JoyAxis *axis, bool displayNames, QWidget *parent) 
     connect(axis, SIGNAL(throttleChanged()), this, SLOT(refreshLabel()));
     connect(axis, SIGNAL(axisNameChanged()), this, SLOT(refreshLabel()));
 
-    //connect(nAxisButton, SIGNAL(slotsChanged()), this, SLOT(refreshLabel()));
-    //connect(pAxisButton, SIGNAL(slotsChanged()), this, SLOT(refreshLabel()));
+    // connect(nAxisButton, SIGNAL(slotsChanged()), this, SLOT(refreshLabel()));
+    // connect(pAxisButton, SIGNAL(slotsChanged()), this, SLOT(refreshLabel()));
     connect(nAxisButton, SIGNAL(propertyUpdated()), this, SLOT(refreshLabel()));
     connect(pAxisButton, SIGNAL(propertyUpdated()), this, SLOT(refreshLabel()));
     connect(nAxisButton, SIGNAL(activeZoneChanged()), this, SLOT(refreshLabel()));
@@ -50,10 +50,7 @@ JoyAxisWidget::JoyAxisWidget(JoyAxis *axis, bool displayNames, QWidget *parent) 
     pAxisButton->establishPropertyUpdatedConnections();
 }
 
-JoyAxis* JoyAxisWidget::getAxis()
-{
-    return axis;
-}
+JoyAxis *JoyAxisWidget::getAxis() { return axis; }
 
 void JoyAxisWidget::disableFlashes()
 {

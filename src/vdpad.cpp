@@ -19,8 +19,8 @@
 
 const QString VDPad::xmlName = "vdpad";
 
-VDPad::VDPad(int index, int originset, SetJoystick *parentSet, QObject *parent) :
-    JoyDPad(index, originset, parentSet, parent)
+VDPad::VDPad(int index, int originset, SetJoystick *parentSet, QObject *parent)
+    : JoyDPad(index, originset, parentSet, parent)
 {
     this->upButton = 0;
     this->downButton = 0;
@@ -30,9 +30,9 @@ VDPad::VDPad(int index, int originset, SetJoystick *parentSet, QObject *parent) 
     pendingVDPadEvent = false;
 }
 
-VDPad::VDPad(JoyButton *upButton, JoyButton *downButton, JoyButton *leftButton, JoyButton *rightButton,
-             int index, int originset, SetJoystick *parentSet, QObject *parent) :
-    JoyDPad(index, originset, parentSet, parent)
+VDPad::VDPad(JoyButton *upButton, JoyButton *downButton, JoyButton *leftButton, JoyButton *rightButton, int index,
+             int originset, SetJoystick *parentSet, QObject *parent)
+    : JoyDPad(index, originset, parentSet, parent)
 {
     this->upButton = upButton;
     upButton->setVDPad(this);
@@ -76,10 +76,7 @@ VDPad::~VDPad()
     }
 }
 
-QString VDPad::getXmlName()
-{
-    return this->xmlName;
-}
+QString VDPad::getXmlName() { return this->xmlName; }
 
 QString VDPad::getName(bool forceFullFormat, bool displayName)
 {
@@ -93,16 +90,14 @@ QString VDPad::getName(bool forceFullFormat, bool displayName)
         }
 
         label.append(dpadName);
-    }
-    else if (!defaultDPadName.isEmpty())
+    } else if (!defaultDPadName.isEmpty())
     {
         if (forceFullFormat)
         {
             label.append(tr("VDPad")).append(" ");
         }
         label.append(defaultDPadName);
-    }
-    else
+    } else
     {
         label.append(tr("VDPad")).append(" ");
         label.append(QString::number(getRealJoyNumber()));
@@ -155,8 +150,7 @@ void VDPad::addVButton(JoyDPadButton::JoyDPadDirections direction, JoyButton *bu
         }
         upButton = button;
         upButton->setVDPad(this);
-    }
-    else if (direction == JoyDPadButton::DpadDown)
+    } else if (direction == JoyDPadButton::DpadDown)
     {
         if (downButton)
         {
@@ -164,8 +158,7 @@ void VDPad::addVButton(JoyDPadButton::JoyDPadDirections direction, JoyButton *bu
         }
         downButton = button;
         downButton->setVDPad(this);
-    }
-    else if (direction == JoyDPadButton::DpadLeft)
+    } else if (direction == JoyDPadButton::DpadLeft)
     {
         if (leftButton)
         {
@@ -173,8 +166,7 @@ void VDPad::addVButton(JoyDPadButton::JoyDPadDirections direction, JoyButton *bu
         }
         leftButton = button;
         leftButton->setVDPad(this);
-    }
-    else if (direction == JoyDPadButton::DpadRight)
+    } else if (direction == JoyDPadButton::DpadRight)
     {
         if (rightButton)
         {
@@ -191,18 +183,15 @@ void VDPad::removeVButton(JoyDPadButton::JoyDPadDirections direction)
     {
         upButton->removeVDPad();
         upButton = 0;
-    }
-    else if (direction == JoyDPadButton::DpadDown && downButton)
+    } else if (direction == JoyDPadButton::DpadDown && downButton)
     {
         downButton->removeVDPad();
         downButton = 0;
-    }
-    else if (direction == JoyDPadButton::DpadLeft && leftButton)
+    } else if (direction == JoyDPadButton::DpadLeft && leftButton)
     {
         leftButton->removeVDPad();
         leftButton = 0;
-    }
-    else if (direction == JoyDPadButton::DpadRight && rightButton)
+    } else if (direction == JoyDPadButton::DpadRight && rightButton)
     {
         rightButton->removeVDPad();
         rightButton = 0;
@@ -215,18 +204,15 @@ void VDPad::removeVButton(JoyButton *button)
     {
         upButton->removeVDPad();
         upButton = 0;
-    }
-    else if (button && button == downButton)
+    } else if (button && button == downButton)
     {
         downButton->removeVDPad();
         downButton = 0;
-    }
-    else if (button && button == leftButton)
+    } else if (button && button == leftButton)
     {
         leftButton->removeVDPad();
         leftButton = 0;
-    }
-    else if (button && button == rightButton)
+    } else if (button && button == rightButton)
     {
         rightButton->removeVDPad();
         rightButton = 0;
@@ -245,22 +231,19 @@ bool VDPad::isEmpty()
     return empty;
 }
 
-JoyButton* VDPad::getVButton(JoyDPadButton::JoyDPadDirections direction)
+JoyButton *VDPad::getVButton(JoyDPadButton::JoyDPadDirections direction)
 {
     JoyButton *button = 0;
     if (direction == JoyDPadButton::DpadUp)
     {
         button = upButton;
-    }
-    else if (direction == JoyDPadButton::DpadDown)
+    } else if (direction == JoyDPadButton::DpadDown)
     {
         button = downButton;
-    }
-    else if (direction == JoyDPadButton::DpadLeft)
+    } else if (direction == JoyDPadButton::DpadLeft)
     {
         button = leftButton;
-    }
-    else if (direction == JoyDPadButton::DpadRight)
+    } else if (direction == JoyDPadButton::DpadRight)
     {
         button = rightButton;
     }
@@ -268,10 +251,7 @@ JoyButton* VDPad::getVButton(JoyDPadButton::JoyDPadDirections direction)
     return button;
 }
 
-bool VDPad::hasPendingEvent()
-{
-    return pendingVDPadEvent;
-}
+bool VDPad::hasPendingEvent() { return pendingVDPadEvent; }
 
 void VDPad::queueJoyEvent(bool ignoresets)
 {
@@ -290,10 +270,6 @@ void VDPad::activatePendingEvent()
 
         pendingVDPadEvent = false;
     }
-
 }
 
-void VDPad::clearPendingEvent()
-{
-    pendingVDPadEvent = false;
-}
+void VDPad::clearPendingEvent() { pendingVDPadEvent = false; }

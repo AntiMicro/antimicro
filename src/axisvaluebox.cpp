@@ -21,8 +21,8 @@
 #include "axisvaluebox.h"
 #include "joyaxis.h"
 
-AxisValueBox::AxisValueBox(QWidget *parent) :
-    QWidget(parent)
+AxisValueBox::AxisValueBox(QWidget *parent)
+    : QWidget(parent)
 {
     deadZone = 0;
     maxZone = 0;
@@ -51,20 +51,16 @@ void AxisValueBox::setValue(int value)
         if (throttle == JoyAxis::NormalThrottle)
         {
             this->joyValue = value;
-        }
-        else if (throttle == JoyAxis::NegativeThrottle)
+        } else if (throttle == JoyAxis::NegativeThrottle)
         {
             this->joyValue = (value + JoyAxis::AXISMIN) / 2;
-        }
-        else if (throttle == JoyAxis::PositiveThrottle)
+        } else if (throttle == JoyAxis::PositiveThrottle)
         {
             this->joyValue = (value + JoyAxis::AXISMAX) / 2;
-        }
-        else if (throttle == JoyAxis::NegativeHalfThrottle)
+        } else if (throttle == JoyAxis::NegativeHalfThrottle)
         {
             this->joyValue = value <= 0 ? value : -value;
-        }
-        else if (throttle == JoyAxis::PositiveHalfThrottle)
+        } else if (throttle == JoyAxis::PositiveHalfThrottle)
         {
             this->joyValue = value >= 0 ? value : -value;
         }
@@ -81,10 +77,7 @@ void AxisValueBox::setDeadZone(int deadZone)
     update();
 }
 
-int AxisValueBox::getDeadZone()
-{
-    return deadZone;
-}
+int AxisValueBox::getDeadZone() { return deadZone; }
 
 void AxisValueBox::setMaxZone(int maxZone)
 {
@@ -95,20 +88,11 @@ void AxisValueBox::setMaxZone(int maxZone)
     update();
 }
 
-int AxisValueBox::getMaxZone()
-{
-    return maxZone;
-}
+int AxisValueBox::getMaxZone() { return maxZone; }
 
-int AxisValueBox::getJoyValue()
-{
-    return joyValue;
-}
+int AxisValueBox::getJoyValue() { return joyValue; }
 
-int AxisValueBox::getThrottle()
-{
-    return throttle;
-}
+int AxisValueBox::getThrottle() { return throttle; }
 
 void AxisValueBox::resizeEvent(QResizeEvent *event)
 {
@@ -131,7 +115,7 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
 
-    QPainter paint (this);
+    QPainter paint(this);
 
     paint.setPen(palette().base().color());
     paint.setBrush(palette().base().color());
@@ -141,8 +125,7 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
     {
         qDrawShadeRect(&paint, lboxstart, 0, lboxend, height(), palette(), true, 2, 0, &brush);
         qDrawShadeRect(&paint, rboxstart, 0, rboxend, height(), palette(), true, 2, 0, &brush);
-    }
-    else
+    } else
     {
         qDrawShadeRect(&paint, lboxstart, 0, singlewidth, height(), palette(), true, 2, 0, &brush);
     }
@@ -151,12 +134,10 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
     if (abs(joyValue) <= deadZone)
     {
         innerColor = Qt::gray;
-    }
-    else if (abs(joyValue) >= maxZone)
+    } else if (abs(joyValue) >= maxZone)
     {
         innerColor = Qt::red;
-    }
-    else
+    } else
     {
         innerColor = Qt::blue;
     }
@@ -169,8 +150,7 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
     if (joyValue > 0)
     {
         paint.drawRect(((throttle == 0) ? rboxstart : lboxstart) + 2, 2, barlength, boxheight);
-    }
-    else if (joyValue < 0)
+    } else if (joyValue < 0)
     {
         paint.drawRect(lboxstart + barwidth - 2 - barlength, 2, barlength, boxheight);
     }
@@ -191,8 +171,7 @@ void AxisValueBox::paintEvent(QPaintEvent *event)
         paint.setPen(Qt::red);
         qDrawPlainRect(&paint, rboxstart + 2 + maxLine, 2, 4, boxheight + 2, Qt::black, 1, &maxBrush);
         qDrawPlainRect(&paint, lboxend - maxLine - 2, 2, 4, boxheight + 2, Qt::black, 1, &maxBrush);
-    }
-    else if (throttle == JoyAxis::PositiveThrottle || JoyAxis::PositiveHalfThrottle)
+    } else if (throttle == JoyAxis::PositiveThrottle || JoyAxis::PositiveHalfThrottle)
     {
         qDrawPlainRect(&paint, lboxstart + deadLine - 2, 2, 4, boxheight + 2, Qt::black, 1, &brush);
         paint.setPen(Qt::red);

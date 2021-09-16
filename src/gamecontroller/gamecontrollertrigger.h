@@ -31,7 +31,7 @@
 class GameControllerTrigger : public JoyAxis
 {
     Q_OBJECT
-public:
+  public:
     explicit GameControllerTrigger(int index, int originset, SetJoystick *parentSet, QObject *parent = 0);
 
     virtual QString getXmlName();
@@ -51,13 +51,12 @@ public:
 
     static const QString xmlName;
 
-protected:
+  protected:
     void correctJoystickThrottle();
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // GAMECONTROLLERTRIGGER_H

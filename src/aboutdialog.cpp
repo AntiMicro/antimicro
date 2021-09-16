@@ -15,25 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGlobal>
 #include <QResource>
 #include <QTextStream>
+#include <QtGlobal>
 
 #ifdef USE_SDL_2
-#include <SDL2/SDL_version.h>
+    #include <SDL2/SDL_version.h>
 #else
-#include <SDL/SDL_version.h>
+    #include <SDL/SDL_version.h>
 #endif
 
 #include "aboutdialog.h"
-#include "ui_aboutdialog.h"
 #include "common.h"
+#include "ui_aboutdialog.h"
 
 #include "eventhandlerfactory.h"
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AboutDialog)
+AboutDialog::AboutDialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
 
@@ -41,10 +41,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     fillInfoTextBrowser();
 }
 
-AboutDialog::~AboutDialog()
-{
-    delete ui;
-}
+AboutDialog::~AboutDialog() { delete ui; }
 
 void AboutDialog::fillInfoTextBrowser()
 {

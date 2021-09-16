@@ -18,20 +18,20 @@
 #ifndef VIRTUALKEYPUSHBUTTON_H
 #define VIRTUALKEYPUSHBUTTON_H
 
+#include <QHash>
 #include <QPushButton>
 #include <QString>
-#include <QHash>
 
 #include <joybutton.h>
 
 class VirtualKeyPushButton : public QPushButton
 {
     Q_OBJECT
-public:
+  public:
     explicit VirtualKeyPushButton(JoyButton *button, QString xcodestring, QWidget *parent = 0);
     int calculateFontSize();
-    
-protected:
+
+  protected:
     int keycode;
     unsigned int qkeyalias;
     QString xcodestring;
@@ -44,12 +44,12 @@ protected:
     QString setDisplayString(QString xcodestring);
     void populateKnownAliases();
 
-signals:
+  signals:
     void keycodeObtained(int code, unsigned int alias);
 
-public slots:
+  public slots:
 
-private slots:
+  private slots:
     void processSingleSelection();
 };
 

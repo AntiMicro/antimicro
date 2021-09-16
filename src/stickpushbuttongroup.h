@@ -21,17 +21,17 @@
 #include <QGridLayout>
 
 #include "joycontrolstick.h"
-#include "joycontrolstickpushbutton.h"
 #include "joycontrolstickbuttonpushbutton.h"
+#include "joycontrolstickpushbutton.h"
 
 class StickPushButtonGroup : public QGridLayout
 {
     Q_OBJECT
-public:
+  public:
     explicit StickPushButtonGroup(JoyControlStick *stick, bool displayNames = false, QWidget *parent = 0);
     JoyControlStick *getStick();
 
-protected:
+  protected:
     void generateButtons();
 
     JoyControlStick *stick;
@@ -49,14 +49,14 @@ protected:
 
     JoyControlStickPushButton *stickWidget;
 
-signals:
+  signals:
     void buttonSlotChanged();
 
-public slots:
+  public slots:
     void changeButtonLayout();
     void toggleNameDisplay();
 
-private slots:
+  private slots:
     void propogateSlotsChanged();
     void openStickButtonDialog();
     void showStickDialog();

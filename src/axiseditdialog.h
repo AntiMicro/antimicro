@@ -20,8 +20,8 @@
 
 #include <QDialog>
 
-#include "joyaxis.h"
 #include "axisvaluebox.h"
+#include "joyaxis.h"
 #include "setaxisthrottledialog.h"
 
 namespace Ui {
@@ -31,12 +31,12 @@ class AxisEditDialog;
 class AxisEditDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
-    explicit AxisEditDialog(JoyAxis *axis, QWidget *parent=0);
+
+  public:
+    explicit AxisEditDialog(JoyAxis *axis, QWidget *parent = 0);
     ~AxisEditDialog();
 
-protected:
+  protected:
     void selectAxisCurrentPreset();
     void selectTriggerPreset();
 
@@ -47,10 +47,10 @@ protected:
     SetAxisThrottleDialog *setAxisThrottleConfirm;
     int initialThrottleState;
 
-private:
+  private:
     Ui::AxisEditDialog *ui;
 
-private slots:
+  private slots:
     void implementAxisPresets(int index);
     void implementTriggerPresets(int index);
     void implementPresets(int index);

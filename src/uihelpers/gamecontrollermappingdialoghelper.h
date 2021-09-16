@@ -18,24 +18,24 @@
 #ifndef GAMECONTROLLERMAPPINGDIALOGHELPER_H
 #define GAMECONTROLLERMAPPINGDIALOGHELPER_H
 
-#include <QObject>
 #include <QList>
+#include <QObject>
 
 #include "inputdevice.h"
 
 class GameControllerMappingDialogHelper : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit GameControllerMappingDialogHelper(InputDevice *device, QObject *parent = 0);
 
-protected:
+  protected:
     InputDevice *device;
     QList<int> originalAxesDeadZones;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     void raiseDeadZones();
     void raiseDeadZones(int deadZone);
     void setupDeadZones();

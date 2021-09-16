@@ -26,15 +26,15 @@
 class MouseButtonSettingsDialogHelper : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit MouseButtonSettingsDialogHelper(JoyButton *button, QObject *parent = 0);
 
-protected:
+  protected:
     JoyButton *button;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     void updateExtraAccelerationStatus(bool checked);
     void updateExtraAccelerationMultiplier(double value);
 
@@ -44,7 +44,7 @@ public slots:
     void updateAccelExtraDuration(double value);
     void updateReleaseSpringRadius(int value);
     void updateSpringRelativeStatus(bool value);
-    //void updateExtraAccelerationCurve(int index);
+    // void updateExtraAccelerationCurve(int index);
 };
 
 #endif // MOUSEBUTTONSETTINGSDIALOGHELPER_H

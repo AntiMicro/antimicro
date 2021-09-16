@@ -28,25 +28,25 @@ class JoyControlStickButtonPushButton : public FlashButtonWidget
     Q_OBJECT
     Q_PROPERTY(bool isflashing READ isButtonFlashing)
 
-public:
+  public:
     explicit JoyControlStickButtonPushButton(JoyControlStickButton *button, bool displayNames, QWidget *parent = 0);
 
-    JoyControlStickButton* getButton();
+    JoyControlStickButton *getButton();
     void setButton(JoyControlStickButton *button);
     void tryFlash();
 
-protected:
+  protected:
     virtual QString generateLabel();
 
     JoyControlStickButton *button;
-    
-signals:
 
-public slots:
+  signals:
+
+  public slots:
     void disableFlashes();
     void enableFlashes();
 
-private slots:
+  private slots:
     void showContextMenu(const QPoint &point);
 };
 

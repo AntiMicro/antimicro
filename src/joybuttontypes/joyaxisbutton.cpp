@@ -18,14 +18,14 @@
 //#include <QDebug>
 #include <cmath>
 
-#include "joyaxisbutton.h"
-#include "joyaxis.h"
 #include "event.h"
+#include "joyaxis.h"
+#include "joyaxisbutton.h"
 
 const QString JoyAxisButton::xmlName = "axisbutton";
 
-JoyAxisButton::JoyAxisButton(JoyAxis *axis, int index, int originset, SetJoystick *parentSet, QObject *parent) :
-    JoyGradientButton(index, originset, parentSet, parent)
+JoyAxisButton::JoyAxisButton(JoyAxis *axis, int index, int originset, SetJoystick *parentSet, QObject *parent)
+    : JoyGradientButton(index, originset, parentSet, parent)
 {
     this->axis = axis;
 }
@@ -42,27 +42,23 @@ QString JoyAxisButton::getPartialName(bool forceFullFormat, bool displayNames)
             temp.append(tr("Button")).append(" ");
         }
         temp.append(buttonName);
-    }
-    else if (!defaultButtonName.isEmpty() && displayNames)
+    } else if (!defaultButtonName.isEmpty() && displayNames)
     {
         if (forceFullFormat)
         {
             temp.append(tr("Button")).append(" ");
         }
         temp.append(defaultButtonName);
-    }
-    else
+    } else
     {
         QString buttontype;
         if (index == 0)
         {
             buttontype = tr("Negative");
-        }
-        else if (index == 1)
+        } else if (index == 1)
         {
             buttontype = tr("Positive");
-        }
-        else
+        } else
         {
             buttontype = tr("Unknown");
         }
@@ -73,10 +69,7 @@ QString JoyAxisButton::getPartialName(bool forceFullFormat, bool displayNames)
     return temp;
 }
 
-QString JoyAxisButton::getXmlName()
-{
-    return this->xmlName;
-}
+QString JoyAxisButton::getXmlName() { return this->xmlName; }
 
 void JoyAxisButton::setChangeSetCondition(SetChangeCondition condition, bool passive, bool updateActiveString)
 {
@@ -88,16 +81,14 @@ void JoyAxisButton::setChangeSetCondition(SetChangeCondition condition, bool pas
         {
             // Set new condition
             emit setAssignmentChanged(index, this->axis->getIndex(), setSelection, condition);
-        }
-        else if (setSelectionCondition == SetChangeWhileHeld || setSelectionCondition == SetChangeTwoWay)
+        } else if (setSelectionCondition == SetChangeWhileHeld || setSelectionCondition == SetChangeTwoWay)
         {
             // Remove old condition
             emit setAssignmentChanged(index, this->axis->getIndex(), setSelection, SetChangeDisabled);
         }
 
         setSelectionCondition = condition;
-    }
-    else if (passive)
+    } else if (passive)
     {
         setSelectionCondition = condition;
     }
@@ -123,19 +114,13 @@ void JoyAxisButton::setChangeSetCondition(SetChangeCondition condition, bool pas
  *     dead zone
  * @return Normalized distance away from dead zone
  */
-double JoyAxisButton::getDistanceFromDeadZone()
-{
-    return axis->getDistanceFromDeadZone();
-}
+double JoyAxisButton::getDistanceFromDeadZone() { return axis->getDistanceFromDeadZone(); }
 
 /**
  * @brief Get the distance factor that should be used for mouse movement
  * @return Distance factor that should be used for mouse movement
  */
-double JoyAxisButton::getMouseDistanceFromDeadZone()
-{
-    return this->getDistanceFromDeadZone();
-}
+double JoyAxisButton::getMouseDistanceFromDeadZone() { return this->getDistanceFromDeadZone(); }
 
 void JoyAxisButton::setVDPad(VDPad *vdpad)
 {
@@ -147,10 +132,7 @@ void JoyAxisButton::setVDPad(VDPad *vdpad)
     JoyButton::setVDPad(vdpad);
 }
 
-JoyAxis* JoyAxisButton::getAxis()
-{
-    return this->axis;
-}
+JoyAxis *JoyAxisButton::getAxis() { return this->axis; }
 
 /**
  * @brief Set the turbo mode that the button should use
@@ -170,10 +152,7 @@ void JoyAxisButton::setTurboMode(TurboMode mode)
  *     type checking.
  * @return Status of being part of a real controller axis
  */
-bool JoyAxisButton::isPartRealAxis()
-{
-    return true;
-}
+bool JoyAxisButton::isPartRealAxis() { return true; }
 
 double JoyAxisButton::getAccelerationDistance()
 {

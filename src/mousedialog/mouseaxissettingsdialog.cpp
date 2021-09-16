@@ -18,15 +18,15 @@
 #include "mouseaxissettingsdialog.h"
 #include "ui_mousesettingsdialog.h"
 
-#include <QSpinBox>
 #include <QComboBox>
+#include <QSpinBox>
 
 #include <inputdevice.h>
 #include <setjoystick.h>
 
-MouseAxisSettingsDialog::MouseAxisSettingsDialog(JoyAxis *axis, QWidget *parent) :
-    MouseSettingsDialog(parent),
-    helper(axis)
+MouseAxisSettingsDialog::MouseAxisSettingsDialog(JoyAxis *axis, QWidget *parent)
+    : MouseSettingsDialog(parent)
+    , helper(axis)
 {
     setAttribute(Qt::WA_DeleteOnClose);
 
@@ -47,10 +47,8 @@ MouseAxisSettingsDialog::MouseAxisSettingsDialog(JoyAxis *axis, QWidget *parent)
 
     if (ui->mouseModeComboBox->currentIndex() == 2)
     {
-        springPreviewWidget = new SpringModeRegionPreview(ui->springWidthSpinBox->value(),
-                                                          ui->springHeightSpinBox->value());
-    }
-    else
+        springPreviewWidget = new SpringModeRegionPreview(ui->springWidthSpinBox->value(), ui->springHeightSpinBox->value());
+    } else
     {
         springPreviewWidget = new SpringModeRegionPreview(0, 0);
     }
@@ -102,11 +100,13 @@ MouseAxisSettingsDialog::MouseAxisSettingsDialog(JoyAxis *axis, QWidget *parent)
     connect(ui->easingDoubleSpinBox, SIGNAL(valueChanged(double)), axis, SLOT(setButtonsEasingDuration(double)));
 
     connect(ui->extraAccelerationGroupBox, SIGNAL(clicked(bool)), &helper, SLOT(updateExtraAccelerationStatus(bool)));
-    connect(ui->extraAccelDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateExtraAccelerationMultiplier(double)));
+    connect(ui->extraAccelDoubleSpinBox, SIGNAL(valueChanged(double)), &helper,
+            SLOT(updateExtraAccelerationMultiplier(double)));
     connect(ui->minMultiDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateStartMultiPercentage(double)));
     connect(ui->minThresholdDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateMinAccelThreshold(double)));
     connect(ui->maxThresholdDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateMaxAccelThreshold(double)));
-    connect(ui->accelExtraDurationDoubleSpinBox, SIGNAL(valueChanged(double)), &helper, SLOT(updateAccelExtraDuration(double)));
+    connect(ui->accelExtraDurationDoubleSpinBox, SIGNAL(valueChanged(double)), &helper,
+            SLOT(updateAccelExtraDuration(double)));
     connect(ui->releaseSpringRadiusspinBox, SIGNAL(valueChanged(int)), &helper, SLOT(updateReleaseSpringRadius(int)));
 
     connect(ui->extraAccelCurveComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateExtraAccelerationCurve(int)));
@@ -121,8 +121,7 @@ void MouseAxisSettingsDialog::changeMouseMode(int index)
         {
             springPreviewWidget->hide();
         }
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         axis->setButtonsMouseMode(JoyButton::MouseSpring);
         if (!springPreviewWidget->isVisible())
@@ -153,15 +152,9 @@ void MouseAxisSettingsDialog::updateConfigVerticalSpeed(int value)
     axis->getNAxisButton()->setMouseSpeedY(value);
 }
 
-void MouseAxisSettingsDialog::updateSpringWidth(int value)
-{
-    axis->setButtonsSpringWidth(value);
-}
+void MouseAxisSettingsDialog::updateSpringWidth(int value) { axis->setButtonsSpringWidth(value); }
 
-void MouseAxisSettingsDialog::updateSpringHeight(int value)
-{
-    axis->setButtonsSpringHeight(value);
-}
+void MouseAxisSettingsDialog::updateSpringHeight(int value) { axis->setButtonsSpringHeight(value); }
 
 void MouseAxisSettingsDialog::selectCurrentMouseModePreset()
 {
@@ -172,13 +165,11 @@ void MouseAxisSettingsDialog::selectCurrentMouseModePreset()
         if (mode == JoyButton::MouseCursor)
         {
             ui->mouseModeComboBox->setCurrentIndex(1);
-        }
-        else if (mode == JoyButton::MouseSpring)
+        } else if (mode == JoyButton::MouseSpring)
         {
             ui->mouseModeComboBox->setCurrentIndex(2);
         }
-    }
-    else
+    } else
     {
         ui->mouseModeComboBox->setCurrentIndex(0);
     }
@@ -212,10 +203,7 @@ void MouseAxisSettingsDialog::calculateMouseSpeedPreset()
     ui->verticalSpinBox->setValue(tempMouseSpeedY);
 }
 
-void MouseAxisSettingsDialog::updateSensitivity(double value)
-{
-    axis->setButtonsSensitivity(value);
-}
+void MouseAxisSettingsDialog::updateSensitivity(double value) { axis->setButtonsSensitivity(value); }
 
 void MouseAxisSettingsDialog::updateAccelerationCurvePresetComboBox()
 {
@@ -235,20 +223,11 @@ void MouseAxisSettingsDialog::calculateWheelSpeedPreset()
     ui->wheelVertSpeedSpinBox->setValue(tempWheelSpeedY);
 }
 
-void MouseAxisSettingsDialog::updateWheelSpeedHorizontalSpeed(int value)
-{
-    axis->setButtonsWheelSpeedX(value);
-}
+void MouseAxisSettingsDialog::updateWheelSpeedHorizontalSpeed(int value) { axis->setButtonsWheelSpeedX(value); }
 
-void MouseAxisSettingsDialog::updateWheelSpeedVerticalSpeed(int value)
-{
-    axis->setButtonsWheelSpeedY(value);
-}
+void MouseAxisSettingsDialog::updateWheelSpeedVerticalSpeed(int value) { axis->setButtonsWheelSpeedY(value); }
 
-void MouseAxisSettingsDialog::updateSpringRelativeStatus(bool value)
-{
-    axis->setButtonsSpringRelativeStatus(value);
-}
+void MouseAxisSettingsDialog::updateSpringRelativeStatus(bool value) { axis->setButtonsSpringRelativeStatus(value); }
 
 void MouseAxisSettingsDialog::updateWindowTitleAxisName()
 {
@@ -258,8 +237,7 @@ void MouseAxisSettingsDialog::updateWindowTitleAxisName()
     if (!axis->getAxisName().isEmpty())
     {
         temp.append(axis->getPartialName(false, true));
-    }
-    else
+    } else
     {
         temp.append(axis->getPartialName());
     }
@@ -283,14 +261,12 @@ void MouseAxisSettingsDialog::updateWindowTitleAxisName()
 
 void MouseAxisSettingsDialog::calculateExtraAccelrationStatus()
 {
-    if (axis->getPAxisButton()->isExtraAccelerationEnabled() &&
-        axis->getNAxisButton()->isExtraAccelerationEnabled())
+    if (axis->getPAxisButton()->isExtraAccelerationEnabled() && axis->getNAxisButton()->isExtraAccelerationEnabled())
     {
         ui->extraAccelerationGroupBox->setChecked(true);
-        //ui->extraAccelCheckBox->setChecked(true);
-        //ui->extraAccelDoubleSpinBox->setEnabled(true);
-    }
-    else
+        // ui->extraAccelCheckBox->setChecked(true);
+        // ui->extraAccelDoubleSpinBox->setEnabled(true);
+    } else
     {
         ui->extraAccelerationGroupBox->setChecked(false);
     }
@@ -298,8 +274,7 @@ void MouseAxisSettingsDialog::calculateExtraAccelrationStatus()
 
 void MouseAxisSettingsDialog::calculateExtraAccelerationMultiplier()
 {
-    if (axis->getPAxisButton()->getExtraAccelerationMultiplier() ==
-        axis->getNAxisButton()->getExtraAccelerationMultiplier())
+    if (axis->getPAxisButton()->getExtraAccelerationMultiplier() == axis->getNAxisButton()->getExtraAccelerationMultiplier())
     {
         double temp = axis->getPAxisButton()->getExtraAccelerationMultiplier();
         ui->extraAccelDoubleSpinBox->setValue(temp);
@@ -308,8 +283,7 @@ void MouseAxisSettingsDialog::calculateExtraAccelerationMultiplier()
 
 void MouseAxisSettingsDialog::calculateStartAccelerationMultiplier()
 {
-    if (axis->getPAxisButton()->getStartAccelMultiplier() ==
-        axis->getNAxisButton()->getStartAccelMultiplier())
+    if (axis->getPAxisButton()->getStartAccelMultiplier() == axis->getNAxisButton()->getStartAccelMultiplier())
     {
         double temp = axis->getPAxisButton()->getStartAccelMultiplier();
         ui->minMultiDoubleSpinBox->setValue(temp);
@@ -318,8 +292,7 @@ void MouseAxisSettingsDialog::calculateStartAccelerationMultiplier()
 
 void MouseAxisSettingsDialog::calculateMinAccelerationThreshold()
 {
-    if (axis->getPAxisButton()->getMinAccelThreshold() ==
-        axis->getNAxisButton()->getMinAccelThreshold())
+    if (axis->getPAxisButton()->getMinAccelThreshold() == axis->getNAxisButton()->getMinAccelThreshold())
     {
         double temp = axis->getPAxisButton()->getMinAccelThreshold();
         ui->minThresholdDoubleSpinBox->setValue(temp);
@@ -328,8 +301,7 @@ void MouseAxisSettingsDialog::calculateMinAccelerationThreshold()
 
 void MouseAxisSettingsDialog::calculateMaxAccelerationThreshold()
 {
-    if (axis->getPAxisButton()->getMaxAccelThreshold() ==
-        axis->getNAxisButton()->getMaxAccelThreshold())
+    if (axis->getPAxisButton()->getMaxAccelThreshold() == axis->getNAxisButton()->getMaxAccelThreshold())
     {
         double temp = axis->getPAxisButton()->getMaxAccelThreshold();
         ui->maxThresholdDoubleSpinBox->setValue(temp);
@@ -338,8 +310,7 @@ void MouseAxisSettingsDialog::calculateMaxAccelerationThreshold()
 
 void MouseAxisSettingsDialog::calculateAccelExtraDuration()
 {
-    if (axis->getPAxisButton()->getAccelExtraDuration() ==
-        axis->getNAxisButton()->getAccelExtraDuration())
+    if (axis->getPAxisButton()->getAccelExtraDuration() == axis->getNAxisButton()->getAccelExtraDuration())
     {
         double temp = axis->getPAxisButton()->getAccelExtraDuration();
         ui->accelExtraDurationDoubleSpinBox->setValue(temp);
@@ -349,8 +320,7 @@ void MouseAxisSettingsDialog::calculateAccelExtraDuration()
 void MouseAxisSettingsDialog::calculateReleaseSpringRadius()
 {
     int result = 0;
-    if (axis->getPAxisButton()->getSpringDeadCircleMultiplier() ==
-        axis->getNAxisButton()->getSpringDeadCircleMultiplier())
+    if (axis->getPAxisButton()->getSpringDeadCircleMultiplier() == axis->getNAxisButton()->getSpringDeadCircleMultiplier())
     {
         result = axis->getPAxisButton()->getSpringDeadCircleMultiplier();
     }
@@ -366,8 +336,8 @@ void MouseAxisSettingsDialog::updateExtraAccelerationCurve(int index)
     {
         InputDevice *device = axis->getParentSet()->getInputDevice();
 
-        //PadderCommon::lockInputDevices();
-        //QMetaObject::invokeMethod(device, "haltServices", Qt::BlockingQueuedConnection);
+        // PadderCommon::lockInputDevices();
+        // QMetaObject::invokeMethod(device, "haltServices", Qt::BlockingQueuedConnection);
 
         PadderCommon::inputDaemonMutex.lock();
 
@@ -376,14 +346,13 @@ void MouseAxisSettingsDialog::updateExtraAccelerationCurve(int index)
 
         PadderCommon::inputDaemonMutex.unlock();
 
-        //PadderCommon::unlockInputDevices();
+        // PadderCommon::unlockInputDevices();
     }
 }
 
 void MouseAxisSettingsDialog::calculateExtraAccelerationCurve()
 {
-    if (axis->getPAxisButton()->getExtraAccelerationCurve() ==
-        axis->getNAxisButton()->getExtraAccelerationCurve())
+    if (axis->getPAxisButton()->getExtraAccelerationCurve() == axis->getNAxisButton()->getExtraAccelerationCurve())
     {
         JoyButton::JoyExtraAccelerationCurve temp = axis->getPAxisButton()->getExtraAccelerationCurve();
         updateExtraAccelerationCurvePresetComboBox(temp);

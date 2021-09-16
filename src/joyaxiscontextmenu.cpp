@@ -16,14 +16,14 @@
  */
 
 #include "joyaxiscontextmenu.h"
-#include "mousedialog/mouseaxissettingsdialog.h"
 #include "antkeymapper.h"
-#include "inputdevice.h"
 #include "common.h"
+#include "inputdevice.h"
+#include "mousedialog/mouseaxissettingsdialog.h"
 
-JoyAxisContextMenu::JoyAxisContextMenu(JoyAxis *axis, QWidget *parent) :
-    QMenu(parent),
-    helper(axis)
+JoyAxisContextMenu::JoyAxisContextMenu(JoyAxis *axis, QWidget *parent)
+    : QMenu(parent)
+    , helper(axis)
 {
     this->axis = axis;
     helper.moveToThread(axis->thread());
@@ -37,8 +37,7 @@ void JoyAxisContextMenu::buildMenu()
 
     PadderCommon::inputDaemonMutex.lock();
 
-    if (axis->getThrottle() == JoyAxis::PositiveThrottle ||
-        axis->getThrottle() == JoyAxis::PositiveHalfThrottle)
+    if (axis->getThrottle() == JoyAxis::PositiveThrottle || axis->getThrottle() == JoyAxis::PositiveHalfThrottle)
     {
         actAsTrigger = true;
     }
@@ -48,8 +47,7 @@ void JoyAxisContextMenu::buildMenu()
     if (actAsTrigger)
     {
         buildTriggerMenu();
-    }
-    else
+    } else
     {
         buildAxisMenu();
     }
@@ -65,7 +63,7 @@ void JoyAxisContextMenu::buildAxisMenu()
 
     action = this->addAction(tr("Mouse (Horizontal)"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -73,7 +71,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("Mouse (Inverted Horizontal)"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -81,7 +79,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("Mouse (Vertical)"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -89,7 +87,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("Mouse (Inverted Vertical)"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -97,7 +95,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("Arrows: Up | Down"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -105,7 +103,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("Arrows: Left | Right"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -113,7 +111,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("Keys: W | S"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -121,7 +119,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("Keys: A | D"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -129,7 +127,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("NumPad: KP_8 | KP_2"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -137,7 +135,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("NumPad: KP_4 | KP_6"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -145,7 +143,7 @@ void JoyAxisContextMenu::buildAxisMenu()
     presetMode++;
     action = this->addAction(tr("None"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setAxisPreset()));
     presetGroup->addAction(action);
@@ -164,9 +162,9 @@ int JoyAxisContextMenu::getPresetIndex()
     PadderCommon::inputDaemonMutex.lock();
 
     JoyAxisButton *naxisbutton = axis->getNAxisButton();
-    QList<JoyButtonSlot*> *naxisslots = naxisbutton->getAssignedSlots();
+    QList<JoyButtonSlot *> *naxisslots = naxisbutton->getAssignedSlots();
     JoyAxisButton *paxisbutton = axis->getPAxisButton();
-    QList<JoyButtonSlot*> *paxisslots = paxisbutton->getAssignedSlots();
+    QList<JoyButtonSlot *> *paxisslots = paxisbutton->getAssignedSlots();
 
     if (naxisslots->length() == 1 && paxisslots->length() == 1)
     {
@@ -176,54 +174,65 @@ int JoyAxisContextMenu::getPresetIndex()
             pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseRight)
         {
             result = 1;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && nslot->getSlotCode() == JoyButtonSlot::MouseRight &&
-            pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseLeft)
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   nslot->getSlotCode() == JoyButtonSlot::MouseRight &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   pslot->getSlotCode() == JoyButtonSlot::MouseLeft)
         {
             result = 2;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && nslot->getSlotCode() == JoyButtonSlot::MouseUp &&
-            pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseDown)
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   nslot->getSlotCode() == JoyButtonSlot::MouseUp &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   pslot->getSlotCode() == JoyButtonSlot::MouseDown)
         {
             result = 3;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && nslot->getSlotCode() == JoyButtonSlot::MouseDown &&
-            pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseUp)
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   nslot->getSlotCode() == JoyButtonSlot::MouseDown &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseUp)
         {
             result = 4;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down))
         {
             result = 5;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right))
         {
             result = 6;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S))
         {
             result = 7;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D))
         {
             result = 8;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2))
         {
             result = 9;
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6))
         {
             result = 10;
         }
-    }
-    else if (naxisslots->length() == 0 && paxisslots->length() == 0)
+    } else if (naxisslots->length() == 0 && paxisslots->length() == 0)
     {
         result = 11;
     }
@@ -235,12 +244,12 @@ int JoyAxisContextMenu::getPresetIndex()
 
 void JoyAxisContextMenu::setAxisPreset()
 {
-    //PadderCommon::lockInputDevices();
+    // PadderCommon::lockInputDevices();
 
-    //InputDevice *tempDevice = axis->getParentSet()->getInputDevice();
-    //QMetaObject::invokeMethod(tempDevice, "haltServices", Qt::BlockingQueuedConnection);
+    // InputDevice *tempDevice = axis->getParentSet()->getInputDevice();
+    // QMetaObject::invokeMethod(tempDevice, "haltServices", Qt::BlockingQueuedConnection);
 
-    QAction *action = static_cast<QAction*>(sender());
+    QAction *action = static_cast<QAction *>(sender());
     int item = action->data().toInt();
 
     JoyButtonSlot *nbuttonslot = 0;
@@ -250,53 +259,55 @@ void JoyAxisContextMenu::setAxisPreset()
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (item == 1)
+    } else if (item == 1)
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (item == 2)
+    } else if (item == 2)
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (item == 3)
+    } else if (item == 3)
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (item == 4)
+    } else if (item == 4)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up), Qt::Key_Up, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down), Qt::Key_Down, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (item == 5)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up), Qt::Key_Up,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down), Qt::Key_Down,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (item == 5)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left), Qt::Key_Left, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right), Qt::Key_Right, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (item == 6)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left), Qt::Key_Left,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right), Qt::Key_Right,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (item == 6)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W), Qt::Key_W, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S), Qt::Key_S, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (item == 7)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W), Qt::Key_W,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S), Qt::Key_S,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (item == 7)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A), Qt::Key_A, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D), Qt::Key_D, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (item == 8)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A), Qt::Key_A,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D), Qt::Key_D,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (item == 8)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8), QtKeyMapperBase::AntKey_KP_8, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2), QtKeyMapperBase::AntKey_KP_2, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (item == 9)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8),
+                                        QtKeyMapperBase::AntKey_KP_8, JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2),
+                                        QtKeyMapperBase::AntKey_KP_2, JoyButtonSlot::JoyKeyboard, this);
+    } else if (item == 9)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4), QtKeyMapperBase::AntKey_KP_4, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6), QtKeyMapperBase::AntKey_KP_6, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (item == 10)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4),
+                                        QtKeyMapperBase::AntKey_KP_4, JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6),
+                                        QtKeyMapperBase::AntKey_KP_6, JoyButtonSlot::JoyKeyboard, this);
+    } else if (item == 10)
     {
         QMetaObject::invokeMethod(&helper, "clearAndResetAxisButtons", Qt::BlockingQueuedConnection);
     }
@@ -308,16 +319,16 @@ void JoyAxisContextMenu::setAxisPreset()
                                   Q_ARG(unsigned int, nbuttonslot->getSlotCodeAlias()),
                                   Q_ARG(JoyButtonSlot::JoySlotInputAction, nbuttonslot->getSlotMode()));
 
-        //JoyAxisButton *button = axis->getNAxisButton();
-        //QMetaObject::invokeMethod(button, "clearSlotsEventReset",
+        // JoyAxisButton *button = axis->getNAxisButton();
+        // QMetaObject::invokeMethod(button, "clearSlotsEventReset",
         //                          Q_ARG(bool, false));
-        //button->clearSlotsEventReset(false);
+        // button->clearSlotsEventReset(false);
         /*QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection,
                                   Q_ARG(int, nbuttonslot->getSlotCode()),
                                   Q_ARG(unsigned int, nbuttonslot->getSlotCodeAlias()),
                                   Q_ARG(JoyButtonSlot::JoySlotInputAction, nbuttonslot->getSlotMode()));
         */
-        //button->setAssignedSlot(nbuttonslot->getSlotCode(), nbuttonslot->getSlotCodeAlias(), nbuttonslot->getSlotMode());
+        // button->setAssignedSlot(nbuttonslot->getSlotCode(), nbuttonslot->getSlotCodeAlias(), nbuttonslot->getSlotMode());
         nbuttonslot->deleteLater();
     }
 
@@ -327,20 +338,20 @@ void JoyAxisContextMenu::setAxisPreset()
                                   Q_ARG(int, nbuttonslot->getSlotCode()),
                                   Q_ARG(unsigned int, nbuttonslot->getSlotCodeAlias()),
                                   Q_ARG(JoyButtonSlot::JoySlotInputAction, nbuttonslot->getSlotMode()));
-        //JoyAxisButton *button = axis->getPAxisButton();
-        //QMetaObject::invokeMethod(button, "clearSlotsEventReset",
+        // JoyAxisButton *button = axis->getPAxisButton();
+        // QMetaObject::invokeMethod(button, "clearSlotsEventReset",
         //                          Q_ARG(bool, false));
-        //button->clearSlotsEventReset(false);
+        // button->clearSlotsEventReset(false);
         /*QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection,
                                   Q_ARG(int, pbuttonslot->getSlotCode()),
                                   Q_ARG(unsigned int, pbuttonslot->getSlotCodeAlias()),
                                   Q_ARG(JoyButtonSlot::JoySlotInputAction, pbuttonslot->getSlotMode()));
         */
-        //button->setAssignedSlot(pbuttonslot->getSlotCode(), pbuttonslot->getSlotCodeAlias(), pbuttonslot->getSlotMode());
+        // button->setAssignedSlot(pbuttonslot->getSlotCode(), pbuttonslot->getSlotCodeAlias(), pbuttonslot->getSlotMode());
         pbuttonslot->deleteLater();
     }
 
-    //PadderCommon::unlockInputDevices();
+    // PadderCommon::unlockInputDevices();
 }
 
 void JoyAxisContextMenu::openMouseSettingsDialog()
@@ -359,7 +370,7 @@ void JoyAxisContextMenu::buildTriggerMenu()
 
     action = this->addAction(tr("Left Mouse Button"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setTriggerPreset()));
     presetGroup->addAction(action);
@@ -367,7 +378,7 @@ void JoyAxisContextMenu::buildTriggerMenu()
     presetMode++;
     action = this->addAction(tr("Right Mouse Button"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setTriggerPreset()));
     presetGroup->addAction(action);
@@ -375,7 +386,7 @@ void JoyAxisContextMenu::buildTriggerMenu()
     presetMode++;
     action = this->addAction(tr("None"));
     action->setCheckable(true);
-    action->setChecked(currentPreset == presetMode+1);
+    action->setChecked(currentPreset == presetMode + 1);
     action->setData(QVariant(presetMode));
     connect(action, SIGNAL(triggered()), this, SLOT(setTriggerPreset()));
     presetGroup->addAction(action);
@@ -394,23 +405,19 @@ int JoyAxisContextMenu::getTriggerPresetIndex()
     PadderCommon::inputDaemonMutex.lock();
 
     JoyAxisButton *paxisbutton = axis->getPAxisButton();
-    QList<JoyButtonSlot*> *paxisslots = paxisbutton->getAssignedSlots();
+    QList<JoyButtonSlot *> *paxisslots = paxisbutton->getAssignedSlots();
 
     if (paxisslots->length() == 1)
     {
         JoyButtonSlot *pslot = paxisslots->at(0);
-        if (pslot->getSlotMode() == JoyButtonSlot::JoyMouseButton &&
-            pslot->getSlotCode() == JoyButtonSlot::MouseLB)
+        if (pslot->getSlotMode() == JoyButtonSlot::JoyMouseButton && pslot->getSlotCode() == JoyButtonSlot::MouseLB)
         {
             result = 1;
-        }
-        else if (pslot->getSlotMode() == JoyButtonSlot::JoyMouseButton &&
-                 pslot->getSlotCode() == JoyButtonSlot::MouseRB)
+        } else if (pslot->getSlotMode() == JoyButtonSlot::JoyMouseButton && pslot->getSlotCode() == JoyButtonSlot::MouseRB)
         {
             result = 2;
         }
-    }
-    else if (paxisslots->length() == 0)
+    } else if (paxisslots->length() == 0)
     {
         result = 3;
     }
@@ -422,7 +429,7 @@ int JoyAxisContextMenu::getTriggerPresetIndex()
 
 void JoyAxisContextMenu::setTriggerPreset()
 {
-    QAction *action = static_cast<QAction*>(sender());
+    QAction *action = static_cast<QAction *>(sender());
     int item = action->data().toInt();
 
     JoyButtonSlot *pbuttonslot = 0;
@@ -430,12 +437,10 @@ void JoyAxisContextMenu::setTriggerPreset()
     if (item == 0)
     {
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseLB, JoyButtonSlot::JoyMouseButton, this);
-    }
-    else if (item == 1)
+    } else if (item == 1)
     {
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseRB, JoyButtonSlot::JoyMouseButton, this);
-    }
-    else if (item == 2)
+    } else if (item == 2)
     {
         JoyAxisButton *pbutton = axis->getPAxisButton();
         QMetaObject::invokeMethod(pbutton, "clearSlotsEventReset", Qt::BlockingQueuedConnection);
@@ -448,16 +453,16 @@ void JoyAxisContextMenu::setTriggerPreset()
                                   Q_ARG(unsigned int, pbuttonslot->getSlotCodeAlias()),
                                   Q_ARG(JoyButtonSlot::JoySlotInputAction, pbuttonslot->getSlotMode()));
 
-        //JoyAxisButton *button = axis->getPAxisButton();
-        //QMetaObject::invokeMethod(button, "clearSlotsEventReset",
+        // JoyAxisButton *button = axis->getPAxisButton();
+        // QMetaObject::invokeMethod(button, "clearSlotsEventReset",
         //                          Q_ARG(bool, false));
-        //button->clearSlotsEventReset(false);
+        // button->clearSlotsEventReset(false);
         /*QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection,
                                   Q_ARG(int, pbuttonslot->getSlotCode()),
                                   Q_ARG(unsigned int, pbuttonslot->getSlotCodeAlias()),
                                   Q_ARG(JoyButtonSlot::JoySlotInputAction, pbuttonslot->getSlotMode()));
         */
-        //button->setAssignedSlot(pbuttonslot->getSlotCode(), pbuttonslot->getSlotCodeAlias(), pbuttonslot->getSlotMode());
+        // button->setAssignedSlot(pbuttonslot->getSlotCode(), pbuttonslot->getSlotCodeAlias(), pbuttonslot->getSlotMode());
         pbuttonslot->deleteLater();
     }
 }

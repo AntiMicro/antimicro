@@ -18,8 +18,8 @@
 #ifndef QTVMULTIKEYMAPPER_H
 #define QTVMULTIKEYMAPPER_H
 
-#include <QObject>
 #include <QHash>
+#include <QObject>
 
 #include "qtkeymapperbase.h"
 #include "qtwinkeymapper.h"
@@ -27,20 +27,20 @@
 class QtVMultiKeyMapper : public QtKeyMapperBase
 {
     Q_OBJECT
-public:
+  public:
     explicit QtVMultiKeyMapper(QObject *parent = 0);
 
     static const unsigned int consumerUsagePagePrefix = 0x12000;
 
-protected:
+  protected:
     void populateMappingHashes();
     void populateCharKeyInformation();
 
-    //static QtWinKeyMapper nativeKeyMapper;
+    // static QtWinKeyMapper nativeKeyMapper;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
 };
 
 #endif // QTVMULTIKEYMAPPER_H

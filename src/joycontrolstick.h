@@ -18,30 +18,35 @@
 #ifndef JOYCONTROLSTICK_H
 #define JOYCONTROLSTICK_H
 
-#include <QObject>
 #include <QHash>
 #include <QList>
+#include <QObject>
 #include <QTimer>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 #include "joyaxis.h"
 #include "joybutton.h"
-#include "joycontrolstickdirectionstype.h"
 #include "joybuttontypes/joycontrolstickbutton.h"
 #include "joybuttontypes/joycontrolstickmodifierbutton.h"
+#include "joycontrolstickdirectionstype.h"
 
 class JoyControlStick : public QObject, public JoyStickDirectionsType
 {
     Q_OBJECT
-public:
-    explicit JoyControlStick(JoyAxis *axisX, JoyAxis *axisY,
-                             int index, int originset = 0, QObject *parent = 0);
+  public:
+    explicit JoyControlStick(JoyAxis *axisX, JoyAxis *axisY, int index, int originset = 0, QObject *parent = 0);
     ~JoyControlStick();
 
-    enum JoyMode {StandardMode=0, EightWayMode, FourWayCardinal, FourWayDiagonal};
+    enum JoyMode
+    {
+        StandardMode = 0,
+        EightWayMode,
+        FourWayCardinal,
+        FourWayDiagonal
+    };
 
-    void joyEvent(bool ignoresets=false);
+    void joyEvent(bool ignoresets = false);
 
     bool inDeadZone();
     int getDeadZone();
@@ -59,8 +64,8 @@ public:
     int getRealJoyIndex();
     int getMaxZone();
     int getCurrentlyAssignedSet();
-    virtual QString getName(bool forceFullFormat=false, bool displayNames=false);
-    virtual QString getPartialName(bool forceFullFormat=false, bool displayNames=false);
+    virtual QString getName(bool forceFullFormat = false, bool displayNames = false);
+    virtual QString getPartialName(bool forceFullFormat = false, bool displayNames = false);
     JoyStickDirections getCurrentDirection();
     int getXCoordinate();
     int getYCoordinate();
@@ -73,23 +78,22 @@ public:
     QList<double> getDiagonalZoneAngles();
     QList<int> getFourWayCardinalZoneAngles();
     QList<int> getFourWayDiagonalZoneAngles();
-    QHash<JoyStickDirections, JoyControlStickButton*>* getButtons();
-    JoyControlStickModifierButton* getModifierButton();
-    JoyAxis* getAxisX();
-    JoyAxis* getAxisY();
+    QHash<JoyStickDirections, JoyControlStickButton *> *getButtons();
+    JoyControlStickModifierButton *getModifierButton();
+    JoyAxis *getAxisX();
+    JoyAxis *getAxisY();
 
     void replaceXAxis(JoyAxis *axis);
     void replaceYAxis(JoyAxis *axis);
-    void replaceAxes(JoyAxis *axisX, JoyAxis* axisY);
+    void replaceAxes(JoyAxis *axisX, JoyAxis *axisY);
 
-    JoyControlStickButton* getDirectionButton(JoyStickDirections direction);
+    JoyControlStickButton *getDirectionButton(JoyStickDirections direction);
     double calculateMouseDirectionalDistance(JoyControlStickButton *button);
 
     double calculateDirectionalDistance();
     double calculateLastDirectionalDistance();
 
     double calculateLastMouseDirectionalDistance(JoyControlStickButton *button);
-
 
     double calculateLastAccelerationButtonDistance(JoyControlStickButton *button);
     double calculateAccelerationDistance(JoyControlStickButton *button);
@@ -156,7 +160,7 @@ public:
     virtual void readConfig(QXmlStreamReader *xml);
     virtual void writeConfig(QXmlStreamWriter *xml);
 
-    SetJoystick* getParentSet();
+    SetJoystick *getParentSet();
     bool hasSlotsAssigned();
 
     bool isRelativeSpring();
@@ -171,12 +175,12 @@ public:
     bool hasPendingEvent();
     void activatePendingEvent();
     void clearPendingEvent();
-    //double calculateXDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate=false);
+    // double calculateXDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate=false);
 
     double getSpringDeadCircleX();
     double getSpringDeadCircleY();
 
-    QHash<JoyStickDirections, JoyControlStickButton*> getButtonsForDirection(JoyControlStick::JoyStickDirections direction);
+    QHash<JoyStickDirections, JoyControlStickButton *> getButtonsForDirection(JoyControlStick::JoyStickDirections direction);
     void setDirButtonsUpdateInitAccel(JoyControlStick::JoyStickDirections direction, bool state);
 
     static const double PI;
@@ -189,13 +193,13 @@ public:
     static const double DEFAULTCIRCLE;
     static const unsigned int DEFAULTSTICKDELAY;
 
-
-protected:
+  protected:
     virtual void populateButtons();
     void createDeskEvent(bool ignoresets = false);
 
     void determineStandardModeEvent(JoyControlStickButton *&eventbutton1, JoyControlStickButton *&eventbutton2);
-    void determineEightWayModeEvent(JoyControlStickButton *&eventbutton1, JoyControlStickButton *&eventbutton2, JoyControlStickButton *&eventbutton3);
+    void determineEightWayModeEvent(JoyControlStickButton *&eventbutton1, JoyControlStickButton *&eventbutton2,
+                                    JoyControlStickButton *&eventbutton3);
     void determineFourWayCardinalEvent(JoyControlStickButton *&eventbutton1, JoyControlStickButton *&eventbutton2);
     void determineFourWayDiagonalEvent(JoyControlStickButton *&eventbutton3);
 
@@ -221,11 +225,11 @@ protected:
     void deleteButtons();
     void resetButtons();
 
-    double calculateXDistanceFromDeadZone(bool interpolate=false);
-    double calculateXDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate=false);
+    double calculateXDistanceFromDeadZone(bool interpolate = false);
+    double calculateXDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate = false);
 
-    double calculateYDistanceFromDeadZone(bool interpolate=false);
-    double calculateYDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate=false);
+    double calculateYDistanceFromDeadZone(bool interpolate = false);
+    double calculateYDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate = false);
 
     int calculateCircleXValue(int axisXValue, int axisYValue);
     int calculateCircleYValue(int axisXValue, int axisYValue);
@@ -237,7 +241,7 @@ protected:
     inline double calculateXDiagonalDeadZone(int axisXValue, int axisYValue);
     inline double calculateYDiagonalDeadZone(int axisXValue, int axisYValue);
 
-    QHash<JoyStickDirections, JoyControlStickButton*> getApplicableButtons();
+    QHash<JoyStickDirections, JoyControlStickButton *> getApplicableButtons();
     void clearPendingAxisEvents();
 
     JoyAxis *axisX;
@@ -261,10 +265,10 @@ protected:
     unsigned int stickDelay;
     bool pendingStickEvent;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> buttons;
+    QHash<JoyStickDirections, JoyControlStickButton *> buttons;
     JoyControlStickModifierButton *modifierButton;
 
-signals:
+  signals:
     void moved(int xaxis, int yaxis);
     void active(int xaxis, int yaxis);
     void released(int axis, int yaxis);
@@ -277,7 +281,7 @@ signals:
     void joyModeChanged();
     void propertyUpdated();
 
-public slots:
+  public slots:
     void reset();
     void setDeadZone(int value);
     void setMaxZone(int value);
@@ -291,7 +295,7 @@ public slots:
     void establishPropertyUpdatedConnection();
     void disconnectPropertyUpdatedConnection();
 
-private slots:
+  private slots:
     void stickDirectionChangeEvent();
 };
 

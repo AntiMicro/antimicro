@@ -18,36 +18,35 @@
 #ifndef JOYTABWIDGET_H
 #define JOYTABWIDGET_H
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QPushButton>
 #include <QComboBox>
-#include <QSpacerItem>
 #include <QFileDialog>
+#include <QGridLayout>
+#include <QHBoxLayout>
 #include <QHash>
-#include <QStackedWidget>
-#include <QScrollArea>
 #include <QIcon>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QSpacerItem>
+#include <QStackedWidget>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include "uihelpers/joytabwidgethelper.h"
 
-#include "joystick.h"
+#include "antimicrosettings.h"
 #include "axiseditdialog.h"
 #include "inputdevice.h"
-#include "antimicrosettings.h"
-
+#include "joystick.h"
 
 class JoyTabWidget : public QWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyTabWidget(InputDevice *joystick, AntiMicroSettings *settings, QWidget *parent = 0);
 
     void saveSettings();
-    void loadSettings(bool forceRefresh=false);
-    QHash<int, QString>* recentConfigs();
+    void loadSettings(bool forceRefresh = false);
+    QHash<int, QString> *recentConfigs();
     void setCurrentConfig(int index);
     int getCurrentConfigIndex();
     QString getCurrentConfigName();
@@ -63,7 +62,7 @@ public:
     void deviceKeyRepeatSettings();
 #endif
 
-protected:
+  protected:
     virtual void changeEvent(QEvent *event);
     void removeCurrentButtons();
     void retranslateUi();
@@ -148,7 +147,7 @@ protected:
 
     static const int DEFAULTNUMBERPROFILES = 5;
 
-signals:
+  signals:
     void joystickConfigChanged(int index);
     void joystickAxisRefreshLabels(int axisIndex);
     void namesDisplayChanged(bool status);
@@ -157,17 +156,17 @@ signals:
     void mappingUpdated(QString mapping, InputDevice *device);
 #endif
 
-public slots:
+  public slots:
     void openConfigFileDialog();
     void fillButtons();
-    void saveDeviceSettings(bool sync=false);
+    void saveDeviceSettings(bool sync = false);
     void loadDeviceSettings();
     void changeNameDisplay(bool displayNames);
     void changeCurrentSet(int index);
     void loadConfigFile(QString fileLocation);
     void refreshButtons();
 
-private slots:
+  private slots:
     void saveConfigFile();
     void resetJoystick();
     void saveAsConfig();
@@ -191,7 +190,7 @@ private slots:
     void changeSetEight();
     void displayProfileEditNotification();
     void removeProfileEditNotification();
-    void checkForUnsavedProfile(int newindex=-1);
+    void checkForUnsavedProfile(int newindex = -1);
 
     void checkStickDisplay();
     void checkDPadButtonDisplay();

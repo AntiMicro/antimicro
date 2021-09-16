@@ -15,25 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <QCoreApplication>
 #include <linux/input.h>
 #include <linux/uinput.h>
-#include <QCoreApplication>
 
 #include "uinputhelper.h"
 
-UInputHelper* UInputHelper::_instance = 0;
+UInputHelper *UInputHelper::_instance = 0;
 
-UInputHelper::UInputHelper(QObject *parent) :
-    QObject(parent)
+UInputHelper::UInputHelper(QObject *parent)
+    : QObject(parent)
 {
     populateKnownAliases();
     connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(deleteLater()));
 }
 
-UInputHelper::~UInputHelper()
-{
-    _instance = 0;
-}
+UInputHelper::~UInputHelper() { _instance = 0; }
 
 void UInputHelper::populateKnownAliases()
 {
@@ -274,7 +271,7 @@ void UInputHelper::populateKnownAliases()
     }
 }
 
-UInputHelper* UInputHelper::getInstance()
+UInputHelper *UInputHelper::getInstance()
 {
     if (!_instance)
     {
@@ -299,8 +296,7 @@ QString UInputHelper::getDisplayString(unsigned int virtualkey)
     if (virtualkey <= 0)
     {
         temp = tr("[NO KEY]");
-    }
-    else if (knownAliasesVKStrings.contains(virtualkey))
+    } else if (knownAliasesVKStrings.contains(virtualkey))
     {
         temp = knownAliasesVKStrings.value(virtualkey);
     }

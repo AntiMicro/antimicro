@@ -26,17 +26,16 @@
 class ButtonEditDialogHelper : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit ButtonEditDialogHelper(JoyButton *button, QObject *parent = 0);
 
-protected:
+  protected:
     JoyButton *button;
 
-signals:
+  signals:
 
-public slots:
-    void setAssignedSlot(int code, unsigned int alias,
-                         JoyButtonSlot::JoySlotInputAction mode=JoyButtonSlot::JoyKeyboard);
+  public slots:
+    void setAssignedSlot(int code, unsigned int alias, JoyButtonSlot::JoySlotInputAction mode = JoyButtonSlot::JoyKeyboard);
     void setUseTurbo(bool useTurbo);
 };
 

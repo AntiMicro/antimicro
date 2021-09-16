@@ -18,18 +18,16 @@
 #ifndef AUTOPROFILEINFO_H
 #define AUTOPROFILEINFO_H
 
-#include <QObject>
 #include <QMetaType>
+#include <QObject>
 
 class AutoProfileInfo : public QObject
 {
     Q_OBJECT
-public:
-    explicit AutoProfileInfo(QString guid, QString profileLocation,
-                             bool active, QObject *parent = 0);
-    explicit AutoProfileInfo(QString guid, QString profileLocation,
-                             QString exe, bool active, QObject *parent = 0);
-    explicit AutoProfileInfo(QObject *parent=0);
+  public:
+    explicit AutoProfileInfo(QString guid, QString profileLocation, bool active, QObject *parent = 0);
+    explicit AutoProfileInfo(QString guid, QString profileLocation, QString exe, bool active, QObject *parent = 0);
+    explicit AutoProfileInfo(QObject *parent = 0);
     ~AutoProfileInfo();
 
     void setGUID(QString guid);
@@ -56,7 +54,7 @@ public:
     void setDefaultState(bool value);
     bool isCurrentDefault();
 
-protected:
+  protected:
     QString guid;
     QString profileLocation;
     QString exe;
@@ -66,12 +64,11 @@ protected:
     bool active;
     bool defaultState;
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
-Q_DECLARE_METATYPE(AutoProfileInfo*)
+Q_DECLARE_METATYPE(AutoProfileInfo *)
 
 #endif // AUTOPROFILEINFO_H

@@ -29,29 +29,29 @@
 class JoyTabWidgetHelper : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyTabWidgetHelper(InputDevice *device, QObject *parent = 0);
     ~JoyTabWidgetHelper();
 
     bool hasReader();
-    XMLConfigReader* getReader();
+    XMLConfigReader *getReader();
 
     bool hasWriter();
-    XMLConfigWriter* getWriter();
+    XMLConfigWriter *getWriter();
 
     bool hasError();
     QString getErrorString();
 
-protected:
+  protected:
     InputDevice *device;
     XMLConfigReader *reader;
     XMLConfigWriter *writer;
     bool errorOccurred;
     QString lastErrorString;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     bool readConfigFile(QString filepath);
     bool readConfigFileWithRevert(QString filepath);
     bool writeConfigFile(QString filepath);

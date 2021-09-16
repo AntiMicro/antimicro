@@ -17,8 +17,8 @@
 
 #include "mouseaxissettingsdialoghelper.h"
 
-MouseAxisSettingsDialogHelper::MouseAxisSettingsDialogHelper(JoyAxis *axis, QObject *parent) :
-    QObject(parent)
+MouseAxisSettingsDialogHelper::MouseAxisSettingsDialogHelper(JoyAxis *axis, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(axis);
 
@@ -66,4 +66,3 @@ void MouseAxisSettingsDialogHelper::updateReleaseSpringRadius(int value)
     axis->getPAxisButton()->setSpringDeadCircleMultiplier(value);
     axis->getNAxisButton()->setSpringDeadCircleMultiplier(value);
 }
-

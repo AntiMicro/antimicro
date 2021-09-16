@@ -21,20 +21,20 @@
 #include "mousesettingsdialog.h"
 #include "springmoderegionpreview.h"
 
-#include <joyaxis.h>
 #include "uihelpers/mouseaxissettingsdialoghelper.h"
+#include <joyaxis.h>
 
 class MouseAxisSettingsDialog : public MouseSettingsDialog
 {
     Q_OBJECT
-public:
+  public:
     explicit MouseAxisSettingsDialog(JoyAxis *axis, QWidget *parent = 0);
 
-protected:
+  protected:
     void selectCurrentMouseModePreset();
     void calculateSpringPreset();
     void calculateMouseSpeedPreset();
-    //void selectSmoothingPreset();
+    // void selectSmoothingPreset();
     void calculateWheelSpeedPreset();
     void updateWindowTitleAxisName();
 
@@ -51,9 +51,9 @@ protected:
     SpringModeRegionPreview *springPreviewWidget;
     MouseAxisSettingsDialogHelper helper;
 
-signals:
-    
-public slots:
+  signals:
+
+  public slots:
     void changeMouseMode(int index);
     void changeMouseCurve(int index);
     void updateConfigHorizontalSpeed(int value);
@@ -62,13 +62,13 @@ public slots:
     void updateSpringHeight(int value);
     void updateSensitivity(double value);
     void updateAccelerationCurvePresetComboBox();
-    //void updateSmoothingSetting(bool clicked);
+    // void updateSmoothingSetting(bool clicked);
 
     void updateWheelSpeedHorizontalSpeed(int value);
     void updateWheelSpeedVerticalSpeed(int value);
     void updateSpringRelativeStatus(bool value);
 
-private slots:
+  private slots:
     void updateExtraAccelerationCurve(int index);
 };
 

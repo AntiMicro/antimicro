@@ -29,22 +29,22 @@ class AdvanceStickAssignmentDialog;
 class AdvanceStickAssignmentDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
+
+  public:
     explicit AdvanceStickAssignmentDialog(Joystick *joystick, QWidget *parent = 0);
     ~AdvanceStickAssignmentDialog();
-    
-protected:
+
+  protected:
     Joystick *joystick;
 
-signals:
+  signals:
     void stickConfigurationChanged();
     void vdpadConfigurationChanged();
 
-private:
+  private:
     Ui::AdvanceStickAssignmentDialog *ui;
 
-private slots:
+  private slots:
     void refreshStickConfiguration();
     void refreshVDPadConfiguration();
 

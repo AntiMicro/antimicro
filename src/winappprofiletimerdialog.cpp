@@ -1,9 +1,9 @@
 #include "winappprofiletimerdialog.h"
 #include "ui_winappprofiletimerdialog.h"
 
-WinAppProfileTimerDialog::WinAppProfileTimerDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::WinAppProfileTimerDialog)
+WinAppProfileTimerDialog::WinAppProfileTimerDialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::WinAppProfileTimerDialog)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -13,10 +13,7 @@ WinAppProfileTimerDialog::WinAppProfileTimerDialog(QWidget *parent) :
     connect(ui->cancelPushButton, SIGNAL(clicked()), this, SLOT(close()));
 }
 
-WinAppProfileTimerDialog::~WinAppProfileTimerDialog()
-{
-    delete ui;
-}
+WinAppProfileTimerDialog::~WinAppProfileTimerDialog() { delete ui; }
 
 void WinAppProfileTimerDialog::startTimer()
 {

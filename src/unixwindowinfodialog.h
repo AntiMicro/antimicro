@@ -29,11 +29,12 @@ class UnixWindowInfoDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     explicit UnixWindowInfoDialog(unsigned long window, QWidget *parent = 0);
     ~UnixWindowInfoDialog();
 
-    enum {
+    enum
+    {
         WindowClass = (1 << 0),
         WindowName = (1 << 1),
         WindowPath = (1 << 2)
@@ -45,17 +46,17 @@ public:
     QString getWindowPath();
     DialogWindowOption getSelectedOptions();
 
-private:
+  private:
     Ui::UnixWindowInfoDialog *ui;
 
-protected:
+  protected:
     DialogWindowOption selectedMatch;
 
     QString winClass;
     QString winName;
     QString winPath;
 
-private slots:
+  private slots:
     void populateOption();
 };
 

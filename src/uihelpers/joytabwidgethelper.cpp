@@ -17,8 +17,8 @@
 
 #include "joytabwidgethelper.h"
 
-JoyTabWidgetHelper::JoyTabWidgetHelper(InputDevice *device, QObject *parent) :
-    QObject(parent)
+JoyTabWidgetHelper::JoyTabWidgetHelper(InputDevice *device, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(device);
 
@@ -43,35 +43,17 @@ JoyTabWidgetHelper::~JoyTabWidgetHelper()
     }
 }
 
-bool JoyTabWidgetHelper::hasReader()
-{
-    return (this->reader != 0);
-}
+bool JoyTabWidgetHelper::hasReader() { return (this->reader != 0); }
 
-XMLConfigReader* JoyTabWidgetHelper::getReader()
-{
-    return this->reader;
-}
+XMLConfigReader *JoyTabWidgetHelper::getReader() { return this->reader; }
 
-bool JoyTabWidgetHelper::hasWriter()
-{
-    return (this->writer != 0);
-}
+bool JoyTabWidgetHelper::hasWriter() { return (this->writer != 0); }
 
-XMLConfigWriter* JoyTabWidgetHelper::getWriter()
-{
-    return this->writer;
-}
+XMLConfigWriter *JoyTabWidgetHelper::getWriter() { return this->writer; }
 
-bool JoyTabWidgetHelper::hasError()
-{
-    return errorOccurred;
-}
+bool JoyTabWidgetHelper::hasError() { return errorOccurred; }
 
-QString JoyTabWidgetHelper::getErrorString()
-{
-    return lastErrorString;
-}
+QString JoyTabWidgetHelper::getErrorString() { return lastErrorString; }
 
 bool JoyTabWidgetHelper::readConfigFile(QString filepath)
 {
@@ -140,7 +122,6 @@ void JoyTabWidgetHelper::reInitDevice()
     device->transferReset();
     device->resetButtonDownCount();
     device->reInitButtons();
-
 
     device->establishPropertyUpdatedConnection();
 }

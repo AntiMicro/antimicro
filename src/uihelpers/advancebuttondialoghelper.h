@@ -26,21 +26,20 @@
 class AdvanceButtonDialogHelper : public QObject
 {
     Q_OBJECT
-public:
-    explicit AdvanceButtonDialogHelper(JoyButton *button,
-                                       QObject *parent = 0);
+  public:
+    explicit AdvanceButtonDialogHelper(JoyButton *button, QObject *parent = 0);
 
-protected:
+  protected:
     JoyButton *button;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     void setAssignedSlot(JoyButtonSlot *otherSlot, int index);
     void setAssignedSlot(int code, unsigned int alias, int index,
-                         JoyButtonSlot::JoySlotInputAction mode=JoyButtonSlot::JoyKeyboard);
+                         JoyButtonSlot::JoySlotInputAction mode = JoyButtonSlot::JoyKeyboard);
     void insertAssignedSlot(int code, unsigned int alias, int index,
-                            JoyButtonSlot::JoySlotInputAction mode=JoyButtonSlot::JoyKeyboard);
+                            JoyButtonSlot::JoySlotInputAction mode = JoyButtonSlot::JoyKeyboard);
     void removeAssignedSlot(int index);
 };
 

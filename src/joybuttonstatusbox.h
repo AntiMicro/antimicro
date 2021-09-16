@@ -27,19 +27,19 @@ class JoyButtonStatusBox : public QPushButton
     Q_OBJECT
     Q_PROPERTY(bool isflashing READ isButtonFlashing)
 
-public:
+  public:
     explicit JoyButtonStatusBox(JoyButton *button, QWidget *parent = 0);
-    JoyButton* getJoyButton();
+    JoyButton *getJoyButton();
     bool isButtonFlashing();
 
-protected:
+  protected:
     JoyButton *button;
     bool isflashing;
 
-signals:
+  signals:
     void flashed(bool flashing);
 
-private slots:
+  private slots:
     void flash();
     void unflash();
 };

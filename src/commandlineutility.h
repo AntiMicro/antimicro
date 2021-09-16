@@ -18,15 +18,16 @@
 #ifndef COMMANDLINEPARSER_H
 #define COMMANDLINEPARSER_H
 
-#include <QObject>
-#include <QStringList>
-#include <QRegExp>
 #include <QList>
+#include <QObject>
+#include <QRegExp>
+#include <QStringList>
 
 #include "logger.h"
 
-class ControllerOptionsInfo {
-public:
+class ControllerOptionsInfo
+{
+  public:
     ControllerOptionsInfo()
     {
         controllerNumber = 0;
@@ -34,70 +35,31 @@ public:
         unloadProfile = false;
     }
 
-    bool hasProfile()
-    {
-        return !profileLocation.isEmpty();
-    }
+    bool hasProfile() { return !profileLocation.isEmpty(); }
 
-    QString getProfileLocation()
-    {
-        return profileLocation;
-    }
+    QString getProfileLocation() { return profileLocation; }
 
-    void setProfileLocation(QString location)
-    {
-        profileLocation = location;
-    }
+    void setProfileLocation(QString location) { profileLocation = location; }
 
-    bool hasControllerNumber()
-    {
-        return (controllerNumber > 0);
-    }
+    bool hasControllerNumber() { return (controllerNumber > 0); }
 
-    unsigned int getControllerNumber()
-    {
-        return controllerNumber;
-    }
+    unsigned int getControllerNumber() { return controllerNumber; }
 
-    void setControllerNumber(unsigned int temp)
-    {
-        controllerNumber = temp;
-    }
+    void setControllerNumber(unsigned int temp) { controllerNumber = temp; }
 
-    bool hasControllerID()
-    {
-        return !controllerIDString.isEmpty();
-    }
+    bool hasControllerID() { return !controllerIDString.isEmpty(); }
 
-    QString getControllerID()
-    {
-        return controllerIDString;
-    }
+    QString getControllerID() { return controllerIDString; }
 
-    void setControllerID(QString temp)
-    {
-        controllerIDString = temp;
-    }
+    void setControllerID(QString temp) { controllerIDString = temp; }
 
-    bool isUnloadRequested()
-    {
-        return unloadProfile;
-    }
+    bool isUnloadRequested() { return unloadProfile; }
 
-    void setUnloadRequest(bool status)
-    {
-        unloadProfile = status;
-    }
+    void setUnloadRequest(bool status) { unloadProfile = status; }
 
-    unsigned int getStartSetNumber()
-    {
-        return startSetNumber;
-    }
+    unsigned int getStartSetNumber() { return startSetNumber; }
 
-    unsigned int getJoyStartSetNumber()
-    {
-        return startSetNumber - 1;
-    }
+    unsigned int getJoyStartSetNumber() { return startSetNumber - 1; }
 
     void setStartSetNumber(unsigned int temp)
     {
@@ -107,7 +69,7 @@ public:
         }
     }
 
-protected:
+  protected:
     QString profileLocation;
     unsigned int controllerNumber;
     QString controllerIDString;
@@ -118,7 +80,7 @@ protected:
 class CommandLineUtility : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit CommandLineUtility(QObject *parent = 0);
 
     void parseArguments(QStringList &arguments);
@@ -143,9 +105,9 @@ public:
 
     unsigned int getStartSetNumber();
     unsigned int getJoyStartSetNumber();
-    QList<unsigned int>* getJoyStartSetNumberList();
+    QList<unsigned int> *getJoyStartSetNumberList();
 
-    QList<ControllerOptionsInfo>* getControllerOptionsList();
+    QList<ControllerOptionsInfo> *getControllerOptionsList();
     bool hasProfileInOptions();
 
     QString getEventGenerator();
@@ -166,7 +128,7 @@ public:
     QString getCurrentLogFile();
     QString getErrorText();
 
-protected:
+  protected:
     bool isPossibleCommand(QString temp);
     void setErrorMessage(QString temp);
 
@@ -218,11 +180,10 @@ protected:
     static QRegExp daemonRegexp;
     static QRegExp displayRegexp;
 #endif
-    
-signals:
-    
-public slots:
-    
+
+  signals:
+
+  public slots:
 };
 
 #endif // COMMANDLINEPARSER_H

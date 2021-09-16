@@ -16,13 +16,13 @@
  */
 
 //#include <QDebug>
-#include <QtGlobal>
 #include <QStringList>
+#include <QtGlobal>
 
 #include "antkeymapper.h"
 #include "eventhandlerfactory.h"
 
-AntKeyMapper* AntKeyMapper::_instance = 0;
+AntKeyMapper *AntKeyMapper::_instance = 0;
 
 static QStringList buildEventGeneratorList()
 {
@@ -30,37 +30,37 @@ static QStringList buildEventGeneratorList()
 
 #ifdef Q_OS_WIN
     temp.append("sendinput");
-  #ifdef WITH_VMULTI
+    #ifdef WITH_VMULTI
     temp.append("vmulti");
-  #endif
+    #endif
 
 #else
-  #ifdef WITH_XTEST
+    #ifdef WITH_XTEST
     temp.append("xtest");
-  #endif
-  #ifdef WITH_UINPUT
+    #endif
+    #ifdef WITH_UINPUT
     temp.append("uinput");
-  #endif
+    #endif
 
 #endif
     return temp;
 }
 
-AntKeyMapper::AntKeyMapper(QString handler, QObject *parent) :
-    QObject(parent)
+AntKeyMapper::AntKeyMapper(QString handler, QObject *parent)
+    : QObject(parent)
 {
     internalMapper = 0;
 
 #ifdef Q_OS_WIN
-  #ifdef WITH_VMULTI
+    #ifdef WITH_VMULTI
     if (handler == "vmulti")
     {
         internalMapper = &vmultiMapper;
         nativeKeyMapper = &winMapper;
     }
-  #endif
+    #endif
 
-    BACKEND_ELSE_IF (handler == "sendinput")
+    BACKEND_ELSE_IF(handler == "sendinput")
     {
         internalMapper = &winMapper;
         nativeKeyMapper = 0;
@@ -79,18 +79,18 @@ AntKeyMapper::AntKeyMapper(QString handler, QObject *parent) :
     if (handler == "uinput")
     {
         internalMapper = &uinputMapper;
-#ifdef WITH_XTEST
+        #ifdef WITH_XTEST
         nativeKeyMapper = &x11Mapper;
-#else
+        #else
         nativeKeyMapper = 0;
-#endif
+        #endif
     }
     #endif
 
 #endif
 }
 
-AntKeyMapper* AntKeyMapper::getInstance(QString handler)
+AntKeyMapper *AntKeyMapper::getInstance(QString handler)
 {
     if (!_instance)
     {
@@ -117,25 +117,13 @@ unsigned int AntKeyMapper::returnQtKey(unsigned int key, unsigned int scancode)
     return internalMapper->returnQtKey(key, scancode);
 }
 
-unsigned int AntKeyMapper::returnVirtualKey(unsigned int qkey)
-{
-    return internalMapper->returnVirtualKey(qkey);
-}
+unsigned int AntKeyMapper::returnVirtualKey(unsigned int qkey) { return internalMapper->returnVirtualKey(qkey); }
 
-bool AntKeyMapper::isModifierKey(unsigned int qkey)
-{
-    return internalMapper->isModifier(qkey);
-}
+bool AntKeyMapper::isModifierKey(unsigned int qkey) { return internalMapper->isModifier(qkey); }
 
-QtKeyMapperBase* AntKeyMapper::getNativeKeyMapper()
-{
-    return nativeKeyMapper;
-}
+QtKeyMapperBase *AntKeyMapper::getNativeKeyMapper() { return nativeKeyMapper; }
 
-QtKeyMapperBase* AntKeyMapper::getKeyMapper()
-{
-    return internalMapper;
-}
+QtKeyMapperBase *AntKeyMapper::getKeyMapper() { return internalMapper; }
 
 bool AntKeyMapper::hasNativeKeyMapper()
 {

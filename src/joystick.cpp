@@ -21,9 +21,8 @@
 
 const QString Joystick::xmlName = "joystick";
 
-Joystick::Joystick(SDL_Joystick *joyhandle, int deviceIndex,
-                   AntiMicroSettings *settings, QObject *parent) :
-    InputDevice(deviceIndex, settings, parent)
+Joystick::Joystick(SDL_Joystick *joyhandle, int deviceIndex, AntiMicroSettings *settings, QObject *parent)
+    : InputDevice(deviceIndex, settings, parent)
 {
     this->joyhandle = joyhandle;
 #ifdef USE_SDL_2
@@ -32,7 +31,7 @@ Joystick::Joystick(SDL_Joystick *joyhandle, int deviceIndex,
     joyNumber = SDL_JoystickIndex(joyhandle);
 #endif
 
-    for (int i=0; i < NUMBER_JOYSETS; i++)
+    for (int i = 0; i < NUMBER_JOYSETS; i++)
     {
         SetJoystick *setstick = new SetJoystick(this, i, this);
         joystick_sets.insert(i, setstick);
@@ -40,10 +39,7 @@ Joystick::Joystick(SDL_Joystick *joyhandle, int deviceIndex,
     }
 }
 
-QString Joystick::getName()
-{
-    return QString(tr("Joystick")).append(" ").append(QString::number(getRealJoyNumber()));
-}
+QString Joystick::getName() { return QString(tr("Joystick")).append(" ").append(QString::number(getRealJoyNumber())); }
 
 QString Joystick::getSDLName()
 {
@@ -74,10 +70,7 @@ QString Joystick::getGUIDString()
     return temp;
 }
 
-QString Joystick::getXmlName()
-{
-    return this->xmlName;
-}
+QString Joystick::getXmlName() { return this->xmlName; }
 
 void Joystick::closeSDLDevice()
 {
@@ -113,8 +106,5 @@ int Joystick::getNumberRawHats()
 }
 
 #ifdef USE_SDL_2
-SDL_JoystickID Joystick::getSDLJoystickID()
-{
-    return joystickID;
-}
+SDL_JoystickID Joystick::getSDLJoystickID() { return joystickID; }
 #endif

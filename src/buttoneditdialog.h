@@ -20,11 +20,10 @@
 
 #include <QDialog>
 
+#include "advancebuttondialog.h"
 #include "joybutton.h"
 #include "keyboard/virtualkeyboardmousewidget.h"
-#include "advancebuttondialog.h"
 #include "uihelpers/buttoneditdialoghelper.h"
-
 
 namespace Ui {
 class ButtonEditDialog;
@@ -33,12 +32,12 @@ class ButtonEditDialog;
 class ButtonEditDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
+
+  public:
     explicit ButtonEditDialog(JoyButton *button, QWidget *parent = 0);
     ~ButtonEditDialog();
-    
-protected:
+
+  protected:
     JoyButton *button;
     bool ignoreRelease;
     ButtonEditDialogHelper helper;
@@ -46,17 +45,17 @@ protected:
     virtual void keyReleaseEvent(QKeyEvent *event);
     virtual void keyPressEvent(QKeyEvent *event);
 
-private:
+  private:
     Ui::ButtonEditDialog *ui;
 
-signals:
+  signals:
     void advancedDialogOpened();
     void sendTempSlotToAdvanced(JoyButtonSlot *tempslot);
     void keyGrabbed(JoyButtonSlot *tempslot);
     void selectionCleared();
     void selectionFinished();
 
-private slots:
+  private slots:
     void refreshSlotSummaryLabel();
     void changeToggleSetting();
     void changeTurboSetting();

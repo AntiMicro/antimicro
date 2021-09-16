@@ -30,21 +30,21 @@ class QuickSetDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     explicit QuickSetDialog(InputDevice *joystick, QWidget *parent = 0);
     ~QuickSetDialog();
 
-protected:
+  protected:
     InputDevice *joystick;
     QDialog *currentButtonDialog;
 
-private:
+  private:
     Ui::QuickSetDialog *ui;
 
-signals:
+  signals:
     void buttonDialogClosed();
 
-private slots:
+  private slots:
     void showAxisButtonDialog();
     void showButtonDialog();
     void showStickButtonDialog();

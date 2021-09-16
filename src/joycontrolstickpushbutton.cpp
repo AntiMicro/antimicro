@@ -18,8 +18,8 @@
 #include "joycontrolstickpushbutton.h"
 #include "joycontrolstickcontextmenu.h"
 
-JoyControlStickPushButton::JoyControlStickPushButton(JoyControlStick *stick, bool displayNames, QWidget *parent) :
-    FlashButtonWidget(displayNames, parent)
+JoyControlStickPushButton::JoyControlStickPushButton(JoyControlStick *stick, bool displayNames, QWidget *parent)
+    : FlashButtonWidget(displayNames, parent)
 {
     this->stick = stick;
 
@@ -28,17 +28,14 @@ JoyControlStickPushButton::JoyControlStickPushButton(JoyControlStick *stick, boo
     tryFlash();
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showContextMenu(const QPoint &)));
 
     connect(stick, SIGNAL(active(int, int)), this, SLOT(flash()), Qt::QueuedConnection);
     connect(stick, SIGNAL(released(int, int)), this, SLOT(unflash()), Qt::QueuedConnection);
     connect(stick, SIGNAL(stickNameChanged()), this, SLOT(refreshLabel()));
 }
 
-JoyControlStick* JoyControlStickPushButton::getStick()
-{
-    return stick;
-}
+JoyControlStick *JoyControlStickPushButton::getStick() { return stick; }
 
 /**
  * @brief Generate the string that will be displayed on the button
@@ -50,8 +47,7 @@ QString JoyControlStickPushButton::generateLabel()
     if (!stick->getStickName().isEmpty() && displayNames)
     {
         temp.append(stick->getPartialName(false, true));
-    }
-    else
+    } else
     {
         temp.append(stick->getPartialName(false));
     }

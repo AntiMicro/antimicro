@@ -20,9 +20,9 @@
 
 #include <QDialog>
 
+#include "antimicrosettings.h"
 #include "autoprofileinfo.h"
 #include "inputdevice.h"
-#include "antimicrosettings.h"
 
 namespace Ui {
 class AddEditAutoProfileDialog;
@@ -32,23 +32,22 @@ class AddEditAutoProfileDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit AddEditAutoProfileDialog(AutoProfileInfo *info, AntiMicroSettings *settings, QList<InputDevice*> *devices,
-                                      QList<QString> &reservedGUIDS,
-                                      bool edit=false, QWidget *parent = 0);
+  public:
+    explicit AddEditAutoProfileDialog(AutoProfileInfo *info, AntiMicroSettings *settings, QList<InputDevice *> *devices,
+                                      QList<QString> &reservedGUIDS, bool edit = false, QWidget *parent = 0);
     ~AddEditAutoProfileDialog();
 
-    AutoProfileInfo* getAutoProfile();
+    AutoProfileInfo *getAutoProfile();
     QString getOriginalGUID();
     QString getOriginalExe();
     QString getOriginalWindowClass();
     QString getOriginalWindowName();
 
-protected:
+  protected:
     virtual void accept();
 
     AutoProfileInfo *info;
-    QList<InputDevice*> *devices;
+    QList<InputDevice *> *devices;
     AntiMicroSettings *settings;
     bool editForm;
     bool defaultInfo;
@@ -58,13 +57,13 @@ protected:
     QString originalWindowClass;
     QString originalWindowName;
 
-private:
+  private:
     Ui::AddEditAutoProfileDialog *ui;
 
-signals:
+  signals:
     void captureFinished();
 
-private slots:
+  private slots:
     void openProfileBrowseDialog();
     void openApplicationBrowseDialog();
     void saveAutoProfileInformation();

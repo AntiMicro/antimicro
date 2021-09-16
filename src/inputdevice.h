@@ -18,28 +18,28 @@
 #ifndef INPUTDEVICE_H
 #define INPUTDEVICE_H
 
-#include <QObject>
 #include <QList>
+#include <QObject>
+#include <QRegExp>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
-#include <QRegExp>
 
 #ifdef USE_SDL_2
-#include <SDL2/SDL_joystick.h>
-#include <SDL2/SDL_platform.h>
+    #include <SDL2/SDL_joystick.h>
+    #include <SDL2/SDL_platform.h>
 #else
-#include <SDL/SDL_joystick.h>
+    #include <SDL/SDL_joystick.h>
 typedef Sint32 SDL_JoystickID;
 #endif
 
-#include "setjoystick.h"
-#include "common.h"
 #include "antimicrosettings.h"
+#include "common.h"
+#include "setjoystick.h"
 
 class InputDevice : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit InputDevice(int deviceIndex, AntiMicroSettings *settings, QObject *parent = 0);
     virtual ~InputDevice();
 
@@ -52,8 +52,8 @@ public:
     int getJoyNumber();
     int getRealJoyNumber();
     int getActiveSetNumber();
-    SetJoystick* getActiveSetJoystick();
-    SetJoystick* getSetJoystick(int index);
+    SetJoystick *getActiveSetJoystick();
+    SetJoystick *getSetJoystick(int index);
     void removeControlStick(int index);
     bool isActive();
     int getButtonDownCount();
@@ -134,12 +134,12 @@ public:
     static const unsigned int DEFAULTKEYREPEATRATE;
     static const int RAISEDDEADZONE;
 
-protected:
+  protected:
     void enableSetConnections(SetJoystick *setstick);
     bool elementsHaveNames();
 
-    SDL_Joystick* joyhandle;
-    QHash<int, SetJoystick*> joystick_sets;
+    SDL_Joystick *joyhandle;
+    QHash<int, SetJoystick *> joystick_sets;
     QHash<int, JoyAxis::ThrottleTypes> cali;
     AntiMicroSettings *settings;
     int active_set;
@@ -162,7 +162,7 @@ protected:
 
     static QRegExp emptyGUID;
 
-signals:
+  signals:
     void setChangeActivated(int index);
     void setAxisThrottleActivated(int index);
     void clicked(int index);
@@ -183,7 +183,7 @@ signals:
     void requestProfileLoad(QString location);
     void requestWait();
 
-public slots:
+  public slots:
     void reset();
     void transferReset();
     void reInitButtons();
@@ -206,7 +206,7 @@ public slots:
     void establishPropertyUpdatedConnection();
     void disconnectPropertyUpdatedConnection();
 
-protected slots:
+  protected slots:
     void propogateSetChange(int index);
     void propogateSetAxisThrottleChange(int index, int originset);
     void buttonDownEvent(int setindex, int buttonindex);
@@ -236,7 +236,7 @@ protected slots:
     void updateSetVDPadNames(int vdpadIndex);
 };
 
-Q_DECLARE_METATYPE(InputDevice*)
+Q_DECLARE_METATYPE(InputDevice *)
 Q_DECLARE_METATYPE(SDL_JoystickID)
 
 #endif // INPUTDEVICE_H

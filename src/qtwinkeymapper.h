@@ -18,28 +18,27 @@
 #ifndef QTWINKEYMAPPER_H
 #define QTWINKEYMAPPER_H
 
-#include <QObject>
-#include <QHash>
 #include <QChar>
+#include <QHash>
+#include <QObject>
 
 #include "qtkeymapperbase.h"
 
 class QtWinKeyMapper : public QtKeyMapperBase
 {
     Q_OBJECT
-public:
+  public:
     explicit QtWinKeyMapper(QObject *parent = 0);
 
-    virtual unsigned int returnQtKey(unsigned int key, unsigned int scancode=0);
+    virtual unsigned int returnQtKey(unsigned int key, unsigned int scancode = 0);
 
-protected:
+  protected:
     void populateMappingHashes();
     void populateCharKeyInformation();
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // QTWINKEYMAPPER_H

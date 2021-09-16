@@ -21,18 +21,20 @@
 #include "ui_capturedwindowinfodialog.h"
 
 #ifdef Q_OS_WIN
-#include "winextras.h"
+    #include "winextras.h"
 #else
-#include "x11extras.h"
+    #include "x11extras.h"
 #endif
 
 #ifdef Q_OS_WIN
-CapturedWindowInfoDialog::CapturedWindowInfoDialog(QWidget *parent) :
+CapturedWindowInfoDialog::CapturedWindowInfoDialog(QWidget *parent)
+    :
 #else
-CapturedWindowInfoDialog::CapturedWindowInfoDialog(unsigned long window, QWidget *parent) :
+CapturedWindowInfoDialog::CapturedWindowInfoDialog(unsigned long window, QWidget *parent)
+    :
 #endif
-    QDialog(parent),
-    ui(new Ui::CapturedWindowInfoDialog)
+    QDialog(parent)
+    , ui(new Ui::CapturedWindowInfoDialog)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -58,8 +60,7 @@ CapturedWindowInfoDialog::CapturedWindowInfoDialog(unsigned long window, QWidget
     {
         ui->winClassCheckBox->setEnabled(false);
         ui->winClassCheckBox->setChecked(false);
-    }
-    else
+    } else
     {
         ui->winClassCheckBox->setChecked(true);
         setRadioDefault = true;
@@ -80,8 +81,7 @@ CapturedWindowInfoDialog::CapturedWindowInfoDialog(unsigned long window, QWidget
     {
         ui->winTitleCheckBox->setEnabled(false);
         ui->winTitleCheckBox->setChecked(false);
-    }
-    else if (!setRadioDefault)
+    } else if (!setRadioDefault)
     {
         ui->winTitleCheckBox->setChecked(true);
         setRadioDefault = true;
@@ -96,8 +96,7 @@ CapturedWindowInfoDialog::CapturedWindowInfoDialog(unsigned long window, QWidget
     {
         ui->winPathCheckBox->setEnabled(false);
         ui->winPathCheckBox->setChecked(false);
-    }
-    else
+    } else
     {
         ui->winPathCheckBox->setChecked(true);
         ui->winTitleCheckBox->setChecked(false);
@@ -118,22 +117,19 @@ CapturedWindowInfoDialog::CapturedWindowInfoDialog(unsigned long window, QWidget
                 ui->winTitleCheckBox->setChecked(true);
                 setRadioDefault = true;
             }
-        }
-        else
+        } else
         {
             ui->winPathCheckBox->setEnabled(false);
             ui->winPathCheckBox->setChecked(false);
         }
-    }
-    else
+    } else
     {
         ui->winPathCheckBox->setEnabled(false);
         ui->winPathCheckBox->setChecked(false);
     }
 #endif
 
-    if (winClass.isEmpty() && winName.isEmpty() &&
-        winPath.isEmpty())
+    if (winClass.isEmpty() && winName.isEmpty() && winPath.isEmpty())
     {
         QPushButton *button = ui->buttonBox->button(QDialogButtonBox::Ok);
         button->setEnabled(false);
@@ -142,10 +138,7 @@ CapturedWindowInfoDialog::CapturedWindowInfoDialog(unsigned long window, QWidget
     connect(this, SIGNAL(accepted()), this, SLOT(populateOption()));
 }
 
-CapturedWindowInfoDialog::~CapturedWindowInfoDialog()
-{
-    delete ui;
-}
+CapturedWindowInfoDialog::~CapturedWindowInfoDialog() { delete ui; }
 
 void CapturedWindowInfoDialog::populateOption()
 {
@@ -166,35 +159,19 @@ void CapturedWindowInfoDialog::populateOption()
         if (ui->winPathChoiceComboBox->currentIndex() == 0)
         {
             fullWinPath = true;
-        }
-        else
+        } else
         {
             fullWinPath = false;
         }
     }
 }
 
-CapturedWindowInfoDialog::CapturedWindowOption CapturedWindowInfoDialog::getSelectedOptions()
-{
-    return selectedMatch;
-}
+CapturedWindowInfoDialog::CapturedWindowOption CapturedWindowInfoDialog::getSelectedOptions() { return selectedMatch; }
 
-QString CapturedWindowInfoDialog::getWindowClass()
-{
-    return winClass;
-}
+QString CapturedWindowInfoDialog::getWindowClass() { return winClass; }
 
-QString CapturedWindowInfoDialog::getWindowName()
-{
-    return winName;
-}
+QString CapturedWindowInfoDialog::getWindowName() { return winName; }
 
-QString CapturedWindowInfoDialog::getWindowPath()
-{
-    return winPath;
-}
+QString CapturedWindowInfoDialog::getWindowPath() { return winPath; }
 
-bool CapturedWindowInfoDialog::useFullWindowPath()
-{
-    return fullWinPath;
-}
+bool CapturedWindowInfoDialog::useFullWindowPath() { return fullWinPath; }

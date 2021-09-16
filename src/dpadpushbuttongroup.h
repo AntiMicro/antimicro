@@ -20,19 +20,19 @@
 
 #include <QGridLayout>
 
+#include "dpadpushbutton.h"
 #include "joydpad.h"
 #include "joydpadbuttonwidget.h"
-#include "dpadpushbutton.h"
 
 class DPadPushButtonGroup : public QGridLayout
 {
     Q_OBJECT
-public:
+  public:
     explicit DPadPushButtonGroup(JoyDPad *dpad, bool displayNames = false, QWidget *parent = 0);
 
     JoyDPad *getDPad();
 
-protected:
+  protected:
     void generateButtons();
 
     JoyDPad *dpad;
@@ -50,14 +50,14 @@ protected:
 
     DPadPushButton *dpadWidget;
 
-signals:
+  signals:
     void buttonSlotChanged();
 
-public slots:
+  public slots:
     void changeButtonLayout();
     void toggleNameDisplay();
 
-private slots:
+  private slots:
     void propogateSlotsChanged();
     void openDPadButtonDialog();
     void showDPadDialog();

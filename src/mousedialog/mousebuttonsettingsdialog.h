@@ -21,16 +21,16 @@
 #include "mousesettingsdialog.h"
 #include "springmoderegionpreview.h"
 
-#include <joybutton.h>
 #include "uihelpers/mousebuttonsettingsdialoghelper.h"
+#include <joybutton.h>
 
 class MouseButtonSettingsDialog : public MouseSettingsDialog
 {
     Q_OBJECT
-public:
+  public:
     explicit MouseButtonSettingsDialog(JoyButton *button, QWidget *parent = 0);
-    
-protected:
+
+  protected:
     void selectCurrentMouseModePreset();
     void calculateSpringPreset();
     void calculateMouseSpeedPreset();
@@ -41,9 +41,9 @@ protected:
     SpringModeRegionPreview *springPreviewWidget;
     MouseButtonSettingsDialogHelper helper;
 
-signals:
-    
-public slots:
+  signals:
+
+  public slots:
     void changeMouseMode(int index);
     void changeMouseCurve(int index);
     void updateConfigHorizontalSpeed(int value);
@@ -52,9 +52,9 @@ public slots:
     void updateSpringHeight(int value);
     void updateSensitivity(double value);
     void updateAccelerationCurvePresetComboBox();
-    //void updateSpringRelativeStatus(bool value);
+    // void updateSpringRelativeStatus(bool value);
 
-private slots:
+  private slots:
     void updateExtraAccelerationCurve(int index);
 };
 

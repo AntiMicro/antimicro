@@ -24,16 +24,16 @@
 #include <QApplication>
 #include <QHashIterator>
 
-#include <X11/keysymdef.h>
 #include <X11/XF86keysym.h>
 #include <X11/XKBlib.h>
 #include <X11/Xutil.h>
+#include <X11/keysymdef.h>
 
 #include "qtx11keymapper.h"
 #include "x11extras.h"
 
-QtX11KeyMapper::QtX11KeyMapper(QObject *parent) :
-    QtKeyMapperBase(parent)
+QtX11KeyMapper::QtX11KeyMapper(QObject *parent)
+    : QtKeyMapperBase(parent)
 {
     identifier = "xtest";
     populateMappingHashes();
@@ -59,7 +59,7 @@ void QtX11KeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_Insert] = XK_Insert;
         qtKeyToVirtualKey[Qt::Key_Delete] = XK_Delete;
         qtKeyToVirtualKey[Qt::Key_Delete] = XK_Delete;
-        //qtKeyToX11KeySym[Qt::Key_Delete] = XK_Clear;
+        // qtKeyToX11KeySym[Qt::Key_Delete] = XK_Clear;
         qtKeyToVirtualKey[Qt::Key_Pause] = XK_Pause;
         qtKeyToVirtualKey[Qt::Key_Print] = XK_Print;
 
@@ -75,33 +75,33 @@ void QtX11KeyMapper::populateMappingHashes()
 
         // modifiers
         qtKeyToVirtualKey[Qt::Key_Shift] = XK_Shift_L;
-        //qtKeyToX11KeySym[Qt::Key_Shift] = XK_Shift_R;
-        //qtKeyToX11KeySym[Qt::Key_Shift] = XK_Shift_Lock;
+        // qtKeyToX11KeySym[Qt::Key_Shift] = XK_Shift_R;
+        // qtKeyToX11KeySym[Qt::Key_Shift] = XK_Shift_Lock;
         qtKeyToVirtualKey[Qt::Key_Control] = XK_Control_L;
-        //qtKeyToX11KeySym[Qt::Key_Control] = XK_Control_R;
-        //qtKeyToVirtualKey[Qt::Key_Meta] = XK_Meta_L;
-        //qtKeyToX11KeySym[Qt::Key_Meta] = XK_Meta_R;
+        // qtKeyToX11KeySym[Qt::Key_Control] = XK_Control_R;
+        // qtKeyToVirtualKey[Qt::Key_Meta] = XK_Meta_L;
+        // qtKeyToX11KeySym[Qt::Key_Meta] = XK_Meta_R;
         qtKeyToVirtualKey[Qt::Key_Alt] = XK_Alt_L;
-        //qtKeyToX11KeySym[Qt::Key_Alt] = XK_Alt_R;
+        // qtKeyToX11KeySym[Qt::Key_Alt] = XK_Alt_R;
 
         qtKeyToVirtualKey[Qt::Key_CapsLock] = XK_Caps_Lock;
         qtKeyToVirtualKey[Qt::Key_NumLock] = XK_Num_Lock;
         qtKeyToVirtualKey[Qt::Key_ScrollLock] = XK_Scroll_Lock;
         qtKeyToVirtualKey[Qt::Key_Meta] = XK_Super_L;
         qtKeyToVirtualKey[AntKey_Meta_R] = XK_Super_R;
-        //qtKeyToVirtualKey[Qt::Key_Super_L] = XK_Super_L;
-        //qtKeyToVirtualKey[Qt::Key_Super_R] = XK_Super_R;
+        // qtKeyToVirtualKey[Qt::Key_Super_L] = XK_Super_L;
+        // qtKeyToVirtualKey[Qt::Key_Super_R] = XK_Super_R;
         qtKeyToVirtualKey[Qt::Key_Menu] = XK_Menu;
         qtKeyToVirtualKey[Qt::Key_Hyper_L] = XK_Hyper_L;
         qtKeyToVirtualKey[Qt::Key_Hyper_R] = XK_Hyper_R;
         qtKeyToVirtualKey[Qt::Key_Help] = XK_Help;
 
         // numeric and function keypad keys
-        //qtKeyToVirtualKey[Qt::Key_Space] = XK_KP_Space;
-        //qtKeyToX11KeySym[Qt::Key_Tab] = XK_KP_Tab;
+        // qtKeyToVirtualKey[Qt::Key_Space] = XK_KP_Space;
+        // qtKeyToX11KeySym[Qt::Key_Tab] = XK_KP_Tab;
         qtKeyToVirtualKey[Qt::Key_Enter] = XK_KP_Enter;
         qtKeyToVirtualKey[AntKey_KP_Home] = XK_KP_Home;
-        //qtKeyToX11KeySym[Qt::Key_Home] = XK_KP_Home;
+        // qtKeyToX11KeySym[Qt::Key_Home] = XK_KP_Home;
         qtKeyToVirtualKey[AntKey_KP_Left] = XK_KP_Left;
         qtKeyToVirtualKey[AntKey_KP_Up] = XK_KP_Up;
         qtKeyToVirtualKey[AntKey_KP_Right] = XK_KP_Right;
@@ -112,9 +112,9 @@ void QtX11KeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[AntKey_KP_Begin] = XK_KP_Begin;
         qtKeyToVirtualKey[AntKey_KP_Insert] = XK_KP_Insert;
         qtKeyToVirtualKey[AntKey_KP_Delete] = XK_KP_Delete;
-        //qtKeyToX11KeySym[AntKey_KP_Equal] = XK_KP_Equal;
+        // qtKeyToX11KeySym[AntKey_KP_Equal] = XK_KP_Equal;
         qtKeyToVirtualKey[AntKey_KP_Add] = XK_KP_Add;
-        //qtKeyToX11KeySym[AntKey_KP_Separator] = XK_KP_Separator;
+        // qtKeyToX11KeySym[AntKey_KP_Separator] = XK_KP_Separator;
         qtKeyToVirtualKey[AntKey_KP_Subtract] = XK_KP_Subtract;
 
         qtKeyToVirtualKey[AntKey_KP_Decimal] = XK_KP_Decimal;
@@ -132,13 +132,13 @@ void QtX11KeyMapper::populateMappingHashes()
 
         // Misc Functions
         qtKeyToVirtualKey[Qt::Key_Mode_switch] = XK_Mode_switch;
-        //qtKeyToX11KeySym[Qt::Key_Mode_switch] = XK_script_switch;
+        // qtKeyToX11KeySym[Qt::Key_Mode_switch] = XK_script_switch;
 
         // Japanese keyboard support
         qtKeyToVirtualKey[Qt::Key_Kanji] = XK_Kanji;
         qtKeyToVirtualKey[Qt::Key_Muhenkan] = XK_Muhenkan;
         qtKeyToVirtualKey[Qt::Key_Henkan] = XK_Henkan_Mode;
-        //qtKeyToX11KeySym[Qt::Key_Henkan] = XK_Henkan;
+        // qtKeyToX11KeySym[Qt::Key_Henkan] = XK_Henkan;
         qtKeyToVirtualKey[Qt::Key_Romaji] = XK_Romaji;
         qtKeyToVirtualKey[Qt::Key_Hiragana] = XK_Hiragana;
         qtKeyToVirtualKey[Qt::Key_Katakana] = XK_Katakana;
@@ -153,8 +153,8 @@ void QtX11KeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_Eisu_Shift] = XK_Eisu_Shift;
         qtKeyToVirtualKey[Qt::Key_Eisu_toggle] = XK_Eisu_toggle;
         qtKeyToVirtualKey[Qt::Key_Codeinput] = XK_Kanji_Bangou;
-        //qtKeyToX11KeySym[Qt::Key_MultipleCandidate] = XK_Zen_Koho;
-        //qtKeyToX11KeySym[Qt::Key_PreviousCandidate] = XK_Mae_Koho;
+        // qtKeyToX11KeySym[Qt::Key_MultipleCandidate] = XK_Zen_Koho;
+        // qtKeyToX11KeySym[Qt::Key_PreviousCandidate] = XK_Mae_Koho;
 
 #ifdef XK_KOREAN
         qtKeyToVirtualKey[Qt::Key_Hangul] = XK_Hangul;
@@ -163,16 +163,16 @@ void QtX11KeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_Hangul_Hanja] = XK_Hangul_Hanja;
         qtKeyToVirtualKey[Qt::Key_Hangul_Jamo] = XK_Hangul_Jamo;
         qtKeyToVirtualKey[Qt::Key_Hangul_Romaja] = XK_Hangul_Romaja;
-        //qtKeyToX11KeySym[Qt::Key_Codeinput] = XK_Hangul_Codeinput;
+        // qtKeyToX11KeySym[Qt::Key_Codeinput] = XK_Hangul_Codeinput;
         qtKeyToVirtualKey[Qt::Key_Hangul_Jeonja] = XK_Hangul_Jeonja;
         qtKeyToVirtualKey[Qt::Key_Hangul_Banja] = XK_Hangul_Banja;
         qtKeyToVirtualKey[Qt::Key_Hangul_PreHanja] = XK_Hangul_PreHanja;
         qtKeyToVirtualKey[Qt::Key_Hangul_PostHanja] = XK_Hangul_PostHanja;
-        //qtKeyToX11KeySym[Qt::Key_SingleCandidate] = XK_Hangul_SingleCandidate;
-        //qtKeyToX11KeySym[Qt::Key_MultipleCandidate] = XK_Hangul_MultipleCandidate;
-        //qtKeyToX11KeySym[Qt::Key_PreviousCandidate] = XK_Hangul_PreviousCandidate;
+        // qtKeyToX11KeySym[Qt::Key_SingleCandidate] = XK_Hangul_SingleCandidate;
+        // qtKeyToX11KeySym[Qt::Key_MultipleCandidate] = XK_Hangul_MultipleCandidate;
+        // qtKeyToX11KeySym[Qt::Key_PreviousCandidate] = XK_Hangul_PreviousCandidate;
         qtKeyToVirtualKey[Qt::Key_Hangul_Special] = XK_Hangul_Special;
-        //qtKeyToX11KeySym[Qt::Key_Mode_switch] = XK_Hangul_switch;
+        // qtKeyToX11KeySym[Qt::Key_Mode_switch] = XK_Hangul_switch;
 
 #endif // XK_KOREAN
 
@@ -243,59 +243,61 @@ void QtX11KeyMapper::populateMappingHashes()
         qtKeyToVirtualKey[Qt::Key_LaunchF] = XF86XK_LaunchD;
 
         // Map initial ASCII keys
-        for (int i=0; i <= (XK_at - XK_space); i++)
+        for (int i = 0; i <= (XK_at - XK_space); i++)
         {
             qtKeyToVirtualKey[Qt::Key_Space + i] = XK_space + i;
         }
 
         // Map lowercase alpha keys
-        for (int i=0; i <= (XK_z - XK_a); i++)
+        for (int i = 0; i <= (XK_z - XK_a); i++)
         {
             qtKeyToVirtualKey[Qt::Key_A + i] = XK_a + i;
         }
 
         // Map [ to ` ASCII keys
-        for (int i=0; i <= (XK_grave - XK_bracketleft); i++)
+        for (int i = 0; i <= (XK_grave - XK_bracketleft); i++)
         {
             qtKeyToVirtualKey[Qt::Key_BracketLeft + i] = XK_bracketleft + i;
         }
 
         // Map { to ~ ASCII keys
-        for (int i=0; i <= (XK_asciitilde - XK_braceleft); i++)
+        for (int i = 0; i <= (XK_asciitilde - XK_braceleft); i++)
         {
             qtKeyToVirtualKey[Qt::Key_BraceLeft + i] = XK_braceleft + i;
         }
 
         // Map function keys
-        for (int i=0; i <= (XK_F35 - XK_F1); i++)
+        for (int i = 0; i <= (XK_F35 - XK_F1); i++)
         {
             qtKeyToVirtualKey[Qt::Key_F1 + i] = XK_F1 + i;
         }
 
         // Misc
-        //qtKeyToVirtualKey[Qt::KeyBri]
+        // qtKeyToVirtualKey[Qt::KeyBri]
 
         // Map custom defined keys
         qtKeyToVirtualKey[AntKey_Shift_R] = XK_Shift_R;
         qtKeyToVirtualKey[AntKey_Control_R] = XK_Control_R;
-        //qtKeyToX11KeySym[AntKey_Shift_Lock] = XK_Shift_Lock;
-        //qtKeyToVirtualKey[AntKey_Meta_R] = XK_Meta_R;
+        // qtKeyToX11KeySym[AntKey_Shift_Lock] = XK_Shift_Lock;
+        // qtKeyToVirtualKey[AntKey_Meta_R] = XK_Meta_R;
         qtKeyToVirtualKey[AntKey_Alt_R] = XK_Alt_R;
         qtKeyToVirtualKey[AntKey_KP_Multiply] = XK_KP_Multiply;
 
-	// Map 0 to 9
-        for (int i=0; i <= (XK_KP_9 - XK_KP_0); i++)
+        // Map 0 to 9
+        for (int i = 0; i <= (XK_KP_9 - XK_KP_0); i++)
         {
             qtKeyToVirtualKey[AntKey_KP_0 + i] = XK_KP_0 + i;
         }
 
-	// Map lower-case latin characters to their capital equivalents
-	for( int i=0; i <= (XK_odiaeresis - XK_agrave); i++) {
-	  qtKeyToVirtualKey[ Qt::Key_Agrave + i ] = XK_agrave + i;
-	}
-	for( int i=0; i <= (XK_thorn - XK_oslash); i++) {
-	  qtKeyToVirtualKey[ Qt::Key_Ooblique + i ] = XK_oslash + i;
-	}
+        // Map lower-case latin characters to their capital equivalents
+        for (int i = 0; i <= (XK_odiaeresis - XK_agrave); i++)
+        {
+            qtKeyToVirtualKey[Qt::Key_Agrave + i] = XK_agrave + i;
+        }
+        for (int i = 0; i <= (XK_thorn - XK_oslash); i++)
+        {
+            qtKeyToVirtualKey[Qt::Key_Ooblique + i] = XK_oslash + i;
+        }
 
         QHashIterator<unsigned int, unsigned int> iter(qtKeyToVirtualKey);
         while (iter.hasNext())
@@ -309,12 +311,12 @@ void QtX11KeyMapper::populateMappingHashes()
 void QtX11KeyMapper::populateCharKeyInformation()
 {
     virtualkeyToCharKeyInformation.clear();
-    Display* display = X11Extras::getInstance()->display();
+    Display *display = X11Extras::getInstance()->display();
 
     unsigned int total = 0;
-    for (int i=8; i <= 255; i++)
+    for (int i = 8; i <= 255; i++)
     {
-        for (int j=0; j <= 3; j++)
+        for (int j = 0; j <= 3; j++)
         {
             Qt::KeyboardModifiers dicis;
             if (j >= 2)
@@ -327,9 +329,8 @@ void QtX11KeyMapper::populateCharKeyInformation()
                 dicis |= Qt::ShiftModifier;
             }
 
-            unsigned int testsym = XkbKeycodeToKeysym(display, i,
-                                                      dicis & Qt::MetaModifier ? 1 : 0,
-                                                      dicis & Qt::ShiftModifier ? 1 : 0);
+            unsigned int testsym =
+                XkbKeycodeToKeysym(display, i, dicis & Qt::MetaModifier ? 1 : 0, dicis & Qt::ShiftModifier ? 1 : 0);
             if (testsym != NoSymbol)
             {
                 XKeyPressedEvent tempevent;
@@ -364,22 +365,20 @@ void QtX11KeyMapper::populateCharKeyInformation()
                         if (!virtualkeyToCharKeyInformation.contains(tempchar.unicode()))
                         {
                             virtualkeyToCharKeyInformation.insert(tempchar.unicode(), testKeyInformation);
-                            //qDebug() << "I FOUND SOMETHING: " << tempchar;
+                            // qDebug() << "I FOUND SOMETHING: " << tempchar;
                             total++;
                         }
-                    }
-                    else
+                    } else
                     {
-                        //qDebug() << "YOU FAIL: " << tempchar;
+                        // qDebug() << "YOU FAIL: " << tempchar;
                     }
                 }
-
             }
         }
     }
 
-    //qDebug() << "TOTAL: " << total;
-    //qDebug() << "";
+    // qDebug() << "TOTAL: " << total;
+    // qDebug() << "";
 
     QChar tempa('*');
     if (virtualkeyToCharKeyInformation.contains(tempa.unicode()))
@@ -387,5 +386,3 @@ void QtX11KeyMapper::populateCharKeyInformation()
         charKeyInformation projects = virtualkeyToCharKeyInformation.value(tempa.unicode());
     }
 }
-
-

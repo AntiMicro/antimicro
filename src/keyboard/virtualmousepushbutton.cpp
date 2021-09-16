@@ -17,8 +17,9 @@
 
 #include "virtualmousepushbutton.h"
 
-VirtualMousePushButton::VirtualMousePushButton(QString displayText, int code, JoyButtonSlot::JoySlotInputAction mode, QWidget *parent) :
-    QPushButton(parent)
+VirtualMousePushButton::VirtualMousePushButton(QString displayText, int code, JoyButtonSlot::JoySlotInputAction mode,
+                                               QWidget *parent)
+    : QPushButton(parent)
 {
     if (mode == JoyButtonSlot::JoyMouseButton || mode == JoyButtonSlot::JoyMouseMovement)
     {
@@ -28,28 +29,24 @@ VirtualMousePushButton::VirtualMousePushButton(QString displayText, int code, Jo
         {
             switch (code)
             {
-                case JoyButtonSlot::MouseUp:
-                case JoyButtonSlot::MouseDown:
-                case JoyButtonSlot::MouseLeft:
-                case JoyButtonSlot::MouseRight:
-                {
-                    this->code = code;
-                    break;
-                }
-                default:
-                {
-                    this->code = 0;
-                    break;
-                }
+            case JoyButtonSlot::MouseUp:
+            case JoyButtonSlot::MouseDown:
+            case JoyButtonSlot::MouseLeft:
+            case JoyButtonSlot::MouseRight: {
+                this->code = code;
+                break;
             }
-        }
-        else
+            default: {
+                this->code = 0;
+                break;
+            }
+            }
+        } else
         {
             this->code = code;
         }
         this->mode = mode;
-    }
-    else
+    } else
     {
         this->setText(tr("INVALID"));
         this->code = 0;
@@ -59,15 +56,9 @@ VirtualMousePushButton::VirtualMousePushButton(QString displayText, int code, Jo
     connect(this, SIGNAL(clicked()), this, SLOT(createTempSlot()));
 }
 
-unsigned int VirtualMousePushButton::getMouseCode()
-{
-    return code;
-}
+unsigned int VirtualMousePushButton::getMouseCode() { return code; }
 
-JoyButtonSlot::JoySlotInputAction VirtualMousePushButton::getMouseMode()
-{
-    return mode;
-}
+JoyButtonSlot::JoySlotInputAction VirtualMousePushButton::getMouseMode() { return mode; }
 
 void VirtualMousePushButton::createTempSlot()
 {

@@ -19,9 +19,8 @@
 
 #include "autoprofileinfo.h"
 
-AutoProfileInfo::AutoProfileInfo(QString guid, QString profileLocation,
-                                 QString exe, bool active, QObject *parent) :
-    QObject(parent)
+AutoProfileInfo::AutoProfileInfo(QString guid, QString profileLocation, QString exe, bool active, QObject *parent)
+    : QObject(parent)
 {
     setGUID(guid);
     setProfileLocation(profileLocation);
@@ -30,9 +29,8 @@ AutoProfileInfo::AutoProfileInfo(QString guid, QString profileLocation,
     setDefaultState(false);
 }
 
-AutoProfileInfo::AutoProfileInfo(QString guid, QString profileLocation,
-                                 bool active, QObject *parent) :
-    QObject(parent)
+AutoProfileInfo::AutoProfileInfo(QString guid, QString profileLocation, bool active, QObject *parent)
+    : QObject(parent)
 {
     setGUID(guid);
     setProfileLocation(profileLocation);
@@ -40,45 +38,32 @@ AutoProfileInfo::AutoProfileInfo(QString guid, QString profileLocation,
     setDefaultState(false);
 }
 
-AutoProfileInfo::AutoProfileInfo(QObject *parent) :
-    QObject(parent)
+AutoProfileInfo::AutoProfileInfo(QObject *parent)
+    : QObject(parent)
 {
     setActive(true);
     setDefaultState(false);
 }
 
-AutoProfileInfo::~AutoProfileInfo()
-{
-}
+AutoProfileInfo::~AutoProfileInfo() {}
 
-void AutoProfileInfo::setGUID(QString guid)
-{
-    this->guid = guid;
-}
+void AutoProfileInfo::setGUID(QString guid) { this->guid = guid; }
 
-QString AutoProfileInfo::getGUID()
-{
-    return guid;
-}
+QString AutoProfileInfo::getGUID() { return guid; }
 
 void AutoProfileInfo::setProfileLocation(QString profileLocation)
 {
     QFileInfo info(profileLocation);
-    if (profileLocation != this->profileLocation &&
-        info.exists() && info.isReadable())
+    if (profileLocation != this->profileLocation && info.exists() && info.isReadable())
     {
         this->profileLocation = profileLocation;
-    }
-    else if (profileLocation.isEmpty())
+    } else if (profileLocation.isEmpty())
     {
         this->profileLocation = "";
     }
 }
 
-QString AutoProfileInfo::getProfileLocation()
-{
-    return profileLocation;
-}
+QString AutoProfileInfo::getProfileLocation() { return profileLocation; }
 
 void AutoProfileInfo::setExe(QString exe)
 {
@@ -95,64 +80,30 @@ void AutoProfileInfo::setExe(QString exe)
             this->exe = exe;
         }
 #endif
-    }
-    else
+    } else
     {
         this->exe = exe;
     }
 }
 
-QString AutoProfileInfo::getExe()
-{
-    return exe;
-}
+QString AutoProfileInfo::getExe() { return exe; }
 
-void AutoProfileInfo::setWindowClass(QString windowClass)
-{
-    this->windowClass = windowClass;
-}
+void AutoProfileInfo::setWindowClass(QString windowClass) { this->windowClass = windowClass; }
 
-QString AutoProfileInfo::getWindowClass()
-{
-    return windowClass;
-}
+QString AutoProfileInfo::getWindowClass() { return windowClass; }
 
-void AutoProfileInfo::setWindowName(QString winName)
-{
-    this->windowName = winName;
-}
+void AutoProfileInfo::setWindowName(QString winName) { this->windowName = winName; }
 
-QString AutoProfileInfo::getWindowName()
-{
-    return windowName;
-}
+QString AutoProfileInfo::getWindowName() { return windowName; }
 
-void AutoProfileInfo::setActive(bool active)
-{
-    this->active = active;
-}
+void AutoProfileInfo::setActive(bool active) { this->active = active; }
 
-bool AutoProfileInfo::isActive()
-{
-    return active;
-}
+bool AutoProfileInfo::isActive() { return active; }
 
-void AutoProfileInfo::setDefaultState(bool value)
-{
-    this->defaultState = value;
-}
+void AutoProfileInfo::setDefaultState(bool value) { this->defaultState = value; }
 
-bool AutoProfileInfo::isCurrentDefault()
-{
-    return defaultState;
-}
+bool AutoProfileInfo::isCurrentDefault() { return defaultState; }
 
-void AutoProfileInfo::setDeviceName(QString name)
-{
-    this->deviceName = name;
-}
+void AutoProfileInfo::setDeviceName(QString name) { this->deviceName = name; }
 
-QString AutoProfileInfo::getDeviceName()
-{
-    return deviceName;
-}
+QString AutoProfileInfo::getDeviceName() { return deviceName; }

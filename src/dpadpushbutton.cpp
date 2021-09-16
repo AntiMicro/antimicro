@@ -18,8 +18,8 @@
 #include "dpadpushbutton.h"
 #include "dpadcontextmenu.h"
 
-DPadPushButton::DPadPushButton(JoyDPad *dpad, bool displayNames, QWidget *parent) :
-    FlashButtonWidget(displayNames, parent)
+DPadPushButton::DPadPushButton(JoyDPad *dpad, bool displayNames, QWidget *parent)
+    : FlashButtonWidget(displayNames, parent)
 {
     this->dpad = dpad;
 
@@ -29,15 +29,12 @@ DPadPushButton::DPadPushButton(JoyDPad *dpad, bool displayNames, QWidget *parent
     tryFlash();
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showContextMenu(const QPoint &)));
 
     connect(dpad, SIGNAL(dpadNameChanged()), this, SLOT(refreshLabel()));
 }
 
-JoyDPad* DPadPushButton::getDPad()
-{
-    return dpad;
-}
+JoyDPad *DPadPushButton::getDPad() { return dpad; }
 
 QString DPadPushButton::generateLabel()
 {
@@ -45,8 +42,7 @@ QString DPadPushButton::generateLabel()
     if (!dpad->getDpadName().isEmpty())
     {
         temp.append(dpad->getName(false, displayNames));
-    }
-    else
+    } else
     {
         temp.append(dpad->getName());
     }

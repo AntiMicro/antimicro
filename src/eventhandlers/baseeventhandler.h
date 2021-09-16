@@ -21,13 +21,13 @@
 #include <QObject>
 #include <QString>
 
-#include <springmousemoveinfo.h>
 #include <joybuttonslot.h>
+#include <springmousemoveinfo.h>
 
 class BaseEventHandler : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit BaseEventHandler(QObject *parent = 0);
 
     virtual bool init() = 0;
@@ -38,8 +38,7 @@ public:
     virtual void sendMouseEvent(int xDis, int yDis) = 0;
     virtual void sendMouseAbsEvent(int xDis, int yDis, int screen);
 
-    virtual void sendMouseSpringEvent(unsigned int xDis, unsigned int yDis,
-                                      unsigned int width, unsigned int height);
+    virtual void sendMouseSpringEvent(unsigned int xDis, unsigned int yDis, unsigned int width, unsigned int height);
     virtual void sendMouseSpringEvent(int xDis, int yDis);
 
     virtual void sendTextEntryEvent(QString maintext);
@@ -49,14 +48,12 @@ public:
     virtual void printPostMessages();
     QString getErrorString();
 
-
-protected:
+  protected:
     QString lastErrorString;
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // BASEEVENTHANDLER_H

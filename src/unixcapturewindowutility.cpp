@@ -18,14 +18,14 @@
 //#include <QDebug>
 #include <QDataStream>
 
-#include <X11/Xlib.h>
-#include <X11/cursorfont.h> // for XGrabPointer
-#include "x11extras.h"
 #include "qtx11keymapper.h"
 #include "unixcapturewindowutility.h"
+#include "x11extras.h"
+#include <X11/Xlib.h>
+#include <X11/cursorfont.h> // for XGrabPointer
 
-UnixCaptureWindowUtility::UnixCaptureWindowUtility(QObject *parent) :
-    QObject(parent)
+UnixCaptureWindowUtility::UnixCaptureWindowUtility(QObject *parent)
+    : QObject(parent)
 {
     targetPath = "";
     failed = false;
@@ -56,8 +56,7 @@ void UnixCaptureWindowUtility::attemptWindowCapture()
     {
         QByteArray tempByteArray = potentialXDisplayString.toLocal8Bit();
         display = XOpenDisplay(tempByteArray.constData());
-    }
-    else
+    } else
     {
         display = XOpenDisplay(NULL);
     }
@@ -65,38 +64,34 @@ void UnixCaptureWindowUtility::attemptWindowCapture()
     Window rootWin = XDefaultRootWindow(display);
 
     cursor = XCreateFontCursor(display, XC_crosshair);
-    status = XGrabPointer(display, rootWin, False, ButtonPressMask,
-                 GrabModeSync, GrabModeAsync, None,
-                 cursor, CurrentTime);
+    status = XGrabPointer(display, rootWin, False, ButtonPressMask, GrabModeSync, GrabModeAsync, None, cursor, CurrentTime);
     if (status == Success)
     {
-        XGrabKey(display, XKeysymToKeycode(display, x11KeyMapper.returnVirtualKey(Qt::Key_Escape)), 0, rootWin,
-                 true, GrabModeAsync, GrabModeAsync);
+        XGrabKey(display, XKeysymToKeycode(display, x11KeyMapper.returnVirtualKey(Qt::Key_Escape)), 0, rootWin, true,
+                 GrabModeAsync, GrabModeAsync);
 
         XEvent event;
         XAllowEvents(display, SyncPointer, CurrentTime);
-        XWindowEvent(display, rootWin, ButtonPressMask|KeyPressMask, &event);
+        XWindowEvent(display, rootWin, ButtonPressMask | KeyPressMask, &event);
         switch (event.type)
         {
-            case (ButtonPress):
-                target_window = event.xbutton.subwindow;
-                if (target_window == None)
-                {
-                    target_window = event.xbutton.window;
-                }
-
-                //qDebug() << QString::number(target_window, 16);
-                break;
-
-            case (KeyPress):
+        case (ButtonPress):
+            target_window = event.xbutton.subwindow;
+            if (target_window == None)
             {
-                escaped = true;
-                break;
+                target_window = event.xbutton.window;
             }
+
+            // qDebug() << QString::number(target_window, 16);
+            break;
+
+        case (KeyPress): {
+            escaped = true;
+            break;
+        }
         }
 
-        XUngrabKey(display, XKeysymToKeycode(display, x11KeyMapper.returnVirtualKey(Qt::Key_Escape)),
-                   0, rootWin);
+        XUngrabKey(display, XKeysymToKeycode(display, x11KeyMapper.returnVirtualKey(Qt::Key_Escape)), 0, rootWin);
         XUngrabPointer(display, CurrentTime);
         XFlush(display);
     }
@@ -104,8 +99,7 @@ void UnixCaptureWindowUtility::attemptWindowCapture()
     if (target_window != None)
     {
         targetWindow = target_window;
-    }
-    else if (!escaped)
+    } else if (!escaped)
     {
         failed = true;
     }
@@ -118,21 +112,12 @@ void UnixCaptureWindowUtility::attemptWindowCapture()
  * @brief Get the saved path for a window
  * @return Program path
  */
-QString UnixCaptureWindowUtility::getTargetPath()
-{
-    return targetPath;
-}
+QString UnixCaptureWindowUtility::getTargetPath() { return targetPath; }
 
 /**
  * @brief Check if attemptWindowCapture failed to obtain an application
  * @return Error status
  */
-bool UnixCaptureWindowUtility::hasFailed()
-{
-    return failed;
-}
+bool UnixCaptureWindowUtility::hasFailed() { return failed; }
 
-unsigned long UnixCaptureWindowUtility::getTargetWindow()
-{
-    return targetWindow;
-}
+unsigned long UnixCaptureWindowUtility::getTargetWindow() { return targetWindow; }

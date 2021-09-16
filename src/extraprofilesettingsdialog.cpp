@@ -20,9 +20,9 @@
 #include "extraprofilesettingsdialog.h"
 #include "ui_extraprofilesettingsdialog.h"
 
-ExtraProfileSettingsDialog::ExtraProfileSettingsDialog(InputDevice *device, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ExtraProfileSettingsDialog)
+ExtraProfileSettingsDialog::ExtraProfileSettingsDialog(InputDevice *device, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::ExtraProfileSettingsDialog)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -46,10 +46,7 @@ ExtraProfileSettingsDialog::ExtraProfileSettingsDialog(InputDevice *device, QWid
     connect(ui->profileNameLineEdit, SIGNAL(textChanged(QString)), device, SLOT(setProfileName(QString)));
 }
 
-ExtraProfileSettingsDialog::~ExtraProfileSettingsDialog()
-{
-    delete ui;
-}
+ExtraProfileSettingsDialog::~ExtraProfileSettingsDialog() { delete ui; }
 
 void ExtraProfileSettingsDialog::changeDeviceKeyPress(int value)
 {

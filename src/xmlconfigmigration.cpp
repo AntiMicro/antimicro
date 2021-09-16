@@ -15,26 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "event.h"
 #include "antkeymapper.h"
+#include "event.h"
 
 #ifdef Q_OS_UNIX
-#include "eventhandlerfactory.h"
+    #include "eventhandlerfactory.h"
 #endif
-
 
 #include "xmlconfigmigration.h"
 
-
-XMLConfigMigration::XMLConfigMigration(QXmlStreamReader *reader, QObject *parent) :
-    QObject(parent)
+XMLConfigMigration::XMLConfigMigration(QXmlStreamReader *reader, QObject *parent)
+    : QObject(parent)
 {
     this->reader = reader;
     if (reader->device() && reader->device()->isOpen())
     {
         this->fileVersion = reader->attributes().value("configversion").toString().toInt();
-    }
-    else
+    } else
     {
         this->fileVersion = 0;
     }
@@ -46,8 +43,7 @@ bool XMLConfigMigration::requiresMigration()
     if (fileVersion == 0)
     {
         toMigrate = false;
-    }
-    else if (fileVersion >= 2 && fileVersion <= PadderCommon::LATESTCONFIGMIGRATIONVERSION)
+    } else if (fileVersion >= 2 && fileVersion <= PadderCommon::LATESTCONFIGMIGRATIONVERSION)
     {
         toMigrate = true;
     }
@@ -118,12 +114,10 @@ QString XMLConfigMigration::version0006Migration()
                 {
                     QString tempcode = reader->readElementText();
                     slotcode = tempcode.toInt();
-                }
-                else if (reader->name() == "mode" && reader->isStartElement())
+                } else if (reader->name() == "mode" && reader->isStartElement())
                 {
                     slotmode = reader->readElementText();
-                }
-                else
+                } else
                 {
                     writer.writeCurrentToken(*reader);
                 }
@@ -144,8 +138,7 @@ QString XMLConfigMigration::version0006Migration()
                     if (handler->getIdentifier() == "xtest")
                     {
                         slotcode = AntKeyMapper::getInstance()->returnQtKey(X11KeyCodeToX11KeySym(slotcode));
-                    }
-                    else
+                    } else
                     {
                         slotcode = 0;
                         tempcode = 0;
@@ -155,13 +148,12 @@ QString XMLConfigMigration::version0006Migration()
                     if (slotcode > 0)
                     {
                         writer.writeTextElement("code", QString("0x%1").arg(slotcode, 0, 16));
-                    }
-                    else if (tempcode > 0)
+                    } else if (tempcode > 0)
                     {
-                        writer.writeTextElement("code", QString("0x%1").arg(tempcode | QtKeyMapperBase::nativeKeyPrefix, 0, 16));
+                        writer.writeTextElement("code",
+                                                QString("0x%1").arg(tempcode | QtKeyMapperBase::nativeKeyPrefix, 0, 16));
                     }
-                }
-                else
+                } else
                 {
                     writer.writeTextElement("code", QString::number(slotcode));
                 }
@@ -169,8 +161,7 @@ QString XMLConfigMigration::version0006Migration()
                 writer.writeTextElement("mode", slotmode);
             }
             writer.writeCurrentToken(*reader);
-        }
-        else
+        } else
         {
             writer.writeCurrentToken(*reader);
         }

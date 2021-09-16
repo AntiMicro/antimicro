@@ -26,24 +26,24 @@
 class JoyAxisContextMenu : public QMenu
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyAxisContextMenu(JoyAxis *axis, QWidget *parent = 0);
     void buildMenu();
     void buildAxisMenu();
     void buildTriggerMenu();
 
-protected:
+  protected:
     int getPresetIndex();
     int getTriggerPresetIndex();
 
     JoyAxis *axis;
     JoyAxisContextMenuHelper helper;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
 
-private slots:
+  private slots:
     void setAxisPreset();
     void setTriggerPreset();
     void openMouseSettingsDialog();

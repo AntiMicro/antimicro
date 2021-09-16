@@ -18,21 +18,21 @@
 #ifndef UINPUTHELPER_H
 #define UINPUTHELPER_H
 
+#include <QHash>
 #include <QObject>
 #include <QString>
-#include <QHash>
 
 class UInputHelper : public QObject
 {
     Q_OBJECT
-public:
-    static UInputHelper* getInstance();
+  public:
+    static UInputHelper *getInstance();
     void deleteInstance();
 
     QString getDisplayString(unsigned int virtualkey);
     unsigned int getVirtualKey(QString codestring);
 
-protected:
+  protected:
     explicit UInputHelper(QObject *parent = 0);
     ~UInputHelper();
 
@@ -42,10 +42,9 @@ protected:
     QHash<QString, unsigned int> knownAliasesX11SymVK;
     QHash<unsigned int, QString> knownAliasesVKStrings;
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // UINPUTHELPER_H

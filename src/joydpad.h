@@ -18,8 +18,8 @@
 #ifndef JOYDPAD_H
 #define JOYDPAD_H
 
-#include <QObject>
 #include <QHash>
+#include <QObject>
 #include <QString>
 #include <QTimer>
 #include <QXmlStreamReader>
@@ -30,23 +30,29 @@
 class JoyDPad : public QObject
 {
     Q_OBJECT
-public:
-    explicit JoyDPad(int index, int originset, SetJoystick *parentSet, QObject *parent=0);
+  public:
+    explicit JoyDPad(int index, int originset, SetJoystick *parentSet, QObject *parent = 0);
     ~JoyDPad();
 
-    enum JoyMode {StandardMode=0, EightWayMode, FourWayCardinal, FourWayDiagonal};
+    enum JoyMode
+    {
+        StandardMode = 0,
+        EightWayMode,
+        FourWayCardinal,
+        FourWayDiagonal
+    };
 
-    JoyDPadButton* getJoyButton(int index);
-    QHash<int, JoyDPadButton*>* getJoyButtons();
+    JoyDPadButton *getJoyButton(int index);
+    QHash<int, JoyDPadButton *> *getJoyButtons();
 
     int getCurrentDirection();
     int getJoyNumber();
     int getIndex();
     int getRealJoyNumber();
-    virtual QString getName(bool fullForceFormat=false, bool displayNames=false);
+    virtual QString getName(bool fullForceFormat = false, bool displayNames = false);
 
-    void joyEvent(int value, bool ignoresets=false);
-    void queuePendingEvent(int value, bool ignoresets=false);
+    void joyEvent(int value, bool ignoresets = false);
+    void queuePendingEvent(int value, bool ignoresets = false);
     void activatePendingEvent();
     bool hasPendingEvent();
     void clearPendingEvent();
@@ -80,7 +86,7 @@ public:
 
     virtual bool isDefault();
 
-    QHash<int, JoyDPadButton*>* getButtons();
+    QHash<int, JoyDPadButton *> *getButtons();
 
     void readConfig(QXmlStreamReader *xml);
     void writeConfig(QXmlStreamWriter *xml);
@@ -90,7 +96,7 @@ public:
     virtual void setDefaultDPadName(QString tempname);
     virtual QString getDefaultDPadName();
 
-    SetJoystick* getParentSet();
+    SetJoystick *getParentSet();
     bool hasSlotsAssigned();
 
     bool isRelativeSpring();
@@ -105,7 +111,7 @@ public:
     void setButtonsExtraAccelerationCurve(JoyButton::JoyExtraAccelerationCurve curve);
     JoyButton::JoyExtraAccelerationCurve getButtonsExtraAccelerationCurve();
 
-    QHash<int, JoyDPadButton*> getDirectionButtons(JoyDPadButton::JoyDPadDirections direction);
+    QHash<int, JoyDPadButton *> getDirectionButtons(JoyDPadButton::JoyDPadDirections direction);
 
     void setDirButtonsUpdateInitAccel(JoyDPadButton::JoyDPadDirections direction, bool state);
     void copyLastDistanceValues(JoyDPad *srcDPad);
@@ -115,13 +121,13 @@ public:
     static const QString xmlName;
     static const unsigned int DEFAULTDPADDELAY;
 
-protected:
+  protected:
     void populateButtons();
     void createDeskEvent(bool ignoresets = false);
-    QHash<int, JoyDPadButton*> getApplicableButtons();
+    QHash<int, JoyDPadButton *> getApplicableButtons();
     bool readMainConfig(QXmlStreamReader *xml);
 
-    QHash<int, JoyDPadButton*> buttons;
+    QHash<int, JoyDPadButton *> buttons;
     int index;
     JoyDPadButton::JoyDPadDirections prevDirection;
     JoyDPadButton::JoyDPadDirections pendingDirection;
@@ -138,7 +144,7 @@ protected:
     int pendingEventDirection;
     bool pendingIgnoreSets;
 
-signals:
+  signals:
     void active(int value);
     void released(int value);
     void dpadNameChanged();
@@ -146,7 +152,7 @@ signals:
     void joyModeChanged();
     void propertyUpdated();
 
-public slots:
+  public slots:
     void setDPadName(QString tempName);
     void setButtonsSpringRelativeStatus(bool value);
     void setDPadDelay(int value);
@@ -155,7 +161,7 @@ public slots:
     void establishPropertyUpdatedConnection();
     void disconnectPropertyUpdatedConnection();
 
-private slots:
+  private slots:
     void dpadDirectionChangeEvent();
 };
 

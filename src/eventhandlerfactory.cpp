@@ -24,9 +24,9 @@ static QHash<QString, QString> buildDisplayNames()
     QHash<QString, QString> temp;
 #ifdef Q_OS_WIN
     temp.insert("sendinput", "SendInput");
-  #ifdef WITH_VMULTI
+    #ifdef WITH_VMULTI
     temp.insert("vmulti", "Vmulti");
-  #endif
+    #endif
 #else
     temp.insert("xtest", "Xtest");
     temp.insert("uinput", "uinput");
@@ -36,10 +36,10 @@ static QHash<QString, QString> buildDisplayNames()
 
 QHash<QString, QString> handlerDisplayNames = buildDisplayNames();
 
-EventHandlerFactory* EventHandlerFactory::instance = 0;
+EventHandlerFactory *EventHandlerFactory::instance = 0;
 
-EventHandlerFactory::EventHandlerFactory(QString handler, QObject *parent) :
-    QObject(parent)
+EventHandlerFactory::EventHandlerFactory(QString handler, QObject *parent)
+    : QObject(parent)
 {
 #ifdef Q_OS_UNIX
     #ifdef WITH_UINPUT
@@ -60,12 +60,12 @@ EventHandlerFactory::EventHandlerFactory(QString handler, QObject *parent) :
     {
         eventHandler = new WinSendInputEventHandler(this);
     }
-  #ifdef WITH_VMULTI
+    #ifdef WITH_VMULTI
     else if (handler == "vmulti")
     {
         eventHandler = new WinVMultiEventHandler(this);
     }
-  #endif
+    #endif
 #endif
 }
 
@@ -78,7 +78,7 @@ EventHandlerFactory::~EventHandlerFactory()
     }
 }
 
-EventHandlerFactory* EventHandlerFactory::getInstance(QString handler)
+EventHandlerFactory *EventHandlerFactory::getInstance(QString handler)
 {
     if (!instance)
     {
@@ -86,8 +86,7 @@ EventHandlerFactory* EventHandlerFactory::getInstance(QString handler)
         if (!handler.isEmpty() && temp.contains(handler))
         {
             instance = new EventHandlerFactory(handler);
-        }
-        else
+        } else
         {
             instance = new EventHandlerFactory(fallBackIdentifier());
         }
@@ -105,22 +104,19 @@ void EventHandlerFactory::deleteInstance()
     }
 }
 
-BaseEventHandler* EventHandlerFactory::handler()
-{
-    return eventHandler;
-}
+BaseEventHandler *EventHandlerFactory::handler() { return eventHandler; }
 
 QString EventHandlerFactory::fallBackIdentifier()
 {
     QString temp;
 #ifdef Q_OS_UNIX
-  #if defined(WITH_XTEST)
+    #if defined(WITH_XTEST)
     temp = "xtest";
-  #elif defined(WITH_UINPUT)
+    #elif defined(WITH_UINPUT)
     temp = "uinput";
-  #else
+    #else
     temp = "xtest";
-  #endif
+    #endif
 #elif defined(Q_OS_WIN)
     temp = "sendinput";
 #endif
@@ -134,9 +130,9 @@ QStringList EventHandlerFactory::buildEventGeneratorList()
 
 #ifdef Q_OS_WIN
     temp.append("sendinput");
-  #ifdef WITH_VMULTI
+    #ifdef WITH_VMULTI
     temp.append("vmulti");
-  #endif
+    #endif
 #else
     temp.append("xtest");
     temp.append("uinput");

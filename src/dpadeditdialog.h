@@ -30,21 +30,21 @@ class DPadEditDialog;
 class DPadEditDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
+
+  public:
     explicit DPadEditDialog(JoyDPad *dpad, QWidget *parent = 0);
     ~DPadEditDialog();
 
-protected:
+  protected:
     void selectCurrentPreset();
 
     JoyDPad *dpad;
     DPadEditDialogHelper helper;
 
-private:
+  private:
     Ui::DPadEditDialog *ui;
 
-private slots:
+  private slots:
     void implementPresets(int index);
     void implementModes(int index);
     void openMouseSettingsDialog();

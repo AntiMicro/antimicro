@@ -26,21 +26,21 @@
 class JoyControlStickContextMenu : public QMenu
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyControlStickContextMenu(JoyControlStick *stick, QWidget *parent = 0);
     void buildMenu();
 
-protected:
+  protected:
     int getPresetIndex();
 
     JoyControlStick *stick;
     JoyControlStickContextMenuHelper helper;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
 
-private slots:
+  private slots:
     void setStickPreset();
     void setStickMode();
     void openMouseSettingsDialog();

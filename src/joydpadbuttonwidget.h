@@ -23,15 +23,15 @@
 class JoyDPadButtonWidget : public JoyButtonWidget
 {
     Q_OBJECT
-public:
-    explicit JoyDPadButtonWidget(JoyButton* button, bool displayNames, QWidget *parent = 0);
+  public:
+    explicit JoyDPadButtonWidget(JoyButton *button, bool displayNames, QWidget *parent = 0);
 
-protected:
+  protected:
     virtual QString generateLabel();
 
-signals:
-    
-public slots:
+  signals:
+
+  public slots:
 };
 
 #endif // JOYDPADBUTTONWIDGET_H

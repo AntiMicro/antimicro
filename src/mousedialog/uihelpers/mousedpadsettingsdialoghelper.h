@@ -26,15 +26,15 @@
 class MouseDpadSettingsDialogHelper : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit MouseDpadSettingsDialogHelper(JoyDPad *dpad, QObject *parent = 0);
 
-protected:
+  protected:
     JoyDPad *dpad;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
 };
 
 #endif // MOUSEDPADSETTINGSDIALOGHELPER_H

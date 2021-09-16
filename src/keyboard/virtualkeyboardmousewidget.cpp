@@ -17,20 +17,20 @@
 
 //#include <QDebug>
 #include <QFont>
-#include <QSizePolicy>
-#include <QSpacerItem>
 #include <QListIterator>
 #include <QLocale>
+#include <QSizePolicy>
+#include <QSpacerItem>
 
 #include "virtualkeyboardmousewidget.h"
-#include <mousedialog/mousebuttonsettingsdialog.h>
-#include <event.h>
 #include <antkeymapper.h>
+#include <event.h>
+#include <mousedialog/mousebuttonsettingsdialog.h>
 
-QHash<QString, QString> VirtualKeyboardMouseWidget::topRowKeys = QHash<QString, QString> ();
+QHash<QString, QString> VirtualKeyboardMouseWidget::topRowKeys = QHash<QString, QString>();
 
-VirtualKeyboardMouseWidget::VirtualKeyboardMouseWidget(JoyButton *button, QWidget *parent) :
-    QTabWidget(parent)
+VirtualKeyboardMouseWidget::VirtualKeyboardMouseWidget(JoyButton *button, QWidget *parent)
+    : QTabWidget(parent)
 {
     this->button = button;
     keyboardTab = new QWidget(this);
@@ -54,8 +54,8 @@ VirtualKeyboardMouseWidget::VirtualKeyboardMouseWidget(JoyButton *button, QWidge
     connect(mouseSettingsPushButton, SIGNAL(clicked()), this, SLOT(openMouseSettingsDialog()));
 }
 
-VirtualKeyboardMouseWidget::VirtualKeyboardMouseWidget(QWidget *parent) :
-    QTabWidget(parent)
+VirtualKeyboardMouseWidget::VirtualKeyboardMouseWidget(QWidget *parent)
+    : QTabWidget(parent)
 {
     keyboardTab = new QWidget(this);
     mouseTab = new QWidget(this);
@@ -118,7 +118,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempHBoxLayout = new QHBoxLayout();
     tempHBoxLayout->setSpacing(0);
     tempHBoxLayout->addWidget(createNewKey("grave"));
-    for (int i=1; i <= 9; i++)
+    for (int i = 1; i <= 9; i++)
     {
         tempHBoxLayout->addWidget(createNewKey(QString::number(i)));
     }
@@ -146,8 +146,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempHBoxLayout->addWidget(createNewKey("p"));
     tempHBoxLayout->addWidget(createNewKey("bracketleft"));
     tempHBoxLayout->addWidget(createNewKey("bracketright"));
-    if (QLocale::system().language() != QLocale::French &&
-        QLocale::system().language() != QLocale::German)
+    if (QLocale::system().language() != QLocale::French && QLocale::system().language() != QLocale::German)
     {
         tempHBoxLayout->addWidget(createNewKey("backslash"));
     }
@@ -167,8 +166,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     tempHBoxLayout->addWidget(createNewKey("l"));
     tempHBoxLayout->addWidget(createNewKey("semicolon"));
     tempHBoxLayout->addWidget(createNewKey("apostrophe"));
-    if (QLocale::system().language() == QLocale::French ||
-        QLocale::system().language() == QLocale::German)
+    if (QLocale::system().language() == QLocale::French || QLocale::system().language() == QLocale::German)
     {
         tempHBoxLayout->addWidget(createNewKey("asterisk"));
     }
@@ -220,7 +218,7 @@ QVBoxLayout *VirtualKeyboardMouseWidget::setupMainKeyboardLayout()
     return finalVBoxLayout;
 }
 
-QVBoxLayout* VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
+QVBoxLayout *VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
 {
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
@@ -256,7 +254,7 @@ QVBoxLayout* VirtualKeyboardMouseWidget::setupAuxKeyboardLayout()
     return tempVBoxLayout;
 }
 
-QVBoxLayout* VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
+QVBoxLayout *VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
 {
     QHBoxLayout *tempHBoxLayout = new QHBoxLayout();
     QVBoxLayout *tempVBoxLayout = new QVBoxLayout();
@@ -265,10 +263,10 @@ QVBoxLayout* VirtualKeyboardMouseWidget::setupKeyboardNumPadLayout()
 
     QPushButton *othersKeysButton = createOtherKeysMenu();
 
-    //tempHBoxLayout->addWidget(othersKeysButton);
-    //tempHBoxLayout->addWidget(noneButton);
+    // tempHBoxLayout->addWidget(othersKeysButton);
+    // tempHBoxLayout->addWidget(noneButton);
 
-    //finalVBoxLayout->addLayout(tempHBoxLayout);
+    // finalVBoxLayout->addLayout(tempHBoxLayout);
     finalVBoxLayout->addWidget(noneButton);
     finalVBoxLayout->addWidget(othersKeysButton);
     finalVBoxLayout->setStretchFactor(noneButton, 1);
@@ -323,7 +321,8 @@ void VirtualKeyboardMouseWidget::setupMouseControlLayout()
     VirtualMousePushButton *pushButton = 0;
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
-    pushButton = new VirtualMousePushButton(tr("Left", "Mouse"), JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, this);
+    pushButton =
+        new VirtualMousePushButton(tr("Left", "Mouse"), JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, this);
     pushButton->setSizePolicy(sizePolicy);
     pushButton->setMinimumHeight(50);
     tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding));
@@ -334,7 +333,8 @@ void VirtualKeyboardMouseWidget::setupMouseControlLayout()
     tempHBoxLayout->addSpacerItem(new QSpacerItem(10, 20, QSizePolicy::Fixed));
 
     tempVBoxLayout = new QVBoxLayout();
-    pushButton = new VirtualMousePushButton(tr("Up", "Mouse"), JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, this);
+    pushButton =
+        new VirtualMousePushButton(tr("Up", "Mouse"), JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, this);
     pushButton->setSizePolicy(sizePolicy);
     pushButton->setMinimumHeight(50);
     tempVBoxLayout->addWidget(pushButton);
@@ -375,7 +375,8 @@ void VirtualKeyboardMouseWidget::setupMouseControlLayout()
 
     tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
 
-    pushButton = new VirtualMousePushButton(tr("Down", "Mouse"), JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, this);
+    pushButton =
+        new VirtualMousePushButton(tr("Down", "Mouse"), JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, this);
     pushButton->setSizePolicy(sizePolicy);
     pushButton->setMinimumHeight(50);
     tempVBoxLayout->addWidget(pushButton);
@@ -391,7 +392,8 @@ void VirtualKeyboardMouseWidget::setupMouseControlLayout()
 
     tempVBoxLayout = new QVBoxLayout();
     tempVBoxLayout->addSpacerItem(new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    pushButton = new VirtualMousePushButton(tr("Right", "Mouse"), JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, this);
+    pushButton =
+        new VirtualMousePushButton(tr("Right", "Mouse"), JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, this);
     pushButton->setSizePolicy(sizePolicy);
     pushButton->setMinimumHeight(50);
     tempVBoxLayout->addWidget(pushButton);
@@ -435,7 +437,7 @@ void VirtualKeyboardMouseWidget::setupMouseControlLayout()
     finalVBoxLayout->addLayout(tempHBoxLayout);
 }
 
-VirtualKeyPushButton* VirtualKeyboardMouseWidget::createNewKey(QString xcodestring)
+VirtualKeyPushButton *VirtualKeyboardMouseWidget::createNewKey(QString xcodestring)
 {
     int width = 30;
     int height = 30;
@@ -448,52 +450,42 @@ VirtualKeyPushButton* VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
     if (xcodestring == "space")
     {
         width = 100;
-    }
-    else if (xcodestring == "Tab")
+    } else if (xcodestring == "Tab")
     {
         width = 40;
-    }
-    else if (xcodestring == "Shift_L" || xcodestring == "Shift_R")
+    } else if (xcodestring == "Shift_L" || xcodestring == "Shift_R")
     {
         width = 84;
-    }
-    else if (xcodestring == "Control_L")
+    } else if (xcodestring == "Control_L")
     {
         width = 70;
-    }
-    else if (xcodestring == "Return")
+    } else if (xcodestring == "Return")
     {
         width = 60;
         height = 60;
         pushButton->setMaximumWidth(100);
-    }
-    else if (xcodestring == "BackSpace")
+    } else if (xcodestring == "BackSpace")
     {
         width = 72;
-    }
-    else if (topRowKeys.contains(xcodestring))
+    } else if (topRowKeys.contains(xcodestring))
     {
         width = 30;
         height = 36;
         pushButton->setMaximumSize(100, 100);
-    }
-    else if (xcodestring == "Print" || xcodestring == "Scroll_Lock" || xcodestring == "Pause")
+    } else if (xcodestring == "Print" || xcodestring == "Scroll_Lock" || xcodestring == "Pause")
     {
         width = 40;
         height = 36;
         pushButton->setMaximumSize(100, 100);
         font1.setPointSize(6);
-    }
-    else if (xcodestring == "KP_Add" || xcodestring == "KP_Enter")
+    } else if (xcodestring == "KP_Add" || xcodestring == "KP_Enter")
     {
         width = 34;
         font1.setPointSize(6);
-    }
-    else if (xcodestring == "Num_Lock")
+    } else if (xcodestring == "Num_Lock")
     {
         font1.setPointSize(6);
-    }
-    else if (xcodestring.startsWith("KP_"))
+    } else if (xcodestring.startsWith("KP_"))
     {
         width = 36;
         height = 32;
@@ -508,11 +500,11 @@ VirtualKeyPushButton* VirtualKeyboardMouseWidget::createNewKey(QString xcodestri
     return pushButton;
 }
 
-QPushButton* VirtualKeyboardMouseWidget::createNoneKey()
+QPushButton *VirtualKeyboardMouseWidget::createNoneKey()
 {
     QPushButton *pushButton = new QPushButton(tr("NONE"), this);
     pushButton->setMinimumSize(0, 25);
-    //pushButton->setMaximumHeight(100);
+    // pushButton->setMaximumHeight(100);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     pushButton->setSizePolicy(sizePolicy);
     QFont font1;
@@ -525,13 +517,11 @@ QPushButton* VirtualKeyboardMouseWidget::createNoneKey()
 void VirtualKeyboardMouseWidget::processSingleKeyboardSelection(int keycode, unsigned int alias)
 {
     QMetaObject::invokeMethod(button, "clearSlotsEventReset");
-    //button->clearSlotsEventReset();
-    QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection,
-                              Q_ARG(int, keycode),
-                              Q_ARG(unsigned int, alias),
-                              Q_ARG(int, 0),
+    // button->clearSlotsEventReset();
+    QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection, Q_ARG(int, keycode),
+                              Q_ARG(unsigned int, alias), Q_ARG(int, 0),
                               Q_ARG(JoyButtonSlot::JoySlotInputAction, JoyButtonSlot::JoyKeyboard));
-    //button->setAssignedSlot(keycode, alias);
+    // button->setAssignedSlot(keycode, alias);
 
     emit selectionFinished();
 }
@@ -544,18 +534,14 @@ void VirtualKeyboardMouseWidget::processAdvancedKeyboardSelection(int keycode, u
 void VirtualKeyboardMouseWidget::processSingleMouseSelection(JoyButtonSlot *tempslot)
 {
     QMetaObject::invokeMethod(button, "clearSlotsEventReset");
-    //button->clearSlotsEventReset();
-    QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection,
-                              Q_ARG(int, tempslot->getSlotCode()),
+    // button->clearSlotsEventReset();
+    QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection, Q_ARG(int, tempslot->getSlotCode()),
                               Q_ARG(JoyButtonSlot::JoySlotInputAction, tempslot->getSlotMode()));
-    //button->setAssignedSlot(tempslot->getSlotCode(), tempslot->getSlotMode());
+    // button->setAssignedSlot(tempslot->getSlotCode(), tempslot->getSlotMode());
     emit selectionFinished();
 }
 
-void VirtualKeyboardMouseWidget::processAdvancedMouseSelection(JoyButtonSlot *tempslot)
-{
-    emit selectionMade(tempslot);
-}
+void VirtualKeyboardMouseWidget::processAdvancedMouseSelection(JoyButtonSlot *tempslot) { emit selectionMade(tempslot); }
 
 void VirtualKeyboardMouseWidget::populateTopRowKeys()
 {
@@ -579,16 +565,17 @@ void VirtualKeyboardMouseWidget::populateTopRowKeys()
 
 void VirtualKeyboardMouseWidget::establishVirtualKeyboardSingleSignalConnections()
 {
-    QList<VirtualKeyPushButton*> newlist = keyboardTab->findChildren<VirtualKeyPushButton*> ();
-    QListIterator<VirtualKeyPushButton*> iter(newlist);
+    QList<VirtualKeyPushButton *> newlist = keyboardTab->findChildren<VirtualKeyPushButton *>();
+    QListIterator<VirtualKeyPushButton *> iter(newlist);
     while (iter.hasNext())
     {
         VirtualKeyPushButton *keybutton = iter.next();
         disconnect(keybutton, SIGNAL(keycodeObtained(int, unsigned int)), 0, 0);
-        connect(keybutton, SIGNAL(keycodeObtained(int, unsigned int)), this, SLOT(processSingleKeyboardSelection(int, unsigned int)));
+        connect(keybutton, SIGNAL(keycodeObtained(int, unsigned int)), this,
+                SLOT(processSingleKeyboardSelection(int, unsigned int)));
     }
 
-    QListIterator<QAction*> iterActions(otherKeysMenu->actions());
+    QListIterator<QAction *> iterActions(otherKeysMenu->actions());
     while (iterActions.hasNext())
     {
         QAction *temp = iterActions.next();
@@ -598,21 +585,22 @@ void VirtualKeyboardMouseWidget::establishVirtualKeyboardSingleSignalConnections
 
     disconnect(noneButton, SIGNAL(clicked()), 0, 0);
     connect(noneButton, SIGNAL(clicked()), this, SLOT(clearButtonSlotsFinish()));
-    //qDebug() << "COUNT: " << newlist.count();
+    // qDebug() << "COUNT: " << newlist.count();
 }
 
 void VirtualKeyboardMouseWidget::establishVirtualKeyboardAdvancedSignalConnections()
 {
-    QList<VirtualKeyPushButton*> newlist = keyboardTab->findChildren<VirtualKeyPushButton*> ();
-    QListIterator<VirtualKeyPushButton*> iter(newlist);
+    QList<VirtualKeyPushButton *> newlist = keyboardTab->findChildren<VirtualKeyPushButton *>();
+    QListIterator<VirtualKeyPushButton *> iter(newlist);
     while (iter.hasNext())
     {
         VirtualKeyPushButton *keybutton = iter.next();
         disconnect(keybutton, SIGNAL(keycodeObtained(int, unsigned int)), 0, 0);
-        connect(keybutton, SIGNAL(keycodeObtained(int, unsigned int)), this, SLOT(processAdvancedKeyboardSelection(int, unsigned int)));
+        connect(keybutton, SIGNAL(keycodeObtained(int, unsigned int)), this,
+                SLOT(processAdvancedKeyboardSelection(int, unsigned int)));
     }
 
-    QListIterator<QAction*> iterActions(otherKeysMenu->actions());
+    QListIterator<QAction *> iterActions(otherKeysMenu->actions());
     while (iterActions.hasNext())
     {
         QAction *temp = iterActions.next();
@@ -626,46 +614,45 @@ void VirtualKeyboardMouseWidget::establishVirtualKeyboardAdvancedSignalConnectio
 
 void VirtualKeyboardMouseWidget::establishVirtualMouseSignalConnections()
 {
-    QList<VirtualMousePushButton*> newlist = mouseTab->findChildren<VirtualMousePushButton*>();
-    QListIterator<VirtualMousePushButton*> iter(newlist);
+    QList<VirtualMousePushButton *> newlist = mouseTab->findChildren<VirtualMousePushButton *>();
+    QListIterator<VirtualMousePushButton *> iter(newlist);
     while (iter.hasNext())
     {
         VirtualMousePushButton *mousebutton = iter.next();
-        disconnect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot*)), 0, 0);
-        connect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot*)), this, SLOT(processSingleMouseSelection(JoyButtonSlot*)));
+        disconnect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot *)), 0, 0);
+        connect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot *)), this,
+                SLOT(processSingleMouseSelection(JoyButtonSlot *)));
     }
 }
 
 void VirtualKeyboardMouseWidget::establishVirtualMouseAdvancedSignalConnections()
 {
-    QList<VirtualMousePushButton*> newlist = mouseTab->findChildren<VirtualMousePushButton*>();
-    QListIterator<VirtualMousePushButton*> iter(newlist);
+    QList<VirtualMousePushButton *> newlist = mouseTab->findChildren<VirtualMousePushButton *>();
+    QListIterator<VirtualMousePushButton *> iter(newlist);
     while (iter.hasNext())
     {
         VirtualMousePushButton *mousebutton = iter.next();
-        disconnect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot*)), 0, 0);
-        connect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot*)), this, SLOT(processAdvancedMouseSelection(JoyButtonSlot*)));
+        disconnect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot *)), 0, 0);
+        connect(mousebutton, SIGNAL(mouseSlotCreated(JoyButtonSlot *)), this,
+                SLOT(processAdvancedMouseSelection(JoyButtonSlot *)));
     }
 }
 
 void VirtualKeyboardMouseWidget::clearButtonSlots()
 {
     QMetaObject::invokeMethod(button, "clearSlotsEventReset", Qt::BlockingQueuedConnection);
-    //button->clearSlotsEventReset();
+    // button->clearSlotsEventReset();
     emit selectionCleared();
 }
 
 void VirtualKeyboardMouseWidget::clearButtonSlotsFinish()
 {
     QMetaObject::invokeMethod(button, "clearSlotsEventReset", Qt::BlockingQueuedConnection);
-    //button->clearSlotsEventReset();
+    // button->clearSlotsEventReset();
     emit selectionFinished();
 }
 
-bool VirtualKeyboardMouseWidget::isKeyboardTabVisible()
-{
-    return this->keyboardTab->isVisible();
-}
+bool VirtualKeyboardMouseWidget::isKeyboardTabVisible() { return this->keyboardTab->isVisible(); }
 
 void VirtualKeyboardMouseWidget::openMouseSettingsDialog()
 {
@@ -673,15 +660,12 @@ void VirtualKeyboardMouseWidget::openMouseSettingsDialog()
 
     MouseButtonSettingsDialog *dialog = new MouseButtonSettingsDialog(this->button, this);
     dialog->show();
-    QDialog *parent = static_cast<QDialog*>(this->parentWidget());
+    QDialog *parent = static_cast<QDialog *>(this->parentWidget());
     connect(parent, SIGNAL(finished(int)), dialog, SLOT(close()));
     connect(dialog, SIGNAL(finished(int)), this, SLOT(enableMouseSettingButton()));
 }
 
-void VirtualKeyboardMouseWidget::enableMouseSettingButton()
-{
-    mouseSettingsPushButton->setEnabled(true);
-}
+void VirtualKeyboardMouseWidget::enableMouseSettingButton() { mouseSettingsPushButton->setEnabled(true); }
 
 void VirtualKeyboardMouseWidget::resizeEvent(QResizeEvent *event)
 {
@@ -693,17 +677,17 @@ void VirtualKeyboardMouseWidget::resizeEvent(QResizeEvent *event)
 // size of the buttons.
 void VirtualKeyboardMouseWidget::setButtonFontSizes()
 {
-    //int tempWidgetFontSize = 20;
-    QList<VirtualKeyPushButton*> buttonList = this->findChildren<VirtualKeyPushButton*>();
-    QListIterator<VirtualKeyPushButton*> iter(buttonList);
+    // int tempWidgetFontSize = 20;
+    QList<VirtualKeyPushButton *> buttonList = this->findChildren<VirtualKeyPushButton *>();
+    QListIterator<VirtualKeyPushButton *> iter(buttonList);
     while (iter.hasNext())
     {
         VirtualKeyPushButton *temp = iter.next();
-        //widgetSizeMan = qMin(temp->calculateFontSize(), tempWidgetFontSize);
+        // widgetSizeMan = qMin(temp->calculateFontSize(), tempWidgetFontSize);
         QFont tempFont(temp->font());
         tempFont.setPointSize(temp->calculateFontSize());
         temp->setFont(tempFont);
-        //temp->update();
+        // temp->update();
     }
 
     /*iter.toFront();
@@ -718,11 +702,11 @@ void VirtualKeyboardMouseWidget::setButtonFontSizes()
     */
 }
 
-QPushButton* VirtualKeyboardMouseWidget::createOtherKeysMenu()
+QPushButton *VirtualKeyboardMouseWidget::createOtherKeysMenu()
 {
     QPushButton *otherKeysPushbutton = new QPushButton("Others", this);
     otherKeysPushbutton->setMinimumSize(0, 25);
-    //fuckMotherFuck->setMaximumHeight(100);
+    // fuckMotherFuck->setMaximumHeight(100);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     otherKeysPushbutton->setSizePolicy(sizePolicy);
     QFont font1;
@@ -839,7 +823,7 @@ void VirtualKeyboardMouseWidget::otherKeysActionSingle(bool triggered)
 {
     Q_UNUSED(triggered);
 
-    QAction *tempAction = static_cast<QAction*>(sender());
+    QAction *tempAction = static_cast<QAction *>(sender());
     unsigned int virtualkey = tempAction->data().toInt();
     processSingleKeyboardSelection(virtualkey, AntKeyMapper::getInstance()->returnQtKey(virtualkey));
 }
@@ -848,7 +832,7 @@ void VirtualKeyboardMouseWidget::otherKeysActionAdvanced(bool triggered)
 {
     Q_UNUSED(triggered);
 
-    QAction *tempAction = static_cast<QAction*>(sender());
+    QAction *tempAction = static_cast<QAction *>(sender());
     unsigned int virtualkey = tempAction->data().toInt();
     processAdvancedKeyboardSelection(virtualkey, AntKeyMapper::getInstance()->returnQtKey(virtualkey));
 }

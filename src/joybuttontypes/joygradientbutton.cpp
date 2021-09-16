@@ -18,11 +18,11 @@
 //#include <QDebug>
 #include <cmath>
 
-#include "joygradientbutton.h"
 #include "event.h"
+#include "joygradientbutton.h"
 
-JoyGradientButton::JoyGradientButton(int index, int originset, SetJoystick *parentSet, QObject *parent) :
-    JoyButton(index, originset, parentSet, parent)
+JoyGradientButton::JoyGradientButton(int index, int originset, SetJoystick *parentSet, QObject *parent)
+    : JoyButton(index, originset, parentSet, parent)
 {
 }
 
@@ -34,20 +34,17 @@ void JoyGradientButton::turboEvent()
     if (currentTurboMode == NormalTurbo)
     {
         JoyButton::turboEvent();
-    }
-    else if (currentTurboMode == GradientTurbo || currentTurboMode == PulseTurbo)
+    } else if (currentTurboMode == GradientTurbo || currentTurboMode == PulseTurbo)
     {
         double diff = fabs(getMouseDistanceFromDeadZone() - lastDistance);
-        //qDebug() << "DIFF: " << QString::number(diff);
+        // qDebug() << "DIFF: " << QString::number(diff);
 
         bool changeState = false;
         int checkmate = 0;
         if (!turboTimer.isActive() && !isButtonPressed)
         {
             changeState = true;
-        }
-        else if (currentTurboMode == GradientTurbo && diff > 0 &&
-                 getMouseDistanceFromDeadZone() >= 1.0)
+        } else if (currentTurboMode == GradientTurbo && diff > 0 && getMouseDistanceFromDeadZone() >= 1.0)
         {
             if (isKeyPressed)
             {
@@ -59,8 +56,7 @@ void JoyGradientButton::turboEvent()
 
                 turboHold.restart();
                 lastDistance = 1.0;
-            }
-            else
+            } else
             {
                 changeState = true;
             }
@@ -69,8 +65,7 @@ void JoyGradientButton::turboEvent()
         else if (turboHold.isNull() || lastDistance == 0.0 || turboHold.elapsed() > tempTurboInterval)
         {
             changeState = true;
-        }
-        else if (diff >= 0.1)
+        } else if (diff >= 0.1)
         {
             int tempInterval2 = 0;
 
@@ -79,26 +74,22 @@ void JoyGradientButton::turboEvent()
                 if (currentTurboMode == GradientTurbo)
                 {
                     tempInterval2 = (int)floor((getMouseDistanceFromDeadZone() * turboInterval) + 0.5);
-                }
-                else
+                } else
                 {
                     tempInterval2 = (int)floor((turboInterval * 0.5) + 0.5);
                 }
-            }
-            else
+            } else
             {
                 if (currentTurboMode == GradientTurbo)
                 {
                     tempInterval2 = (int)floor(((1 - getMouseDistanceFromDeadZone()) * turboInterval) + 0.5);
-                }
-                else
+                } else
                 {
                     double distance = getMouseDistanceFromDeadZone();
                     if (distance > 0.0)
                     {
                         tempInterval2 = (int)floor(((turboInterval / getMouseDistanceFromDeadZone()) * 0.5) + 0.5);
-                    }
-                    else
+                    } else
                     {
                         tempInterval2 = 0;
                     }
@@ -119,18 +110,17 @@ void JoyGradientButton::turboEvent()
                 turboHold.restart();
                 changeState = false;
                 lastDistance = getMouseDistanceFromDeadZone();
-                //qDebug() << "diff tmpTurbo press: " << QString::number(tempTurboInterval);
-                //qDebug() << "diff timer press: " << QString::number(timerInterval);
-            }
-            else
+                // qDebug() << "diff tmpTurbo press: " << QString::number(tempTurboInterval);
+                // qDebug() << "diff timer press: " << QString::number(timerInterval);
+            } else
             {
                 // Elapsed time is greater than new interval. Change state.
-                //if (isKeyPressed)
+                // if (isKeyPressed)
                 //{
                 //    checkmate = turboHold.elapsed();
                 //}
                 changeState = true;
-                //qDebug() << "YOU GOT CHANGE";
+                // qDebug() << "YOU GOT CHANGE";
             }
         }
 
@@ -155,15 +145,14 @@ void JoyGradientButton::turboEvent()
                     if (currentTurboMode == GradientTurbo)
                     {
                         tempTurboInterval = (int)floor((getMouseDistanceFromDeadZone() * turboInterval) + 0.5);
-                    }
-                    else
+                    } else
                     {
                         tempTurboInterval = (int)floor((turboInterval * 0.5) + 0.5);
                     }
 
                     int timerInterval = qMin(tempTurboInterval, 5);
-                    //qDebug() << "tmpTurbo press: " << QString::number(tempTurboInterval);
-                    //qDebug() << "timer press: " << QString::number(timerInterval);
+                    // qDebug() << "tmpTurbo press: " << QString::number(tempTurboInterval);
+                    // qDebug() << "timer press: " << QString::number(timerInterval);
                     if (turboTimer.interval() != timerInterval)
                     {
                         turboTimer.start(timerInterval);
@@ -171,8 +160,7 @@ void JoyGradientButton::turboEvent()
 
                     turboHold.restart();
                 }
-            }
-            else
+            } else
             {
                 if (!isButtonPressedQueue.isEmpty())
                 {
@@ -188,23 +176,21 @@ void JoyGradientButton::turboEvent()
                     if (currentTurboMode == GradientTurbo)
                     {
                         tempTurboInterval = (int)floor(((1 - getMouseDistanceFromDeadZone()) * turboInterval) + 0.5);
-                    }
-                    else
+                    } else
                     {
                         double distance = getMouseDistanceFromDeadZone();
                         if (distance > 0.0)
                         {
                             tempTurboInterval = (int)floor(((turboInterval / getMouseDistanceFromDeadZone()) * 0.5) + 0.5);
-                        }
-                        else
+                        } else
                         {
                             tempTurboInterval = 0;
                         }
                     }
 
                     int timerInterval = qMin(tempTurboInterval, 5);
-                    //qDebug() << "tmpTurbo release: " << QString::number(tempTurboInterval);
-                    //qDebug() << "timer release: " << QString::number(timerInterval);
+                    // qDebug() << "tmpTurbo release: " << QString::number(tempTurboInterval);
+                    // qDebug() << "timer release: " << QString::number(timerInterval);
                     if (turboTimer.interval() != timerInterval)
                     {
                         turboTimer.start(timerInterval);
@@ -212,7 +198,6 @@ void JoyGradientButton::turboEvent()
 
                     turboHold.restart();
                 }
-
             }
 
             lastDistance = getMouseDistanceFromDeadZone();
@@ -221,7 +206,6 @@ void JoyGradientButton::turboEvent()
         checkmate = 0;
     }
 }
-
 
 void JoyGradientButton::wheelEventVertical()
 {
@@ -237,8 +221,7 @@ void JoyGradientButton::wheelEventVertical()
         if (lastWheelVerticalDistance > 0.0)
         {
             oldInterval = 1000 / wheelSpeedY / lastWheelVerticalDistance;
-        }
-        else
+        } else
         {
             oldInterval = 1000 / wheelSpeedY / 0.01;
         }
@@ -255,19 +238,16 @@ void JoyGradientButton::wheelEventVertical()
         if (!mouseWheelVerticalEventTimer.isActive())
         {
             activateEvent = true;
-        }
-        else if (wheelVerticalTime.elapsed() > oldInterval)
+        } else if (wheelVerticalTime.elapsed() > oldInterval)
         {
             activateEvent = true;
-        }
-        else if (diff >= 0.1 && wheelSpeedY != 0)
+        } else if (diff >= 0.1 && wheelSpeedY != 0)
         {
             double distance = getMouseDistanceFromDeadZone();
             if (distance > 0.0)
             {
                 tempInterval = static_cast<int>(1000 / wheelSpeedY / distance);
-            }
-            else
+            } else
             {
                 tempInterval = 0;
             }
@@ -282,8 +262,7 @@ void JoyGradientButton::wheelEventVertical()
                 {
                     mouseWheelVerticalEventTimer.start(tempInterval);
                 }
-            }
-            else
+            } else
             {
                 // Elapsed time is greater than new interval. Change state.
                 activateEvent = true;
@@ -303,8 +282,7 @@ void JoyGradientButton::wheelEventVertical()
             if (distance > 0.0)
             {
                 tempInterval = static_cast<int>(1000 / wheelSpeedY / distance);
-            }
-            else
+            } else
             {
                 tempInterval = 0;
             }
@@ -314,15 +292,13 @@ void JoyGradientButton::wheelEventVertical()
             {
                 mouseWheelVerticalEventTimer.start(tempInterval);
             }
-        }
-        else if (!isActive)
+        } else if (!isActive)
         {
             mouseWheelVerticalEventTimer.stop();
         }
-    }
-    else if (!mouseWheelVerticalEventQueue.isEmpty() && wheelSpeedY != 0)
+    } else if (!mouseWheelVerticalEventQueue.isEmpty() && wheelSpeedY != 0)
     {
-        QQueue<JoyButtonSlot*> tempQueue;
+        QQueue<JoyButtonSlot *> tempQueue;
         while (!mouseWheelVerticalEventQueue.isEmpty())
         {
             buttonslot = mouseWheelVerticalEventQueue.dequeue();
@@ -332,8 +308,7 @@ void JoyGradientButton::wheelEventVertical()
                 sendevent(buttonslot, true);
                 sendevent(buttonslot, false);
                 tempQueue.enqueue(buttonslot);
-            }
-            else if (isActive)
+            } else if (isActive)
             {
                 tempQueue.enqueue(buttonslot);
             }
@@ -346,8 +321,7 @@ void JoyGradientButton::wheelEventVertical()
             if (distance > 0.0)
             {
                 tempInterval = static_cast<int>(1000 / wheelSpeedY / distance);
-            }
-            else
+            } else
             {
                 tempInterval = 0;
             }
@@ -357,13 +331,11 @@ void JoyGradientButton::wheelEventVertical()
             {
                 mouseWheelVerticalEventTimer.start(tempInterval);
             }
-        }
-        else
+        } else
         {
             mouseWheelVerticalEventTimer.stop();
         }
-    }
-    else
+    } else
     {
         mouseWheelVerticalEventTimer.stop();
     }
@@ -389,8 +361,7 @@ void JoyGradientButton::wheelEventHorizontal()
         if (lastWheelHorizontalDistance > 0.0)
         {
             oldInterval = 1000 / wheelSpeedX / lastWheelHorizontalDistance;
-        }
-        else
+        } else
         {
             oldInterval = 1000 / wheelSpeedX / 0.01;
         }
@@ -407,19 +378,16 @@ void JoyGradientButton::wheelEventHorizontal()
         if (!mouseWheelHorizontalEventTimer.isActive())
         {
             activateEvent = true;
-        }
-        else if (wheelHorizontalTime.elapsed() > oldInterval)
+        } else if (wheelHorizontalTime.elapsed() > oldInterval)
         {
             activateEvent = true;
-        }
-        else if (diff >= 0.1 && wheelSpeedX != 0)
+        } else if (diff >= 0.1 && wheelSpeedX != 0)
         {
             double distance = getMouseDistanceFromDeadZone();
             if (distance > 0.0)
             {
                 tempInterval = static_cast<int>(1000 / wheelSpeedX / distance);
-            }
-            else
+            } else
             {
                 tempInterval = 0;
             }
@@ -434,8 +402,7 @@ void JoyGradientButton::wheelEventHorizontal()
                 {
                     mouseWheelHorizontalEventTimer.start(tempInterval);
                 }
-            }
-            else
+            } else
             {
                 // Elapsed time is greater than new interval. Change state.
                 activateEvent = true;
@@ -455,8 +422,7 @@ void JoyGradientButton::wheelEventHorizontal()
             if (distance > 0.0)
             {
                 tempInterval = static_cast<int>(1000 / wheelSpeedX / distance);
-            }
-            else
+            } else
             {
                 tempInterval = 0;
             }
@@ -467,15 +433,13 @@ void JoyGradientButton::wheelEventHorizontal()
             {
                 mouseWheelHorizontalEventTimer.start(tempInterval);
             }
-        }
-        else if (!isActive)
+        } else if (!isActive)
         {
             mouseWheelHorizontalEventTimer.stop();
         }
-    }
-    else if (!mouseWheelHorizontalEventQueue.isEmpty() && wheelSpeedX != 0)
+    } else if (!mouseWheelHorizontalEventQueue.isEmpty() && wheelSpeedX != 0)
     {
-        QQueue<JoyButtonSlot*> tempQueue;
+        QQueue<JoyButtonSlot *> tempQueue;
         while (!mouseWheelHorizontalEventQueue.isEmpty())
         {
             buttonslot = mouseWheelHorizontalEventQueue.dequeue();
@@ -495,8 +459,7 @@ void JoyGradientButton::wheelEventHorizontal()
             if (distance > 0.0)
             {
                 tempInterval = static_cast<int>(1000 / wheelSpeedX / distance);
-            }
-            else
+            } else
             {
                 tempInterval = 0;
             }
@@ -507,13 +470,11 @@ void JoyGradientButton::wheelEventHorizontal()
             {
                 mouseWheelHorizontalEventTimer.start(tempInterval);
             }
-        }
-        else
+        } else
         {
             mouseWheelHorizontalEventTimer.stop();
         }
-    }
-    else
+    } else
     {
         mouseWheelHorizontalEventTimer.stop();
     }

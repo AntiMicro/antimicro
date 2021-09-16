@@ -16,21 +16,20 @@
  */
 
 //#include <QDebug>
-#include <QProgressBar>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLabel>
+#include <QProgressBar>
 #include <QSpacerItem>
+#include <QVBoxLayout>
 
+#include "joybuttonstatusbox.h"
 #include "joystickstatuswindow.h"
 #include "ui_joystickstatuswindow.h"
-#include "joybuttonstatusbox.h"
 
-
-JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::JoystickStatusWindow)
+JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::JoystickStatusWindow)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -39,8 +38,7 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
 
     PadderCommon::inputDaemonMutex.lock();
 
-    setWindowTitle(tr("%1 (#%2) Properties").arg(joystick->getSDLName())
-                   .arg(joystick->getRealJoyNumber()));
+    setWindowTitle(tr("%1 (#%2) Properties").arg(joystick->getSDLName()).arg(joystick->getRealJoyNumber()));
 
     ui->joystickNameLabel->setText(joystick->getSDLName());
     ui->joystickNumberLabel->setText(QString::number(joystick->getRealJoyNumber()));
@@ -54,7 +52,7 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
 
     QVBoxLayout *axesBox = new QVBoxLayout();
     axesBox->setSpacing(4);
-    for (int i=0; i < joystick->getNumberAxes(); i++)
+    for (int i = 0; i < joystick->getNumberAxes(); i++)
     {
         JoyAxis *axis = joystick->getActiveSetJoystick()->getJoyAxis(i);
 
@@ -86,14 +84,13 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
 
     int currentRow = 0;
     int currentColumn = 0;
-    for (int i=0; i < joystick->getNumberButtons(); i++)
+    for (int i = 0; i < joystick->getNumberButtons(); i++)
     {
         JoyButton *button = joystick->getActiveSetJoystick()->getJoyButton(i);
         if (button)
         {
             JoyButtonStatusBox *statusbox = new JoyButtonStatusBox(button);
-            statusbox->setSizePolicy(QSizePolicy::Expanding,
-                                     QSizePolicy::Expanding);
+            statusbox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
             buttonsGrid->addWidget(statusbox, currentRow, currentColumn);
             currentColumn++;
@@ -109,7 +106,7 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
 
     QVBoxLayout *hatsBox = new QVBoxLayout();
     hatsBox->setSpacing(4);
-    for (int i=0; i < joystick->getNumberHats(); i++)
+    for (int i = 0; i < joystick->getNumberHats(); i++)
     {
         JoyDPad *dpad = joystick->getActiveSetJoystick()->getJoyDPad(i);
         if (dpad)
@@ -148,8 +145,7 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
         ui->guidHeaderLabel->show();
         ui->guidLabel->setText(guidString);
         ui->guidLabel->show();
-    }
-    else
+    } else
     {
         ui->guidHeaderLabel->hide();
         ui->guidLabel->hide();
@@ -174,10 +170,7 @@ JoystickStatusWindow::JoystickStatusWindow(InputDevice *joystick, QWidget *paren
     connect(this, SIGNAL(finished(int)), this, SLOT(restoreButtonStates(int)));
 }
 
-JoystickStatusWindow::~JoystickStatusWindow()
-{
-    delete ui;
-}
+JoystickStatusWindow::~JoystickStatusWindow() { delete ui; }
 
 void JoystickStatusWindow::restoreButtonStates(int code)
 {
@@ -192,7 +185,4 @@ void JoystickStatusWindow::restoreButtonStates(int code)
     }
 }
 
-void JoystickStatusWindow::obliterate()
-{
-    this->done(QDialogButtonBox::DestructiveRole);
-}
+void JoystickStatusWindow::obliterate() { this->done(QDialogButtonBox::DestructiveRole); }

@@ -21,16 +21,16 @@
 #include "mousesettingsdialog.h"
 #include "springmoderegionpreview.h"
 
-#include <joydpad.h>
 #include "uihelpers/mousedpadsettingsdialoghelper.h"
+#include <joydpad.h>
 
 class MouseDPadSettingsDialog : public MouseSettingsDialog
 {
     Q_OBJECT
-public:
+  public:
     explicit MouseDPadSettingsDialog(JoyDPad *dpad, QWidget *parent = 0);
 
-protected:
+  protected:
     void selectCurrentMouseModePreset();
     void calculateSpringPreset();
     void calculateMouseSpeedPreset();
@@ -43,9 +43,9 @@ protected:
     SpringModeRegionPreview *springPreviewWidget;
     MouseDpadSettingsDialogHelper helper;
 
-signals:
-    
-public slots:
+  signals:
+
+  public slots:
     void changeMouseMode(int index);
     void changeMouseCurve(int index);
     void updateConfigHorizontalSpeed(int value);
@@ -58,7 +58,7 @@ public slots:
     void updateWheelSpeedVerticalSpeed(int value);
     void updateSpringRelativeStatus(bool value);
 
-private slots:
+  private slots:
     void updateReleaseSpringRadius(int value);
     void updateExtraAccelerationCurve(int index);
 };

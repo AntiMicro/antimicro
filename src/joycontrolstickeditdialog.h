@@ -30,21 +30,21 @@ class JoyControlStickEditDialog;
 class JoyControlStickEditDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
+
+  public:
     explicit JoyControlStickEditDialog(JoyControlStick *stick, QWidget *parent = 0);
     ~JoyControlStickEditDialog();
-    
-protected:
+
+  protected:
     void selectCurrentPreset();
 
     JoyControlStick *stick;
     JoyControlStickEditDialogHelper helper;
 
-private:
+  private:
     Ui::JoyControlStickEditDialog *ui;
 
-private slots:
+  private slots:
     void implementPresets(int index);
     void implementModes(int index);
 

@@ -20,8 +20,8 @@
 #include <QStringList>
 #include <cmath>
 
-#include "joycontrolstick.h"
 #include "inputdevice.h"
+#include "joycontrolstick.h"
 
 // Define Pi here.
 const double JoyControlStick::PI = acos(-1.0);
@@ -34,9 +34,8 @@ const JoyControlStick::JoyMode JoyControlStick::DEFAULTMODE = JoyControlStick::S
 const double JoyControlStick::DEFAULTCIRCLE = 0.0;
 const unsigned int JoyControlStick::DEFAULTSTICKDELAY = 0;
 
-JoyControlStick::JoyControlStick(JoyAxis *axis1, JoyAxis *axis2,
-                                 int index, int originset, QObject *parent) :
-    QObject(parent)
+JoyControlStick::JoyControlStick(JoyAxis *axis1, JoyAxis *axis2, int index, int originset, QObject *parent)
+    : QObject(parent)
 {
     this->axisX = axis1;
     this->axisX->setControlStick(this);
@@ -84,16 +83,14 @@ void JoyControlStick::joyEvent(bool ignoresets)
             }
 
             createDeskEvent(ignoresets);
-        }
-        else
+        } else
         {
             if (!directionDelayTimer.isActive())
             {
                 directionDelayTimer.start(stickDelay);
             }
         }
-    }
-    else if (!safezone && isActive)
+    } else if (!safezone && isActive)
     {
         isActive = false;
         emit released(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
@@ -105,16 +102,14 @@ void JoyControlStick::joyEvent(bool ignoresets)
             }
 
             createDeskEvent(ignoresets);
-        }
-        else
+        } else
         {
             if (!directionDelayTimer.isActive())
             {
                 directionDelayTimer.start(stickDelay);
             }
         }
-    }
-    else if (isActive)
+    } else if (isActive)
     {
         if (ignoresets || stickDelay == 0)
         {
@@ -124,8 +119,7 @@ void JoyControlStick::joyEvent(bool ignoresets)
             }
 
             createDeskEvent(ignoresets);
-        }
-        else
+        } else
         {
             JoyStickDirections pendingDirection = calculateStickDirection();
             if (currentDirection != pendingDirection)
@@ -134,8 +128,7 @@ void JoyControlStick::joyEvent(bool ignoresets)
                 {
                     directionDelayTimer.start(stickDelay);
                 }
-            }
-            else
+            } else
             {
                 if (directionDelayTimer.isActive())
                 {
@@ -162,10 +155,10 @@ bool JoyControlStick::inDeadZone()
     int axis1Value = axisX->getCurrentRawValue();
     int axis2Value = axisY->getCurrentRawValue();
 
-    unsigned int squareDist = static_cast<unsigned int>(axis1Value*axis1Value) +
-            static_cast<unsigned int>(axis2Value*axis2Value);
+    unsigned int squareDist =
+        static_cast<unsigned int>(axis1Value * axis1Value) + static_cast<unsigned int>(axis2Value * axis2Value);
 
-    return squareDist <= static_cast<unsigned int>(deadZone*deadZone);
+    return squareDist <= static_cast<unsigned int>(deadZone * deadZone);
 }
 
 /**
@@ -173,59 +166,44 @@ bool JoyControlStick::inDeadZone()
  */
 void JoyControlStick::populateButtons()
 {
-    JoyControlStickButton *button = new JoyControlStickButton(this, StickUp,
-                                                              originset, getParentSet(), this);
+    JoyControlStickButton *button = new JoyControlStickButton(this, StickUp, originset, getParentSet(), this);
     buttons.insert(StickUp, button);
 
-    button = new JoyControlStickButton(this, StickDown, originset,
-                                       getParentSet(), this);
+    button = new JoyControlStickButton(this, StickDown, originset, getParentSet(), this);
     buttons.insert(StickDown, button);
 
-    button = new JoyControlStickButton(this, StickLeft, originset,
-                                       getParentSet(), this);
+    button = new JoyControlStickButton(this, StickLeft, originset, getParentSet(), this);
     buttons.insert(StickLeft, button);
 
-    button = new JoyControlStickButton(this, StickRight, originset,
-                                       getParentSet(), this);
+    button = new JoyControlStickButton(this, StickRight, originset, getParentSet(), this);
     buttons.insert(StickRight, button);
 
-    button = new JoyControlStickButton(this, StickLeftUp, originset,
-                                       getParentSet(), this);
+    button = new JoyControlStickButton(this, StickLeftUp, originset, getParentSet(), this);
     buttons.insert(StickLeftUp, button);
 
-    button = new JoyControlStickButton(this, StickLeftDown, originset,
-                                       getParentSet(), this);
+    button = new JoyControlStickButton(this, StickLeftDown, originset, getParentSet(), this);
     buttons.insert(StickLeftDown, button);
 
-    button = new JoyControlStickButton(this, StickRightDown, originset,
-                                       getParentSet(), this);
+    button = new JoyControlStickButton(this, StickRightDown, originset, getParentSet(), this);
     buttons.insert(StickRightDown, button);
 
-    button = new JoyControlStickButton(this, StickRightUp, originset,
-                                       getParentSet(), this);
+    button = new JoyControlStickButton(this, StickRightUp, originset, getParentSet(), this);
     buttons.insert(StickRightUp, button);
 
-    modifierButton = new JoyControlStickModifierButton(this, originset,
-                                                       getParentSet(), this);
+    modifierButton = new JoyControlStickModifierButton(this, originset, getParentSet(), this);
 }
 
 /**
  * @brief Get the assigned dead zone value.
  * @return Assigned dead zone value
  */
-int JoyControlStick::getDeadZone()
-{
-    return deadZone;
-}
+int JoyControlStick::getDeadZone() { return deadZone; }
 
 /**
  * @brief Get the assigned diagonal range value.
  * @return Assigned diagonal range.
  */
-int JoyControlStick::getDiagonalRange()
-{
-    return diagonalRange;
-}
+int JoyControlStick::getDiagonalRange() { return diagonalRange; }
 
 /**
  * @brief Find the position of the two stick axes, deactivate no longer used
@@ -245,21 +223,17 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
         if (currentMode == StandardMode)
         {
             determineStandardModeEvent(eventbutton1, eventbutton2);
-        }
-        else if (currentMode == EightWayMode)
+        } else if (currentMode == EightWayMode)
         {
             determineEightWayModeEvent(eventbutton1, eventbutton2, eventbutton3);
-        }
-        else if (currentMode == FourWayCardinal)
+        } else if (currentMode == FourWayCardinal)
         {
             determineFourWayCardinalEvent(eventbutton1, eventbutton2);
-        }
-        else if (currentMode == FourWayDiagonal)
+        } else if (currentMode == FourWayDiagonal)
         {
             determineFourWayDiagonalEvent(eventbutton3);
         }
-    }
-    else
+    } else
     {
         currentDirection = StickCentered;
     }
@@ -271,8 +245,7 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
     {
         // Currently in deadzone. Disable currently active button.
         performButtonRelease(activeButton1, ignoresets);
-    }
-    else if (eventbutton1 && activeButton1 && eventbutton1 != activeButton1)
+    } else if (eventbutton1 && activeButton1 && eventbutton1 != activeButton1)
     {
         // Deadzone skipped. Button for new event is not the currently
         // active button. Disable the active button.
@@ -283,8 +256,7 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
     {
         // Currently in deadzone. Disable currently active button.
         performButtonRelease(activeButton2, ignoresets);
-    }
-    else if (eventbutton2 && activeButton2 && eventbutton2 != activeButton2)
+    } else if (eventbutton2 && activeButton2 && eventbutton2 != activeButton2)
     {
         // Deadzone skipped. Button for new event is not the currently
         // active button. Disable the active button.
@@ -295,8 +267,7 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
     {
         // Currently in deadzone. Disable currently active button.
         performButtonRelease(activeButton3, ignoresets);
-    }
-    else if (eventbutton3 && activeButton3 && eventbutton3 != activeButton3)
+    } else if (eventbutton3 && activeButton3 && eventbutton3 != activeButton3)
     {
         // Deadzone skipped. Button for new event is not the currently
         // active button. Disable the active button.
@@ -309,8 +280,7 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
         // Value from the new stick event will be used to determine
         // distance events.
         modifierButton->joyEvent(true, ignoresets);
-    }
-    else
+    } else
     {
         // Release modifier button after releasing directional buttons.
         modifierButton->joyEvent(false, ignoresets);
@@ -324,8 +294,7 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
         // There is no active button. Call joyEvent and set current
         // button as active button
         performButtonPress(eventbutton1, activeButton1, ignoresets);
-    }
-    else if (eventbutton1 && activeButton1 && eventbutton1 == activeButton1)
+    } else if (eventbutton1 && activeButton1 && eventbutton1 == activeButton1)
     {
         // Button is currently active. Just pass current value
         performButtonPress(eventbutton1, activeButton1, ignoresets);
@@ -336,8 +305,7 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
         // There is no active button. Call joyEvent and set current
         // button as active button
         performButtonPress(eventbutton2, activeButton2, ignoresets);
-    }
-    else if (eventbutton2 && activeButton2 && eventbutton2 == activeButton2)
+    } else if (eventbutton2 && activeButton2 && eventbutton2 == activeButton2)
     {
         // Button is currently active. Just pass current value
         performButtonPress(eventbutton2, activeButton2, ignoresets);
@@ -348,8 +316,7 @@ void JoyControlStick::createDeskEvent(bool ignoresets)
         // There is no active button. Call joyEvent and set current
         // button as active button
         performButtonPress(eventbutton3, activeButton3, ignoresets);
-    }
-    else if (eventbutton3 && activeButton3 && eventbutton3 == activeButton3)
+    } else if (eventbutton3 && activeButton3 && eventbutton3 == activeButton3)
     {
         // Button is currently active. Just pass current value
         performButtonPress(eventbutton3, activeButton3, ignoresets);
@@ -382,8 +349,7 @@ double JoyControlStick::calculateBearing(int axisXValue, int axisYValue)
     if (axis1Value == 0 && axis2Value == 0)
     {
         finalAngle = 0.0;
-    }
-    else
+    } else
     {
         double temp1 = axis1Value;
         double temp2 = axis2Value;
@@ -394,18 +360,15 @@ double JoyControlStick::calculateBearing(int axisXValue, int axisYValue)
         {
             // NE Quadrant
             finalAngle = angle;
-        }
-        else if (axis1Value >= 0 && axis2Value >= 0)
+        } else if (axis1Value >= 0 && axis2Value >= 0)
         {
             // SE Quadrant (angle will be positive)
             finalAngle = angle;
-        }
-        else if (axis1Value <= 0 && axis2Value >= 0)
+        } else if (axis1Value <= 0 && axis2Value >= 0)
         {
             // SW Quadrant (angle will be negative)
             finalAngle = 360.0 + angle;
-        }
-        else if (axis1Value <= 0 && axis2Value <= 0)
+        } else if (axis1Value <= 0 && axis2Value <= 0)
         {
             // NW Quadrant (angle will be negative)
             finalAngle = 360.0 + angle;
@@ -422,8 +385,7 @@ double JoyControlStick::calculateBearing(int axisXValue, int axisYValue)
  */
 double JoyControlStick::getDistanceFromDeadZone()
 {
-    return getDistanceFromDeadZone(axisX->getCurrentRawValue(),
-                                   axisY->getCurrentRawValue());
+    return getDistanceFromDeadZone(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
 }
 
 /**
@@ -444,18 +406,18 @@ double JoyControlStick::getDistanceFromDeadZone(int axisXValue, int axisYValue)
     double ang_sin = sin(angle2);
     double ang_cos = cos(angle2);
 
-    unsigned int squared_dist = static_cast<unsigned int>(axis1Value*axis1Value)
-            + static_cast<unsigned int>(axis2Value*axis2Value);
+    unsigned int squared_dist =
+        static_cast<unsigned int>(axis1Value * axis1Value) + static_cast<unsigned int>(axis2Value * axis2Value);
     unsigned int dist = sqrt(squared_dist);
 
-    double squareStickFullPhi = qMin(ang_sin ? 1/fabs(ang_sin) : 2, ang_cos ? 1/fabs(ang_cos) : 2);
+    double squareStickFullPhi = qMin(ang_sin ? 1 / fabs(ang_sin) : 2, ang_cos ? 1 / fabs(ang_cos) : 2);
     double circle = this->circle;
     double circleStickFull = (squareStickFullPhi - 1) * circle + 1;
 
     double adjustedDist = circleStickFull > 1.0 ? (dist / circleStickFull) : dist;
     double adjustedDeadZone = circleStickFull > 1.0 ? (deadZone / circleStickFull) : deadZone;
 
-    distance = (adjustedDist - adjustedDeadZone)/(double)(maxZone - adjustedDeadZone);
+    distance = (adjustedDist - adjustedDeadZone) / (double)(maxZone - adjustedDeadZone);
     distance = qBound(0.0, distance, 1.0);
     return distance;
 }
@@ -467,9 +429,7 @@ double JoyControlStick::getDistanceFromDeadZone(int axisXValue, int axisYValue)
  */
 double JoyControlStick::calculateYDistanceFromDeadZone(bool interpolate)
 {
-    return calculateYDistanceFromDeadZone(axisX->getCurrentRawValue(),
-                                          axisY->getCurrentRawValue(),
-                                          interpolate);
+    return calculateYDistanceFromDeadZone(axisX->getCurrentRawValue(), axisY->getCurrentRawValue(), interpolate);
 }
 
 /**
@@ -480,25 +440,24 @@ double JoyControlStick::calculateYDistanceFromDeadZone(bool interpolate)
  * @param Should interpolation be performed along the diagonal regions.
  * @return Distance percentage in the range of 0.0 - 1.0.
  */
-double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue,
-                                                       int axisYValue, bool interpolate)
+double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate)
 {
     double distance = 0.0;
 
     int axis1Value = axisXValue;
     int axis2Value = axisYValue;
-    //unsigned int square_dist = (unsigned int)(axis1Value*axis1Value) + (unsigned int)(axis2Value*axis2Value);
+    // unsigned int square_dist = (unsigned int)(axis1Value*axis1Value) + (unsigned int)(axis2Value*axis2Value);
 
     double angle2 = atan2(axis1Value, -axis2Value);
     double ang_sin = sin(angle2);
     double ang_cos = cos(angle2);
 
     int deadY = abs(floor(deadZone * ang_cos + 0.5));
-    //int axis2ValueCircleFull = (int)floor(JoyAxis::AXISMAX * fabs(ang_cos) + 0.5);
-    double squareStickFullPhi = qMin(ang_sin ? 1/fabs(ang_sin) : 2, ang_cos ? 1/fabs(ang_cos) : 2);
+    // int axis2ValueCircleFull = (int)floor(JoyAxis::AXISMAX * fabs(ang_cos) + 0.5);
+    double squareStickFullPhi = qMin(ang_sin ? 1 / fabs(ang_sin) : 2, ang_cos ? 1 / fabs(ang_cos) : 2);
     double circle = this->circle;
     double circleStickFull = (squareStickFullPhi - 1) * circle + 1;
-    //double circleToSquareTest = axis2Value * squareStickFullPhi;
+    // double circleToSquareTest = axis2Value * squareStickFullPhi;
 
     double adjustedAxis2Value = circleStickFull > 1.0 ? (axis2Value / circleStickFull) : axis2Value;
     double adjustedDeadYZone = circleStickFull > 1.0 ? (deadY / circleStickFull) : deadY;
@@ -524,8 +483,7 @@ double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else if (direction == StickRightDown || direction == StickRight)
+        } else if (direction == StickRightDown || direction == StickRight)
         {
             QList<double> tempfuck = getDiagonalZoneAngles();
             double maxangle = tempfuck.at(5);
@@ -541,8 +499,7 @@ double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else if (direction == StickLeftDown || direction == StickDown)
+        } else if (direction == StickLeftDown || direction == StickDown)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(7);
@@ -558,8 +515,7 @@ double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else if (direction == StickLeftUp || direction == StickLeft)
+        } else if (direction == StickLeftUp || direction == StickLeft)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(1);
@@ -575,8 +531,7 @@ double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else
+        } else
         {
             // Backup plan. Should not arrive here.
             double maxRange = static_cast<double>(maxZone - adjustedDeadYZone);
@@ -588,8 +543,7 @@ double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue,
 
             distance = tempdist4;
         }
-    }
-    else
+    } else
     {
         // No interpolation desired or diagonal range is 90 degrees.
         double maxRange = static_cast<double>(maxZone - adjustedDeadYZone);
@@ -613,9 +567,7 @@ double JoyControlStick::calculateYDistanceFromDeadZone(int axisXValue,
  */
 double JoyControlStick::calculateXDistanceFromDeadZone(bool interpolate)
 {
-    return calculateXDistanceFromDeadZone(axisX->getCurrentRawValue(),
-                                          axisY->getCurrentRawValue(),
-                                          interpolate);
+    return calculateXDistanceFromDeadZone(axisX->getCurrentRawValue(), axisY->getCurrentRawValue(), interpolate);
 }
 
 /**
@@ -626,25 +578,24 @@ double JoyControlStick::calculateXDistanceFromDeadZone(bool interpolate)
  * @param Should interpolation be performed along the diagonal regions.
  * @return Distance percentage in the range of 0.0 - 1.0.
  */
-double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue,
-                                                       int axisYValue, bool interpolate)
+double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue, int axisYValue, bool interpolate)
 {
     double distance = 0.0;
 
     int axis1Value = axisXValue;
     int axis2Value = axisYValue;
-    //unsigned int square_dist = (unsigned int)(axis1Value*axis1Value) + (unsigned int)(axis2Value*axis2Value);
+    // unsigned int square_dist = (unsigned int)(axis1Value*axis1Value) + (unsigned int)(axis2Value*axis2Value);
 
     double angle2 = atan2(axis1Value, -axis2Value);
     double ang_sin = sin(angle2);
     double ang_cos = cos(angle2);
 
     int deadX = abs((int)floor(deadZone * ang_sin + 0.5));
-    //int axis1ValueCircleFull = (int)floor(JoyAxis::AXISMAX * fabs(ang_sin) + 0.5);
-    double squareStickFullPhi = qMin(ang_sin ? 1/fabs(ang_sin) : 2, ang_cos ? 1/fabs(ang_cos) : 2);
+    // int axis1ValueCircleFull = (int)floor(JoyAxis::AXISMAX * fabs(ang_sin) + 0.5);
+    double squareStickFullPhi = qMin(ang_sin ? 1 / fabs(ang_sin) : 2, ang_cos ? 1 / fabs(ang_cos) : 2);
     double circle = this->circle;
     double circleStickFull = (squareStickFullPhi - 1) * circle + 1;
-    //double alternateStickFullValue = circleStickFull * abs(axis1ValueCircleFull);
+    // double alternateStickFullValue = circleStickFull * abs(axis1ValueCircleFull);
 
     double adjustedAxis1Value = circleStickFull > 1.0 ? (axis1Value / circleStickFull) : axis1Value;
     double adjustedDeadXZone = circleStickFull > 1.0 ? (deadX / circleStickFull) : deadX;
@@ -670,8 +621,7 @@ double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else if (direction == StickRightDown || direction == StickDown)
+        } else if (direction == StickRightDown || direction == StickDown)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(5);
@@ -687,8 +637,7 @@ double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else if (direction == StickLeftDown || direction == StickLeft)
+        } else if (direction == StickLeftDown || direction == StickLeft)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(7);
@@ -704,8 +653,7 @@ double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else if (direction == StickLeftUp || direction == StickUp)
+        } else if (direction == StickLeftUp || direction == StickUp)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(1);
@@ -721,8 +669,7 @@ double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue,
             }
 
             distance = tempdist4;
-        }
-        else
+        } else
         {
             // Backup plan. Should not arrive here.
             double maxRange = static_cast<double>(maxZone - adjustedDeadXZone);
@@ -734,8 +681,7 @@ double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue,
 
             distance = tempdist4;
         }
-    }
-    else
+    } else
     {
         // No interpolation desired or diagonal range is 90 degrees.
         double maxRange = static_cast<double>(maxZone - adjustedDeadXZone);
@@ -752,15 +698,13 @@ double JoyControlStick::calculateXDistanceFromDeadZone(int axisXValue,
     return distance;
 }
 
-
 /**
  * @brief Get the raw radial distance of the stick. Values will be between 0 - 32,767.
  * @return Radial distance in the range of 0 - 32,767.
  */
 double JoyControlStick::getAbsoluteRawDistance()
 {
-    double temp = getAbsoluteRawDistance(axisX->getCurrentRawValue(),
-                                         axisY->getCurrentRawValue());
+    double temp = getAbsoluteRawDistance(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
     return temp;
 }
 
@@ -771,8 +715,8 @@ double JoyControlStick::getAbsoluteRawDistance(int axisXValue, int axisYValue)
     int axis1Value = axisXValue;
     int axis2Value = axisYValue;
 
-    unsigned int square_dist = static_cast<unsigned int>(axis1Value*axis1Value) +
-            static_cast<unsigned int>(axis2Value*axis2Value);
+    unsigned int square_dist =
+        static_cast<unsigned int>(axis1Value * axis1Value) + static_cast<unsigned int>(axis2Value * axis2Value);
 
     distance = sqrt(square_dist);
     return distance;
@@ -785,15 +729,14 @@ double JoyControlStick::getNormalizedAbsoluteDistance()
     int axis1Value = axisX->getCurrentRawValue();
     int axis2Value = axisY->getCurrentRawValue();
 
-    unsigned int square_dist = static_cast<unsigned int>(axis1Value*axis1Value)
-            + static_cast<unsigned int>(axis2Value*axis2Value);
+    unsigned int square_dist =
+        static_cast<unsigned int>(axis1Value * axis1Value) + static_cast<unsigned int>(axis2Value * axis2Value);
 
-    distance = sqrt(square_dist)/static_cast<double>(maxZone);
+    distance = sqrt(square_dist) / static_cast<double>(maxZone);
     if (distance > 1.0)
     {
         distance = 1.0;
-    }
-    else if (distance < 0.0)
+    } else if (distance < 0.0)
     {
         distance = 0.0;
     }
@@ -808,15 +751,14 @@ double JoyControlStick::getRadialDistance(int axisXValue, int axisYValue)
     int axis1Value = axisXValue;
     int axis2Value = axisYValue;
 
-    unsigned int square_dist = static_cast<unsigned int>(axis1Value*axis1Value)
-            + static_cast<unsigned int>(axis2Value*axis2Value);
+    unsigned int square_dist =
+        static_cast<unsigned int>(axis1Value * axis1Value) + static_cast<unsigned int>(axis2Value * axis2Value);
 
-    distance = sqrt(square_dist)/static_cast<double>(maxZone);
+    distance = sqrt(square_dist) / static_cast<double>(maxZone);
     if (distance > 1.0)
     {
         distance = 1.0;
-    }
-    else if (distance < 0.0)
+    } else if (distance < 0.0)
     {
         distance = 0.0;
     }
@@ -824,20 +766,11 @@ double JoyControlStick::getRadialDistance(int axisXValue, int axisYValue)
     return distance;
 }
 
-void JoyControlStick::setIndex(int index)
-{
-    this->index = index;
-}
+void JoyControlStick::setIndex(int index) { this->index = index; }
 
-int JoyControlStick::getIndex()
-{
-    return index;
-}
+int JoyControlStick::getIndex() { return index; }
 
-int JoyControlStick::getRealJoyIndex()
-{
-    return index + 1;
-}
+int JoyControlStick::getRealJoyIndex() { return index + 1; }
 
 QString JoyControlStick::getName(bool forceFullFormat, bool displayNames)
 {
@@ -851,8 +784,7 @@ QString JoyControlStick::getName(bool forceFullFormat, bool displayNames)
         if (!button->getButtonName().isEmpty())
         {
             tempList.append(button->getButtonName());
-        }
-        else
+        } else
         {
             tempList.append(button->getSlotsSummary());
         }
@@ -864,8 +796,7 @@ QString JoyControlStick::getName(bool forceFullFormat, bool displayNames)
         if (!button->getButtonName().isEmpty())
         {
             tempList.append(button->getButtonName());
-        }
-        else
+        } else
         {
             tempList.append(button->getSlotsSummary());
         }
@@ -877,8 +808,7 @@ QString JoyControlStick::getName(bool forceFullFormat, bool displayNames)
         if (!button->getButtonName().isEmpty())
         {
             tempList.append(button->getButtonName());
-        }
-        else
+        } else
         {
             tempList.append(button->getSlotsSummary());
         }
@@ -890,8 +820,7 @@ QString JoyControlStick::getName(bool forceFullFormat, bool displayNames)
         if (!button->getButtonName().isEmpty())
         {
             tempList.append(button->getButtonName());
-        }
-        else
+        } else
         {
             tempList.append(button->getSlotsSummary());
         }
@@ -913,8 +842,7 @@ QString JoyControlStick::getPartialName(bool forceFullFormat, bool displayNames)
         }
 
         label.append(stickName);
-    }
-    else if (!defaultStickName.isEmpty())
+    } else if (!defaultStickName.isEmpty())
     {
         if (forceFullFormat)
         {
@@ -922,8 +850,7 @@ QString JoyControlStick::getPartialName(bool forceFullFormat, bool displayNames)
         }
 
         label.append(defaultStickName);
-    }
-    else
+    } else
     {
         label.append(tr("Stick")).append(" ");
         label.append(QString::number(getRealJoyIndex()));
@@ -938,20 +865,11 @@ void JoyControlStick::setDefaultStickName(QString tempname)
     emit stickNameChanged();
 }
 
-QString JoyControlStick::getDefaultStickName()
-{
-    return defaultStickName;
-}
+QString JoyControlStick::getDefaultStickName() { return defaultStickName; }
 
-int JoyControlStick::getMaxZone()
-{
-    return maxZone;
-}
+int JoyControlStick::getMaxZone() { return maxZone; }
 
-int JoyControlStick::getCurrentlyAssignedSet()
-{
-    return originset;
-}
+int JoyControlStick::getCurrentlyAssignedSet() { return originset; }
 
 void JoyControlStick::reset()
 {
@@ -1027,8 +945,7 @@ void JoyControlStick::setDiagonalRange(int value)
     if (value < 1)
     {
         value = 1;
-    }
-    else if (value > 90)
+    } else if (value > 90)
     {
         value = 90;
     }
@@ -1056,7 +973,7 @@ void JoyControlStick::refreshButtons()
  */
 void JoyControlStick::deleteButtons()
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyButton *button = iter.next().value();
@@ -1094,36 +1011,30 @@ void JoyControlStick::readConfig(QXmlStreamReader *xml)
                 QString temptext = xml->readElementText();
                 int tempchoice = temptext.toInt();
                 this->setDeadZone(tempchoice);
-            }
-            else if (xml->name() == "maxZone" && xml->isStartElement())
+            } else if (xml->name() == "maxZone" && xml->isStartElement())
             {
                 QString temptext = xml->readElementText();
                 int tempchoice = temptext.toInt();
                 this->setMaxZone(tempchoice);
-            }
-            else if (xml->name() == "diagonalRange" && xml->isStartElement())
+            } else if (xml->name() == "diagonalRange" && xml->isStartElement())
             {
                 QString temptext = xml->readElementText();
                 int tempchoice = temptext.toInt();
                 this->setDiagonalRange(tempchoice);
-            }
-            else if (xml->name() == "mode" && xml->isStartElement())
+            } else if (xml->name() == "mode" && xml->isStartElement())
             {
                 QString temptext = xml->readElementText();
                 if (temptext == "eight-way")
                 {
                     this->setJoyMode(EightWayMode);
-                }
-                else if (temptext == "four-way")
+                } else if (temptext == "four-way")
                 {
                     this->setJoyMode(FourWayCardinal);
-                }
-                else if (temptext == "diagonal")
+                } else if (temptext == "diagonal")
                 {
                     this->setJoyMode(FourWayDiagonal);
                 }
-            }
-            else if (xml->name() == "squareStick" && xml->isStartElement())
+            } else if (xml->name() == "squareStick" && xml->isStartElement())
             {
                 QString temptext = xml->readElementText();
                 int tempchoice = temptext.toInt();
@@ -1131,31 +1042,26 @@ void JoyControlStick::readConfig(QXmlStreamReader *xml)
                 {
                     this->setCircleAdjust(tempchoice / 100.0);
                 }
-            }
-            else if (xml->name() == JoyControlStickButton::xmlName && xml->isStartElement())
+            } else if (xml->name() == JoyControlStickButton::xmlName && xml->isStartElement())
             {
                 int index = xml->attributes().value("index").toString().toInt();
                 JoyControlStickButton *button = buttons.value((JoyStickDirections)index);
                 if (button)
                 {
                     button->readConfig(xml);
-                }
-                else
+                } else
                 {
                     xml->skipCurrentElement();
                 }
-            }
-            else if (xml->name() == JoyControlStickModifierButton::xmlName && xml->isStartElement())
+            } else if (xml->name() == JoyControlStickModifierButton::xmlName && xml->isStartElement())
             {
                 modifierButton->readConfig(xml);
-            }
-            else if (xml->name() == "stickDelay" && xml->isStartElement())
+            } else if (xml->name() == "stickDelay" && xml->isStartElement())
             {
                 QString temptext = xml->readElementText();
                 int tempchoice = temptext.toInt();
                 this->setStickDelay(tempchoice);
-            }
-            else
+            } else
             {
                 xml->skipCurrentElement();
             }
@@ -1175,7 +1081,7 @@ void JoyControlStick::writeConfig(QXmlStreamWriter *xml)
     if (!isDefault())
     {
         xml->writeStartElement("stick");
-        xml->writeAttribute("index", QString::number(index+1));
+        xml->writeAttribute("index", QString::number(index + 1));
 
         if (deadZone != DEFAULTDEADZONE)
         {
@@ -1198,12 +1104,10 @@ void JoyControlStick::writeConfig(QXmlStreamWriter *xml)
         if (currentMode == EightWayMode)
         {
             xml->writeTextElement("mode", "eight-way");
-        }
-        else if (currentMode == FourWayCardinal)
+        } else if (currentMode == FourWayCardinal)
         {
             xml->writeTextElement("mode", "four-way");
-        }
-        else if (currentMode == FourWayDiagonal)
+        } else if (currentMode == FourWayDiagonal)
         {
             xml->writeTextElement("mode", "diagonal");
         }
@@ -1218,7 +1122,7 @@ void JoyControlStick::writeConfig(QXmlStreamWriter *xml)
             xml->writeTextElement("stickDelay", QString::number(stickDelay));
         }
 
-        QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+        QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
         while (iter.hasNext())
         {
             JoyControlStickButton *button = iter.next().value();
@@ -1240,7 +1144,7 @@ void JoyControlStick::writeConfig(QXmlStreamWriter *xml)
  */
 void JoyControlStick::resetButtons()
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyButton *button = iter.next().value();
@@ -1263,7 +1167,7 @@ void JoyControlStick::resetButtons()
  * @return Pointer to the stick direction button for the stick
  *     direction.
  */
-JoyControlStickButton* JoyControlStick::getDirectionButton(JoyStickDirections direction)
+JoyControlStickButton *JoyControlStick::getDirectionButton(JoyStickDirections direction)
 {
     JoyControlStickButton *button = buttons.value(direction);
     return button;
@@ -1282,75 +1186,60 @@ double JoyControlStick::calculateMouseDirectionalDistance(JoyControlStickButton 
     if (currentDirection == StickUp)
     {
         finalDistance = calculateYDistanceFromDeadZone(true);
-    }
-    else if (currentDirection == StickRightUp)
+    } else if (currentDirection == StickRightUp)
     {
         if (activeButton1 && activeButton1 == button)
         {
             finalDistance = calculateXDistanceFromDeadZone(true);
-        }
-        else if (activeButton2 && activeButton2 == button)
+        } else if (activeButton2 && activeButton2 == button)
         {
             finalDistance = calculateYDistanceFromDeadZone(true);
-        }
-        else if (activeButton3 && activeButton3 == button)
+        } else if (activeButton3 && activeButton3 == button)
         {
             finalDistance = calculateEightWayDiagonalDistanceFromDeadZone();
         }
-    }
-    else if (currentDirection == StickRight)
+    } else if (currentDirection == StickRight)
     {
         finalDistance = calculateXDistanceFromDeadZone(true);
-    }
-    else if (currentDirection  == StickRightDown)
+    } else if (currentDirection == StickRightDown)
     {
         if (activeButton1 && activeButton1 == button)
         {
             finalDistance = calculateXDistanceFromDeadZone(true);
-        }
-        else if (activeButton2 && activeButton2 == button)
+        } else if (activeButton2 && activeButton2 == button)
         {
             finalDistance = calculateYDistanceFromDeadZone(true);
-        }
-        else if (activeButton3 && activeButton3 == button)
+        } else if (activeButton3 && activeButton3 == button)
         {
             finalDistance = calculateEightWayDiagonalDistanceFromDeadZone();
         }
-    }
-    else if (currentDirection == StickDown)
+    } else if (currentDirection == StickDown)
     {
         finalDistance = calculateYDistanceFromDeadZone(true);
-    }
-    else if (currentDirection == StickLeftDown)
+    } else if (currentDirection == StickLeftDown)
     {
         if (activeButton1 && activeButton1 == button)
         {
             finalDistance = calculateXDistanceFromDeadZone(true);
-        }
-        else if (activeButton2 && activeButton2 == button)
+        } else if (activeButton2 && activeButton2 == button)
         {
             finalDistance = calculateYDistanceFromDeadZone(true);
-        }
-        else if (activeButton3 && activeButton3 == button)
+        } else if (activeButton3 && activeButton3 == button)
         {
             finalDistance = calculateEightWayDiagonalDistanceFromDeadZone();
         }
-    }
-    else if (currentDirection == StickLeft)
+    } else if (currentDirection == StickLeft)
     {
         finalDistance = calculateXDistanceFromDeadZone(true);
-    }
-    else if (currentDirection == StickLeftUp)
+    } else if (currentDirection == StickLeftUp)
     {
         if (activeButton1 && activeButton1 == button)
         {
             finalDistance = calculateXDistanceFromDeadZone(true);
-        }
-        else if (activeButton2 && activeButton2 == button)
+        } else if (activeButton2 && activeButton2 == button)
         {
             finalDistance = calculateYDistanceFromDeadZone(true);
-        }
-        else if (activeButton3 && activeButton3 == button)
+        } else if (activeButton3 && activeButton3 == button)
         {
             finalDistance = calculateEightWayDiagonalDistanceFromDeadZone();
         }
@@ -1359,223 +1248,179 @@ double JoyControlStick::calculateMouseDirectionalDistance(JoyControlStickButton 
     return finalDistance;
 }
 
-
 double JoyControlStick::calculateLastMouseDirectionalDistance(JoyControlStickButton *button)
 {
     double finalDistance = 0.0;
 
-    JoyStickDirections direction = calculateStickDirection(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue());
+    JoyStickDirections direction =
+        calculateStickDirection(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue());
     if (direction == StickUp && button->getJoyNumber() == StickUp)
     {
         if (axisY->getLastKnownThrottleValue() >= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
-            finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue(),
-                                                           true);
+            finalDistance =
+                calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue(), true);
         }
-    }
-    else if (direction == StickRightUp)
+    } else if (direction == StickRightUp)
     {
         if (button->getJoyNumber() == StickRight)
         {
             if (axisX->getLastKnownThrottleValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickUp)
+        } else if (button->getJoyNumber() == StickUp)
         {
             if (axisY->getLastKnownThrottleValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickRightUp)
+        } else if (button->getJoyNumber() == StickRightUp)
         {
             if (axisX->getLastKnownThrottleValue() <= 0 || axisY->getLastKnownThrottleValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
                                                                               axisY->getLastKnownThrottleValue());
             }
         }
-    }
-    else if (direction == StickRight && button->getJoyNumber() == StickRight)
+    } else if (direction == StickRight && button->getJoyNumber() == StickRight)
     {
         if (axisX->getLastKnownThrottleValue() < 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
-            finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue(),
-                                                           true);
+            finalDistance =
+                calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue(), true);
         }
-    }
-    else if (direction  == StickRightDown)
+    } else if (direction == StickRightDown)
     {
         if (button->getJoyNumber() == StickRight)
         {
             if (axisX->getLastKnownThrottleValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickDown)
+        } else if (button->getJoyNumber() == StickDown)
         {
             if (axisY->getLastKnownThrottleValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickRightDown)
+        } else if (button->getJoyNumber() == StickRightDown)
         {
             if (axisX->getLastKnownThrottleValue() <= 0 || axisY->getLastKnownThrottleValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
                                                                               axisY->getLastKnownThrottleValue());
             }
         }
-    }
-    else if (direction == StickDown && button->getJoyNumber() == StickDown)
+    } else if (direction == StickDown && button->getJoyNumber() == StickDown)
     {
         if (axisY->getLastKnownThrottleValue() >= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
-            finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue(),
-                                                           true);
+            finalDistance =
+                calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue(), true);
         }
-    }
-    else if (direction == StickLeftDown)
+    } else if (direction == StickLeftDown)
     {
         if (button->getJoyNumber() == StickLeft)
         {
             if (axisX->getLastKnownThrottleValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickDown)
+        } else if (button->getJoyNumber() == StickDown)
         {
             if (axisY->getLastKnownThrottleValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickLeftDown)
+        } else if (button->getJoyNumber() == StickLeftDown)
         {
             if (axisX->getLastKnownThrottleValue() >= 0 || axisY->getLastKnownThrottleValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
                                                                               axisY->getLastKnownThrottleValue());
             }
         }
-    }
-    else if (direction == StickLeft && button->getJoyNumber() == StickLeft)
+    } else if (direction == StickLeft && button->getJoyNumber() == StickLeft)
     {
         if (axisX->getLastKnownThrottleValue() >= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
-            finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue(),
-                                                           true);
+            finalDistance =
+                calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue(), true);
         }
-    }
-    else if (direction == StickLeftUp)
+    } else if (direction == StickLeftUp)
     {
         if (button->getJoyNumber() == StickLeft)
         {
             if (axisX->getLastKnownThrottleValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickUp)
+        } else if (button->getJoyNumber() == StickUp)
         {
             if (axisY->getLastKnownThrottleValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                               axisY->getLastKnownThrottleValue(),
-                                                               true);
+                                                               axisY->getLastKnownThrottleValue(), true);
             }
-        }
-        else if (button->getJoyNumber() == StickLeftUp)
+        } else if (button->getJoyNumber() == StickLeftUp)
         {
             if (axisX->getLastKnownThrottleValue() >= 0 || axisY->getLastKnownThrottleValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
                                                                               axisY->getLastKnownThrottleValue());
@@ -1590,65 +1435,58 @@ double JoyControlStick::calculateLastDirectionalDistance()
 {
     double finalDistance = 0.0;
 
-    JoyStickDirections direction = calculateStickDirection(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue());
+    JoyStickDirections direction =
+        calculateStickDirection(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue());
     if (direction == StickUp)
     {
         if (!axisX->getLastKnownThrottleValue() >= 0)
         {
-            finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue());
+            finalDistance =
+                calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue());
         }
-    }
-    else if (direction == StickRightUp)
+    } else if (direction == StickRightUp)
     {
         if (!axisY->getLastKnownThrottleValue() <= 0 && !axisY->getLastKnownThrottleValue() >= 0)
         {
             finalDistance = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
                                                                           axisY->getLastKnownThrottleValue());
         }
-    }
-    else if (direction == StickRight)
+    } else if (direction == StickRight)
     {
         if (!axisX->getLastKnownThrottleValue() <= 0)
         {
-            finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue());
+            finalDistance =
+                calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue());
         }
-    }
-    else if (direction  == StickRightDown)
+    } else if (direction == StickRightDown)
     {
         if (!axisY->getLastKnownThrottleValue() <= 0 && !axisY->getLastKnownThrottleValue() <= 0)
         {
             finalDistance = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
                                                                           axisY->getLastKnownThrottleValue());
         }
-    }
-    else if (direction == StickDown)
+    } else if (direction == StickDown)
     {
         if (!axisY->getLastKnownThrottleValue() <= 0)
         {
-            finalDistance = calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue());
+            finalDistance =
+                calculateYDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue());
         }
-    }
-    else if (direction == StickLeftDown)
+    } else if (direction == StickLeftDown)
     {
         if (!axisY->getLastKnownThrottleValue() >= 0 && !axisY->getLastKnownThrottleValue() <= 0)
         {
             finalDistance = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
                                                                           axisY->getLastKnownThrottleValue());
         }
-    }
-    else if (direction == StickLeft)
+    } else if (direction == StickLeft)
     {
         if (!axisX->getLastKnownThrottleValue() >= 0)
         {
-            finalDistance = calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(),
-                                                           axisY->getLastKnownThrottleValue());
+            finalDistance =
+                calculateXDistanceFromDeadZone(axisX->getLastKnownThrottleValue(), axisY->getLastKnownThrottleValue());
         }
-    }
-    else if (direction == StickLeftUp)
+    } else if (direction == StickLeftUp)
     {
         if (!axisY->getLastKnownThrottleValue() >= 0 && !axisY->getLastKnownThrottleValue() >= 0)
         {
@@ -1670,50 +1508,43 @@ double JoyControlStick::calculateLastAccelerationDirectionalDistance()
         {
             finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickRightUp)
+    } else if (currentDirection == StickRightUp)
     {
         if (!axisY->getLastKnownRawValue() <= 0 && !axisY->getLastKnownRawValue() >= 0)
         {
             finalDistance = calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickRight)
+    } else if (currentDirection == StickRight)
     {
         if (!axisX->getLastKnownRawValue() <= 0)
         {
             finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection  == StickRightDown)
+    } else if (currentDirection == StickRightDown)
     {
         if (!axisY->getLastKnownRawValue() <= 0 && !axisY->getLastKnownRawValue() <= 0)
         {
             finalDistance = calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickDown)
+    } else if (currentDirection == StickDown)
     {
         if (!axisY->getLastKnownRawValue() <= 0)
         {
             finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickLeftDown)
+    } else if (currentDirection == StickLeftDown)
     {
         if (!axisY->getLastKnownRawValue() >= 0 && !axisY->getLastKnownRawValue() <= 0)
         {
             finalDistance = calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickLeft)
+    } else if (currentDirection == StickLeft)
     {
         if (!axisX->getLastKnownRawValue() >= 0)
         {
             finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickLeftUp)
+    } else if (currentDirection == StickLeftUp)
     {
         if (!axisY->getLastKnownRawValue() >= 0 && !axisY->getLastKnownRawValue() >= 0)
         {
@@ -1737,32 +1568,25 @@ double JoyControlStick::calculateDirectionalDistance()
     if (currentDirection == StickUp)
     {
         finalDistance = calculateYDistanceFromDeadZone();
-    }
-    else if (currentDirection == StickRightUp)
+    } else if (currentDirection == StickRightUp)
     {
         finalDistance = getDistanceFromDeadZone();
-    }
-    else if (currentDirection == StickRight)
+    } else if (currentDirection == StickRight)
     {
         finalDistance = calculateXDistanceFromDeadZone();
-    }
-    else if (currentDirection  == StickRightDown)
+    } else if (currentDirection == StickRightDown)
     {
         finalDistance = getDistanceFromDeadZone();
-    }
-    else if (currentDirection == StickDown)
+    } else if (currentDirection == StickDown)
     {
         finalDistance = calculateYDistanceFromDeadZone();
-    }
-    else if (currentDirection == StickLeftDown)
+    } else if (currentDirection == StickLeftDown)
     {
         finalDistance = getDistanceFromDeadZone();
-    }
-    else if (currentDirection == StickLeft)
+    } else if (currentDirection == StickLeft)
     {
         finalDistance = calculateXDistanceFromDeadZone();
-    }
-    else if (currentDirection == StickLeftUp)
+    } else if (currentDirection == StickLeftUp)
     {
         finalDistance = getDistanceFromDeadZone();
     }
@@ -1774,28 +1598,19 @@ double JoyControlStick::calculateDirectionalDistance()
  * @brief Get the value for the currently active stick direction.
  * @return Value of the corresponding active stick direction.
  */
-JoyControlStick::JoyStickDirections JoyControlStick::getCurrentDirection()
-{
-    return currentDirection;
-}
+JoyControlStick::JoyStickDirections JoyControlStick::getCurrentDirection() { return currentDirection; }
 
 /**
  * @brief Get the value for the corresponding X axis.
  * @return X axis value.
  */
-int JoyControlStick::getXCoordinate()
-{
-    return axisX->getCurrentRawValue();
-}
+int JoyControlStick::getXCoordinate() { return axisX->getCurrentRawValue(); }
 
 /**
  * @brief Get the value for the corresponding Y axis.
  * @return Y axis value.
  */
-int JoyControlStick::getYCoordinate()
-{
-    return axisY->getCurrentRawValue();
-}
+int JoyControlStick::getYCoordinate() { return axisY->getCurrentRawValue(); }
 
 int JoyControlStick::getCircleXCoordinate()
 {
@@ -1833,13 +1648,14 @@ int JoyControlStick::calculateCircleXValue(int axisXValue, int axisYValue)
         double ang_sin = sin(angle2);
         double ang_cos = cos(angle2);
 
-        //int axisXValueCircleFull = static_cast<int>(floor(JoyAxis::AXISMAX * fabs(ang_sin) + 0.5));
-        double squareStickFull = qMin(ang_sin ? 1/fabs(ang_sin) : 2, ang_cos ? 1/fabs(ang_cos) : 2);
+        // int axisXValueCircleFull = static_cast<int>(floor(JoyAxis::AXISMAX * fabs(ang_sin) + 0.5));
+        double squareStickFull = qMin(ang_sin ? 1 / fabs(ang_sin) : 2, ang_cos ? 1 / fabs(ang_cos) : 2);
         double circle = this->circle;
         double circleStickFull = (squareStickFull - 1) * circle + 1;
-        //double alternateStickFullValue = circleStickFull * abs(axisXValueCircleFull);
+        // double alternateStickFullValue = circleStickFull * abs(axisXValueCircleFull);
 
-        //value = circleStickFull > 1.0 ? static_cast<int>(floor((axisXValue / alternateStickFullValue) * abs(axisXValueCircleFull) + 0.5)) : value;
+        // value = circleStickFull > 1.0 ? static_cast<int>(floor((axisXValue / alternateStickFullValue) *
+        // abs(axisXValueCircleFull) + 0.5)) : value;
         value = circleStickFull > 1.0 ? static_cast<int>(floor((axisXValue / circleStickFull) + 0.5)) : value;
     }
 
@@ -1858,13 +1674,14 @@ int JoyControlStick::calculateCircleYValue(int axisXValue, int axisYValue)
         double ang_sin = sin(angle2);
         double ang_cos = cos(angle2);
 
-        //int axisYValueCircleFull = static_cast<int>(floor(JoyAxis::AXISMAX * fabs(ang_cos) + 0.5));
-        double squareStickFull = qMin(ang_sin ? 1/fabs(ang_sin) : 2, ang_cos ? 1/fabs(ang_cos) : 2);
+        // int axisYValueCircleFull = static_cast<int>(floor(JoyAxis::AXISMAX * fabs(ang_cos) + 0.5));
+        double squareStickFull = qMin(ang_sin ? 1 / fabs(ang_sin) : 2, ang_cos ? 1 / fabs(ang_cos) : 2);
         double circle = this->circle;
         double circleStickFull = (squareStickFull - 1) * circle + 1;
-        //double alternateStickFullValue = circleStickFull * abs(axisYValueCircleFull);
+        // double alternateStickFullValue = circleStickFull * abs(axisYValueCircleFull);
 
-        //value = circleStickFull > 1.0 ? static_cast<int>(floor((axisYValue / alternateStickFullValue) * abs(axisYValueCircleFull) + 0.5)) : value;
+        // value = circleStickFull > 1.0 ? static_cast<int>(floor((axisYValue / alternateStickFullValue) *
+        // abs(axisYValueCircleFull) + 0.5)) : value;
         value = circleStickFull > 1.0 ? static_cast<int>(floor((axisYValue / circleStickFull) + 0.5)) : value;
     }
 
@@ -1880,7 +1697,7 @@ QList<double> JoyControlStick::getDiagonalZoneAngles()
     double cardinalAngle = (360 - (diagonalAngle * 4)) / 4.0;
 
     double initialLeft = 360 - ((cardinalAngle) / 2.0);
-    double initialRight = ((cardinalAngle)/ 2.0);
+    double initialRight = ((cardinalAngle) / 2.0);
     /*if ((int)(cardinalAngle - 1) % 2 != 0)
     {
         initialLeft = 360 - (cardinalAngle / 2.0);
@@ -1945,20 +1762,11 @@ QList<int> JoyControlStick::getFourWayDiagonalZoneAngles()
     return anglesList;
 }
 
-QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*>* JoyControlStick::getButtons()
-{
-    return &buttons;
-}
+QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *> *JoyControlStick::getButtons() { return &buttons; }
 
-JoyAxis* JoyControlStick::getAxisX()
-{
-    return axisX;
-}
+JoyAxis *JoyControlStick::getAxisX() { return axisX; }
 
-JoyAxis* JoyControlStick::getAxisY()
-{
-    return axisY;
-}
+JoyAxis *JoyControlStick::getAxisY() { return axisY; }
 
 void JoyControlStick::replaceXAxis(JoyAxis *axis)
 {
@@ -2002,14 +1810,11 @@ void JoyControlStick::setJoyMode(JoyMode mode)
     emit propertyUpdated();
 }
 
-JoyControlStick::JoyMode JoyControlStick::getJoyMode()
-{
-    return currentMode;
-}
+JoyControlStick::JoyMode JoyControlStick::getJoyMode() { return currentMode; }
 
 void JoyControlStick::releaseButtonEvents()
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2027,7 +1832,7 @@ bool JoyControlStick::isDefault()
     value = value && (circle == DEFAULTCIRCLE);
     value = value && (stickDelay == DEFAULTSTICKDELAY);
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2044,7 +1849,7 @@ bool JoyControlStick::isDefault()
 
 void JoyControlStick::setButtonsMouseMode(JoyButton::JoyMouseMovementMode mode)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2058,16 +1863,15 @@ bool JoyControlStick::hasSameButtonsMouseMode()
 
     JoyButton::JoyMouseMovementMode initialMode = JoyButton::MouseCursor;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             initialMode = button->getMouseMode();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             JoyButton::JoyMouseMovementMode temp = button->getMouseMode();
@@ -2086,16 +1890,15 @@ JoyButton::JoyMouseMovementMode JoyControlStick::getButtonsPresetMouseMode()
 {
     JoyButton::JoyMouseMovementMode resultMode = JoyButton::MouseCursor;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             resultMode = button->getMouseMode();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             JoyButton::JoyMouseMovementMode temp = button->getMouseMode();
@@ -2112,7 +1915,7 @@ JoyButton::JoyMouseMovementMode JoyControlStick::getButtonsPresetMouseMode()
 
 void JoyControlStick::setButtonsMouseCurve(JoyButton::JoyMouseCurve mouseCurve)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2126,16 +1929,15 @@ bool JoyControlStick::hasSameButtonsMouseCurve()
 
     JoyButton::JoyMouseCurve initialCurve = JoyButton::LinearCurve;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             initialCurve = button->getMouseCurve();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             JoyButton::JoyMouseCurve temp = button->getMouseCurve();
@@ -2154,16 +1956,15 @@ JoyButton::JoyMouseCurve JoyControlStick::getButtonsPresetMouseCurve()
 {
     JoyButton::JoyMouseCurve resultCurve = JoyButton::LinearCurve;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             resultCurve = button->getMouseCurve();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             JoyButton::JoyMouseCurve temp = button->getMouseCurve();
@@ -2180,7 +1981,7 @@ JoyButton::JoyMouseCurve JoyControlStick::getButtonsPresetMouseCurve()
 
 void JoyControlStick::setButtonsSpringWidth(int value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2190,7 +1991,7 @@ void JoyControlStick::setButtonsSpringWidth(int value)
 
 void JoyControlStick::setButtonsSpringHeight(int value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2202,16 +2003,15 @@ int JoyControlStick::getButtonsPresetSpringWidth()
 {
     int presetSpringWidth = 0;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             presetSpringWidth = button->getSpringWidth();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             int temp = button->getSpringWidth();
@@ -2230,16 +2030,15 @@ int JoyControlStick::getButtonsPresetSpringHeight()
 {
     int presetSpringHeight = 0;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             presetSpringHeight = button->getSpringHeight();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             int temp = button->getSpringHeight();
@@ -2256,7 +2055,7 @@ int JoyControlStick::getButtonsPresetSpringHeight()
 
 void JoyControlStick::setButtonsSensitivity(double value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2268,16 +2067,15 @@ double JoyControlStick::getButtonsPresetSensitivity()
 {
     double presetSensitivity = 1.0;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             presetSensitivity = button->getSensitivity();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             double temp = button->getSensitivity();
@@ -2292,12 +2090,11 @@ double JoyControlStick::getButtonsPresetSensitivity()
     return presetSensitivity;
 }
 
-QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*> JoyControlStick::getApplicableButtons()
+QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *> JoyControlStick::getApplicableButtons()
 {
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash;
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash;
 
-    if (currentMode == StandardMode || currentMode == EightWayMode ||
-        currentMode == FourWayCardinal)
+    if (currentMode == StandardMode || currentMode == EightWayMode || currentMode == FourWayCardinal)
     {
         temphash.insert(StickUp, buttons.value(StickUp));
         temphash.insert(StickDown, buttons.value(StickDown));
@@ -2326,14 +2123,11 @@ void JoyControlStick::setStickName(QString tempName)
     }
 }
 
-QString JoyControlStick::getStickName()
-{
-    return stickName;
-}
+QString JoyControlStick::getStickName() { return stickName; }
 
 void JoyControlStick::setButtonsWheelSpeedX(int value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2343,7 +2137,7 @@ void JoyControlStick::setButtonsWheelSpeedX(int value)
 
 void JoyControlStick::setButtonsWheelSpeedY(int value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2355,14 +2149,13 @@ void JoyControlStick::setButtonsWheelSpeedY(int value)
  * @brief Get pointer to the set that a stick belongs to.
  * @return Pointer to the set that a stick belongs to.
  */
-SetJoystick* JoyControlStick::getParentSet()
+SetJoystick *JoyControlStick::getParentSet()
 {
     SetJoystick *temp = 0;
     if (axisX)
     {
         temp = axisX->getParentSet();
-    }
-    else if (axisY)
+    } else if (axisY)
     {
         temp = axisY->getParentSet();
     }
@@ -2375,7 +2168,8 @@ SetJoystick* JoyControlStick::getParentSet()
  * @param [out] Pointer to the currently active button.
  * @param Should set changing routines be ignored.
  */
-void JoyControlStick::performButtonPress(JoyControlStickButton *eventbutton, JoyControlStickButton *&activebutton, bool ignoresets)
+void JoyControlStick::performButtonPress(JoyControlStickButton *eventbutton, JoyControlStickButton *&activebutton,
+                                         bool ignoresets)
 {
     activebutton = eventbutton;
     eventbutton->joyEvent(true, ignoresets);
@@ -2413,46 +2207,39 @@ void JoyControlStick::determineStandardModeEvent(JoyControlStickButton *&eventbu
     double leftInitial = anglesList.value(7);
     double upLeftInitial = anglesList.value(8);
 
-    //bearing = floor(bearing + 0.5);
+    // bearing = floor(bearing + 0.5);
     if (bearing <= initialRight || bearing >= initialLeft)
     {
         currentDirection = StickUp;
         eventbutton2 = buttons.value(StickUp);
-    }
-    else if (bearing >= upRightInitial && bearing < rightInitial)
+    } else if (bearing >= upRightInitial && bearing < rightInitial)
     {
         currentDirection = StickRightUp;
         eventbutton1 = buttons.value(StickRight);
         eventbutton2 = buttons.value(StickUp);
-    }
-    else if (bearing >= rightInitial && bearing < downRightInitial)
+    } else if (bearing >= rightInitial && bearing < downRightInitial)
     {
         currentDirection = StickRight;
         eventbutton1 = buttons.value(StickRight);
-    }
-    else if (bearing >= downRightInitial && bearing < downInitial)
+    } else if (bearing >= downRightInitial && bearing < downInitial)
     {
         currentDirection = StickRightDown;
         eventbutton1 = buttons.value(StickRight);
         eventbutton2 = buttons.value(StickDown);
-    }
-    else if (bearing >= downInitial && bearing < downLeftInitial)
+    } else if (bearing >= downInitial && bearing < downLeftInitial)
     {
         currentDirection = StickDown;
         eventbutton2 = buttons.value(StickDown);
-    }
-    else if (bearing >= downLeftInitial && bearing < leftInitial)
+    } else if (bearing >= downLeftInitial && bearing < leftInitial)
     {
         currentDirection = StickLeftDown;
         eventbutton1 = buttons.value(StickLeft);
         eventbutton2 = buttons.value(StickDown);
-    }
-    else if (bearing >= leftInitial && bearing < upLeftInitial)
+    } else if (bearing >= leftInitial && bearing < upLeftInitial)
     {
         currentDirection = StickLeft;
         eventbutton1 = buttons.value(StickLeft);
-    }
-    else if (bearing >= upLeftInitial && bearing < initialLeft)
+    } else if (bearing >= upLeftInitial && bearing < initialLeft)
     {
         currentDirection = StickLeftUp;
         eventbutton1 = buttons.value(StickLeft);
@@ -2467,7 +2254,8 @@ void JoyControlStick::determineStandardModeEvent(JoyControlStickButton *&eventbu
  * @param [out] Pointer to a Y axis stick direction button that should be active.
  * @param [out] Pointer to a diagonal stick direction button that should be active.
  */
-void JoyControlStick::determineEightWayModeEvent(JoyControlStickButton *&eventbutton1, JoyControlStickButton *&eventbutton2, JoyControlStickButton *&eventbutton3)
+void JoyControlStick::determineEightWayModeEvent(JoyControlStickButton *&eventbutton1, JoyControlStickButton *&eventbutton2,
+                                                 JoyControlStickButton *&eventbutton3)
 {
     double bearing = calculateBearing();
 
@@ -2482,43 +2270,36 @@ void JoyControlStick::determineEightWayModeEvent(JoyControlStickButton *&eventbu
     double leftInitial = anglesList.value(7);
     double upLeftInitial = anglesList.value(8);
 
-    //bearing = floor(bearing + 0.5);
+    // bearing = floor(bearing + 0.5);
     if (bearing <= initialRight || bearing >= initialLeft)
     {
         currentDirection = StickUp;
         eventbutton2 = buttons.value(StickUp);
-    }
-    else if (bearing >= upRightInitial && bearing < rightInitial)
+    } else if (bearing >= upRightInitial && bearing < rightInitial)
     {
         currentDirection = StickRightUp;
         eventbutton3 = buttons.value(StickRightUp);
-    }
-    else if (bearing >= rightInitial && bearing < downRightInitial)
+    } else if (bearing >= rightInitial && bearing < downRightInitial)
     {
         currentDirection = StickRight;
         eventbutton1 = buttons.value(StickRight);
-    }
-    else if (bearing >= downRightInitial && bearing < downInitial)
+    } else if (bearing >= downRightInitial && bearing < downInitial)
     {
         currentDirection = StickRightDown;
         eventbutton3 = buttons.value(StickRightDown);
-    }
-    else if (bearing >= downInitial && bearing < downLeftInitial)
+    } else if (bearing >= downInitial && bearing < downLeftInitial)
     {
         currentDirection = StickDown;
         eventbutton2 = buttons.value(StickDown);
-    }
-    else if (bearing >= downLeftInitial && bearing < leftInitial)
+    } else if (bearing >= downLeftInitial && bearing < leftInitial)
     {
         currentDirection = StickLeftDown;
         eventbutton3 = buttons.value(StickLeftDown);
-    }
-    else if (bearing >= leftInitial && bearing < upLeftInitial)
+    } else if (bearing >= leftInitial && bearing < upLeftInitial)
     {
         currentDirection = StickLeft;
         eventbutton1 = buttons.value(StickLeft);
-    }
-    else if (bearing >= upLeftInitial && bearing < initialLeft)
+    } else if (bearing >= upLeftInitial && bearing < initialLeft)
     {
         currentDirection = StickLeftUp;
         eventbutton3 = buttons.value(StickLeftUp);
@@ -2531,7 +2312,8 @@ void JoyControlStick::determineEightWayModeEvent(JoyControlStickButton *&eventbu
  * @param [out] Pointer to an X axis stick direction button that should be active.
  * @param [out] Pointer to a Y axis stick direction button that should be active.
  */
-void JoyControlStick::determineFourWayCardinalEvent(JoyControlStickButton *&eventbutton1, JoyControlStickButton *&eventbutton2)
+void JoyControlStick::determineFourWayCardinalEvent(JoyControlStickButton *&eventbutton1,
+                                                    JoyControlStickButton *&eventbutton2)
 {
     double bearing = calculateBearing();
 
@@ -2541,23 +2323,20 @@ void JoyControlStick::determineFourWayCardinalEvent(JoyControlStickButton *&even
     int leftInitial = anglesList.value(2);
     int upInitial = anglesList.value(3);
 
-    //bearing = floor(bearing + 0.5);
+    // bearing = floor(bearing + 0.5);
     if (bearing < rightInitial || bearing >= upInitial)
     {
         currentDirection = StickUp;
         eventbutton2 = buttons.value(StickUp);
-    }
-    else if (bearing >= rightInitial && bearing < downInitial)
+    } else if (bearing >= rightInitial && bearing < downInitial)
     {
         currentDirection = StickRight;
         eventbutton1 = buttons.value(StickRight);
-    }
-    else if (bearing >= downInitial && bearing < leftInitial)
+    } else if (bearing >= downInitial && bearing < leftInitial)
     {
         currentDirection = StickDown;
         eventbutton2 = buttons.value(StickDown);
-    }
-    else if (bearing >= leftInitial && bearing < upInitial)
+    } else if (bearing >= leftInitial && bearing < upInitial)
     {
         currentDirection = StickLeft;
         eventbutton1 = buttons.value(StickLeft);
@@ -2579,23 +2358,20 @@ void JoyControlStick::determineFourWayDiagonalEvent(JoyControlStickButton *&even
     int downLeftInitial = anglesList.value(2);
     int upLeftInitial = anglesList.value(3);
 
-    //bearing = floor(bearing + 0.5);
+    // bearing = floor(bearing + 0.5);
     if (bearing >= upRightInitial && bearing < downRightInitial)
     {
         currentDirection = StickRightUp;
         eventbutton3 = buttons.value(StickRightUp);
-    }
-    else if (bearing >= downRightInitial && bearing < downLeftInitial)
+    } else if (bearing >= downRightInitial && bearing < downLeftInitial)
     {
         currentDirection = StickRightDown;
         eventbutton3 = buttons.value(StickRightDown);
-    }
-    else if (bearing >= downLeftInitial && bearing < upLeftInitial)
+    } else if (bearing >= downLeftInitial && bearing < upLeftInitial)
     {
         currentDirection = StickLeftDown;
         eventbutton3 = buttons.value(StickLeftDown);
-    }
-    else if (bearing >= upLeftInitial)
+    } else if (bearing >= upLeftInitial)
     {
         currentDirection = StickLeftUp;
         eventbutton3 = buttons.value(StickLeftUp);
@@ -2608,17 +2384,15 @@ void JoyControlStick::determineFourWayDiagonalEvent(JoyControlStickButton *&even
  */
 JoyControlStick::JoyStickDirections JoyControlStick::determineStandardModeDirection()
 {
-    return determineStandardModeDirection(axisX->getCurrentRawValue(),
-                                          axisY->getCurrentRawValue());
+    return determineStandardModeDirection(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
 }
 
-JoyControlStick::JoyStickDirections
-JoyControlStick::determineStandardModeDirection(int axisXValue, int axisYValue)
+JoyControlStick::JoyStickDirections JoyControlStick::determineStandardModeDirection(int axisXValue, int axisYValue)
 {
     JoyStickDirections result = StickCentered;
 
     double bearing = calculateBearing(axisXValue, axisYValue);
-    //bearing = floor(bearing + 0.5);
+    // bearing = floor(bearing + 0.5);
 
     QList<double> anglesList = getDiagonalZoneAngles();
     int initialLeft = anglesList.value(0);
@@ -2634,32 +2408,25 @@ JoyControlStick::determineStandardModeDirection(int axisXValue, int axisYValue)
     if (bearing <= initialRight || bearing >= initialLeft)
     {
         result = StickUp;
-    }
-    else if (bearing >= upRightInitial && bearing < rightInitial)
+    } else if (bearing >= upRightInitial && bearing < rightInitial)
     {
         result = StickRightUp;
-    }
-    else if (bearing >= rightInitial && bearing < downRightInitial)
+    } else if (bearing >= rightInitial && bearing < downRightInitial)
     {
         result = StickRight;
-    }
-    else if (bearing >= downRightInitial && bearing < downInitial)
+    } else if (bearing >= downRightInitial && bearing < downInitial)
     {
         result = StickRightDown;
-    }
-    else if (bearing >= downInitial && bearing < downLeftInitial)
+    } else if (bearing >= downInitial && bearing < downLeftInitial)
     {
         result = StickDown;
-    }
-    else if (bearing >= downLeftInitial && bearing < leftInitial)
+    } else if (bearing >= downLeftInitial && bearing < leftInitial)
     {
         result = StickLeftDown;
-    }
-    else if (bearing >= leftInitial && bearing < upLeftInitial)
+    } else if (bearing >= leftInitial && bearing < upLeftInitial)
     {
         result = StickLeft;
-    }
-    else if (bearing >= upLeftInitial && bearing < initialLeft)
+    } else if (bearing >= upLeftInitial && bearing < initialLeft)
     {
         result = StickLeftUp;
     }
@@ -2671,15 +2438,12 @@ JoyControlStick::determineStandardModeDirection(int axisXValue, int axisYValue)
  * @brief Find the current stick direction based on a Eight Way mode stick.
  * @return Current direction the stick is positioned.
  */
-JoyControlStick::JoyStickDirections
-JoyControlStick::determineEightWayModeDirection()
+JoyControlStick::JoyStickDirections JoyControlStick::determineEightWayModeDirection()
 {
-    return determineStandardModeDirection(axisX->getCurrentRawValue(),
-                                          axisY->getCurrentRawValue());
+    return determineStandardModeDirection(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
 }
 
-JoyControlStick::JoyStickDirections
-JoyControlStick::determineEightWayModeDirection(int axisXValue, int axisYValue)
+JoyControlStick::JoyStickDirections JoyControlStick::determineEightWayModeDirection(int axisXValue, int axisYValue)
 {
     return determineStandardModeDirection(axisXValue, axisYValue);
 }
@@ -2689,20 +2453,17 @@ JoyControlStick::determineEightWayModeDirection(int axisXValue, int axisYValue)
  *     stick.
  * @return Current direction the stick is positioned.
  */
-JoyControlStick::JoyStickDirections
-JoyControlStick::determineFourWayCardinalDirection()
+JoyControlStick::JoyStickDirections JoyControlStick::determineFourWayCardinalDirection()
 {
-    return determineFourWayCardinalDirection(axisX->getCurrentRawValue(),
-                                             axisY->getCurrentRawValue());
+    return determineFourWayCardinalDirection(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
 }
 
-JoyControlStick::JoyStickDirections
-JoyControlStick::determineFourWayCardinalDirection(int axisXValue, int axisYValue)
+JoyControlStick::JoyStickDirections JoyControlStick::determineFourWayCardinalDirection(int axisXValue, int axisYValue)
 {
     JoyStickDirections result = StickCentered;
 
     double bearing = calculateBearing(axisXValue, axisYValue);
-    //bearing = floor(bearing + 0.5);
+    // bearing = floor(bearing + 0.5);
 
     QList<int> anglesList = getFourWayCardinalZoneAngles();
     int rightInitial = anglesList.value(0);
@@ -2713,16 +2474,13 @@ JoyControlStick::determineFourWayCardinalDirection(int axisXValue, int axisYValu
     if (bearing < rightInitial || bearing >= upInitial)
     {
         result = StickUp;
-    }
-    else if (bearing >= rightInitial && bearing < downInitial)
+    } else if (bearing >= rightInitial && bearing < downInitial)
     {
         result = StickRight;
-    }
-    else if (bearing >= downInitial && bearing < leftInitial)
+    } else if (bearing >= downInitial && bearing < leftInitial)
     {
         result = StickDown;
-    }
-    else if (bearing >= leftInitial && bearing < upInitial)
+    } else if (bearing >= leftInitial && bearing < upInitial)
     {
         result = StickLeft;
     }
@@ -2735,20 +2493,17 @@ JoyControlStick::determineFourWayCardinalDirection(int axisXValue, int axisYValu
  *     stick.
  * @return Current direction the stick is positioned.
  */
-JoyControlStick::JoyStickDirections
-JoyControlStick::determineFourWayDiagonalDirection()
+JoyControlStick::JoyStickDirections JoyControlStick::determineFourWayDiagonalDirection()
 {
-    return determineFourWayDiagonalDirection(axisX->getCurrentRawValue(),
-                                             axisY->getCurrentRawValue());
+    return determineFourWayDiagonalDirection(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
 }
 
-JoyControlStick::JoyStickDirections
-JoyControlStick::determineFourWayDiagonalDirection(int axisXValue, int axisYValue)
+JoyControlStick::JoyStickDirections JoyControlStick::determineFourWayDiagonalDirection(int axisXValue, int axisYValue)
 {
     JoyStickDirections result = StickCentered;
 
     double bearing = calculateBearing(axisXValue, axisYValue);
-    //bearing = floor(bearing + 0.5);
+    // bearing = floor(bearing + 0.5);
 
     QList<int> anglesList = getFourWayDiagonalZoneAngles();
     int upRightInitial = anglesList.value(0);
@@ -2759,16 +2514,13 @@ JoyControlStick::determineFourWayDiagonalDirection(int axisXValue, int axisYValu
     if (bearing >= upRightInitial && bearing < downRightInitial)
     {
         result = StickRightUp;
-    }
-    else if (bearing >= downRightInitial && bearing < downLeftInitial)
+    } else if (bearing >= downRightInitial && bearing < downLeftInitial)
     {
         result = StickRightDown;
-    }
-    else if (bearing >= downLeftInitial && bearing < upLeftInitial)
+    } else if (bearing >= downLeftInitial && bearing < upLeftInitial)
     {
         result = StickLeftDown;
-    }
-    else if (bearing >= upLeftInitial)
+    } else if (bearing >= upLeftInitial)
     {
         result = StickLeftUp;
     }
@@ -2781,31 +2533,25 @@ JoyControlStick::determineFourWayDiagonalDirection(int axisXValue, int axisYValu
  *     of the X and Y axes and the current mode of the stick.
  * @return Current direction the stick is positioned.
  */
-JoyControlStick::JoyStickDirections
-JoyControlStick::calculateStickDirection()
+JoyControlStick::JoyStickDirections JoyControlStick::calculateStickDirection()
 {
-    return calculateStickDirection(axisX->getCurrentRawValue(),
-                                   axisY->getCurrentRawValue());
+    return calculateStickDirection(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
 }
 
-JoyControlStick::JoyStickDirections
-JoyControlStick::calculateStickDirection(int axisXValue, int axisYValue)
+JoyControlStick::JoyStickDirections JoyControlStick::calculateStickDirection(int axisXValue, int axisYValue)
 {
     JoyStickDirections result = StickCentered;
 
     if (currentMode == StandardMode)
     {
         result = determineStandardModeDirection(axisXValue, axisYValue);
-    }
-    else if (currentMode == EightWayMode)
+    } else if (currentMode == EightWayMode)
     {
         result = determineEightWayModeDirection(axisXValue, axisYValue);
-    }
-    else if (currentMode == FourWayCardinal)
+    } else if (currentMode == FourWayCardinal)
     {
         result = determineFourWayCardinalDirection(axisXValue, axisYValue);
-    }
-    else if (currentMode == FourWayDiagonal)
+    } else if (currentMode == FourWayDiagonal)
     {
         result = determineFourWayDiagonalDirection(axisXValue, axisYValue);
     }
@@ -2831,7 +2577,7 @@ bool JoyControlStick::hasSlotsAssigned()
 {
     bool hasSlots = false;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyButton *button = iter.next().value();
@@ -2850,7 +2596,7 @@ bool JoyControlStick::hasSlotsAssigned()
 
 void JoyControlStick::setButtonsSpringRelativeStatus(bool value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2862,16 +2608,15 @@ bool JoyControlStick::isRelativeSpring()
 {
     bool relative = false;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             relative = button->isRelativeSpring();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             bool temp = button->isRelativeSpring();
@@ -2903,7 +2648,7 @@ void JoyControlStick::copyAssignments(JoyControlStick *destStick)
     destStick->circle = circle;
     destStick->stickDelay = stickDelay;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(destStick->buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(destStick->buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *destButton = iter.next().value();
@@ -2949,19 +2694,13 @@ void JoyControlStick::setCircleAdjust(double circle)
  *     when performing the final axis calculations.
  * @return Percentage represented by the range of 0.0 - 1.0.
  */
-double JoyControlStick::getCircleAdjust()
-{
-    return circle;
-}
+double JoyControlStick::getCircleAdjust() { return circle; }
 
 /**
  * @brief Slot called when directionDelayTimer has timed out. The method will
  *     call createDeskEvent.
  */
-void JoyControlStick::stickDirectionChangeEvent()
-{
-    createDeskEvent();
-}
+void JoyControlStick::stickDirectionChangeEvent() { createDeskEvent(); }
 
 void JoyControlStick::setStickDelay(int value)
 {
@@ -2973,14 +2712,11 @@ void JoyControlStick::setStickDelay(int value)
     }
 }
 
-unsigned int JoyControlStick::getStickDelay()
-{
-    return stickDelay;
-}
+unsigned int JoyControlStick::getStickDelay() { return stickDelay; }
 
 void JoyControlStick::setButtonsEasingDuration(double value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(buttons);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(buttons);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -2992,16 +2728,15 @@ double JoyControlStick::getButtonsEasingDuration()
 {
     double result = JoyButton::DEFAULTEASINGDURATION;
 
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash = getApplicableButtons();
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(temphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash = getApplicableButtons();
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(temphash);
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
         {
             JoyControlStickButton *button = iter.next().value();
             result = button->getEasingDuration();
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             double temp = button->getEasingDuration();
@@ -3016,10 +2751,7 @@ double JoyControlStick::getButtonsEasingDuration()
     return result;
 }
 
-JoyControlStickModifierButton *JoyControlStick::getModifierButton()
-{
-    return modifierButton;
-}
+JoyControlStickModifierButton *JoyControlStick::getModifierButton() { return modifierButton; }
 
 void JoyControlStick::queueJoyEvent(bool ignoresets)
 {
@@ -3028,10 +2760,7 @@ void JoyControlStick::queueJoyEvent(bool ignoresets)
     pendingStickEvent = true;
 }
 
-bool JoyControlStick::hasPendingEvent()
-{
-    return pendingStickEvent;
-}
+bool JoyControlStick::hasPendingEvent() { return pendingStickEvent; }
 
 void JoyControlStick::activatePendingEvent()
 {
@@ -3044,14 +2773,11 @@ void JoyControlStick::activatePendingEvent()
     }
 }
 
-void JoyControlStick::clearPendingEvent()
-{
-    pendingStickEvent = false;
-}
+void JoyControlStick::clearPendingEvent() { pendingStickEvent = false; }
 
 void JoyControlStick::setButtonsExtraAccelerationStatus(bool enabled)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3066,7 +2792,7 @@ bool JoyControlStick::getButtonsExtraAccelerationStatus()
 {
     bool result = false;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3077,8 +2803,7 @@ bool JoyControlStick::getButtonsExtraAccelerationStatus()
             {
                 result = false;
                 iter.toBack();
-            }
-            else
+            } else
             {
                 result = temp;
             }
@@ -3090,7 +2815,7 @@ bool JoyControlStick::getButtonsExtraAccelerationStatus()
 
 void JoyControlStick::setButtonsExtraAccelerationMultiplier(double value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3105,7 +2830,7 @@ double JoyControlStick::getButtonsExtraAccelerationMultiplier()
 {
     double result = JoyButton::DEFAULTEXTRACCELVALUE;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
@@ -3115,8 +2840,7 @@ double JoyControlStick::getButtonsExtraAccelerationMultiplier()
             {
                 result = button->getExtraAccelerationMultiplier();
             }
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             if (button)
@@ -3134,10 +2858,9 @@ double JoyControlStick::getButtonsExtraAccelerationMultiplier()
     return result;
 }
 
-
 void JoyControlStick::setButtonsStartAccelerationMultiplier(double value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3152,7 +2875,7 @@ double JoyControlStick::getButtonsStartAccelerationMultiplier()
 {
     double result = JoyButton::DEFAULTSTARTACCELMULTIPLIER;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
@@ -3162,8 +2885,7 @@ double JoyControlStick::getButtonsStartAccelerationMultiplier()
             {
                 result = button->getStartAccelMultiplier();
             }
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             if (button)
@@ -3183,7 +2905,7 @@ double JoyControlStick::getButtonsStartAccelerationMultiplier()
 
 void JoyControlStick::setButtonsMinAccelerationThreshold(double value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3198,7 +2920,7 @@ double JoyControlStick::getButtonsMinAccelerationThreshold()
 {
     double result = JoyButton::DEFAULTMINACCELTHRESHOLD;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
@@ -3208,8 +2930,7 @@ double JoyControlStick::getButtonsMinAccelerationThreshold()
             {
                 result = button->getMinAccelThreshold();
             }
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             if (button)
@@ -3229,7 +2950,7 @@ double JoyControlStick::getButtonsMinAccelerationThreshold()
 
 void JoyControlStick::setButtonsMaxAccelerationThreshold(double value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3244,7 +2965,7 @@ double JoyControlStick::getButtonsMaxAccelerationThreshold()
 {
     double result = JoyButton::DEFAULTMAXACCELTHRESHOLD;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
@@ -3254,8 +2975,7 @@ double JoyControlStick::getButtonsMaxAccelerationThreshold()
             {
                 result = button->getMaxAccelThreshold();
             }
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             if (button)
@@ -3273,10 +2993,9 @@ double JoyControlStick::getButtonsMaxAccelerationThreshold()
     return result;
 }
 
-
 void JoyControlStick::setButtonsAccelerationExtraDuration(double value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3291,7 +3010,7 @@ double JoyControlStick::getButtonsAccelerationEasingDuration()
 {
     double result = JoyButton::DEFAULTACCELEASINGDURATION;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
@@ -3301,8 +3020,7 @@ double JoyControlStick::getButtonsAccelerationEasingDuration()
             {
                 result = button->getAccelExtraDuration();
             }
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             if (button)
@@ -3322,7 +3040,7 @@ double JoyControlStick::getButtonsAccelerationEasingDuration()
 
 void JoyControlStick::setButtonsSpringDeadCircleMultiplier(int value)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -3337,7 +3055,7 @@ int JoyControlStick::getButtonsSpringDeadCircleMultiplier()
 {
     int result = JoyButton::DEFAULTSPRINGRELEASERADIUS;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
@@ -3347,8 +3065,7 @@ int JoyControlStick::getButtonsSpringDeadCircleMultiplier()
             {
                 result = button->getSpringDeadCircleMultiplier();
             }
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             if (button)
@@ -3375,185 +3092,154 @@ double JoyControlStick::calculateAccelerationDistance(JoyControlStickButton *but
         if (axisY->getCurrentRawValue() >= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateYAxisDistance(axisY->getCurrentRawValue());
         }
-    }
-    else if (currentDirection == StickRightUp)
+    } else if (currentDirection == StickRightUp)
     {
         if (button->getJoyNumber() == StickRight)
         {
             if (axisX->getCurrentRawValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getCurrentRawValue());
             }
 
-        }
-        else if (button->getJoyNumber() == StickUp)
+        } else if (button->getJoyNumber() == StickUp)
         {
             if (axisY->getCurrentRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getCurrentRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickRightUp)
+        } else if (button->getJoyNumber() == StickRightUp)
         {
             if (axisX->getCurrentRawValue() <= 0 || axisY->getCurrentRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistance(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
             }
         }
-    }
-    else if (currentDirection == StickRight)
+    } else if (currentDirection == StickRight)
     {
         if (axisX->getCurrentRawValue() < 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateXAxisDistance(axisX->getCurrentRawValue());
         }
-    }
-    else if (currentDirection  == StickRightDown)
+    } else if (currentDirection == StickRightDown)
     {
         if (button->getJoyNumber() == StickRight)
         {
             if (axisX->getCurrentRawValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getCurrentRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickDown)
+        } else if (button->getJoyNumber() == StickDown)
         {
             if (axisY->getCurrentRawValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getCurrentRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickRightDown)
+        } else if (button->getJoyNumber() == StickRightDown)
         {
             if (axisX->getCurrentRawValue() <= 0 || axisY->getCurrentRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistance(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
             }
         }
-    }
-    else if (currentDirection == StickDown)
+    } else if (currentDirection == StickDown)
     {
         if (axisY->getCurrentRawValue() <= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateYAxisDistance(axisY->getCurrentRawValue());
         }
-    }
-    else if (currentDirection == StickLeftDown)
+    } else if (currentDirection == StickLeftDown)
     {
         if (button->getJoyNumber() == StickLeft)
         {
             if (axisX->getCurrentRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getCurrentRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickDown)
+        } else if (button->getJoyNumber() == StickDown)
         {
             if (axisY->getCurrentRawValue() < 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getCurrentRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickLeftDown)
+        } else if (button->getJoyNumber() == StickLeftDown)
         {
             if (axisX->getCurrentRawValue() >= 0 || axisY->getCurrentRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistance(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
             }
         }
-    }
-    else if (currentDirection == StickLeft)
+    } else if (currentDirection == StickLeft)
     {
         if (axisX->getCurrentRawValue() >= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateXAxisDistance(axisX->getCurrentRawValue());
         }
-    }
-    else if (currentDirection == StickLeftUp)
+    } else if (currentDirection == StickLeftUp)
     {
         if (button->getJoyNumber() == StickLeft)
         {
             if (axisX->getCurrentRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getCurrentRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickUp)
+        } else if (button->getJoyNumber() == StickUp)
         {
             if (axisY->getCurrentRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getCurrentRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickLeftUp)
+        } else if (button->getJoyNumber() == StickLeftUp)
         {
             if (axisX->getCurrentRawValue() >= 0 || axisY->getCurrentRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateEightWayDiagonalDistance(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
             }
@@ -3573,187 +3259,160 @@ double JoyControlStick::calculateLastAccelerationButtonDistance(JoyControlStickB
         if (axisY->getLastKnownRawValue() >= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickRightUp)
+    } else if (currentDirection == StickRightUp)
     {
         if (button->getJoyNumber() == StickRight)
         {
             if (axisX->getLastKnownRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
             }
 
-        }
-        else if (button->getJoyNumber() == StickUp)
+        } else if (button->getJoyNumber() == StickUp)
         {
             if (axisY->getLastKnownRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickRightUp)
+        } else if (button->getJoyNumber() == StickRightUp)
         {
             if (axisX->getLastKnownRawValue() <= 0 || axisY->getLastKnownRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
-                finalDistance = calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
+                finalDistance =
+                    calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
             }
         }
-    }
-    else if (currentDirection == StickRight)
+    } else if (currentDirection == StickRight)
     {
         if (axisX->getLastKnownRawValue() <= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection  == StickRightDown)
+    } else if (currentDirection == StickRightDown)
     {
         if (button->getJoyNumber() == StickRight)
         {
             if (axisX->getLastKnownRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickDown)
+        } else if (button->getJoyNumber() == StickDown)
         {
             if (axisY->getLastKnownRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickRightDown)
+        } else if (button->getJoyNumber() == StickRightDown)
         {
             if (axisX->getLastKnownRawValue() <= 0 || axisY->getLastKnownRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
-                finalDistance = calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
+                finalDistance =
+                    calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
             }
         }
-    }
-    else if (currentDirection == StickDown)
+    } else if (currentDirection == StickDown)
     {
         if (axisY->getLastKnownRawValue() <= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickLeftDown)
+    } else if (currentDirection == StickLeftDown)
     {
         if (button->getJoyNumber() == StickLeft)
         {
             if (axisX->getLastKnownRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickDown)
+        } else if (button->getJoyNumber() == StickDown)
         {
             if (axisY->getLastKnownRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickLeftDown)
+        } else if (button->getJoyNumber() == StickLeftDown)
         {
             if (axisX->getLastKnownRawValue() >= 0 || axisY->getLastKnownRawValue() <= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
-                finalDistance = calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
+                finalDistance =
+                    calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
             }
         }
-    }
-    else if (currentDirection == StickLeft)
+    } else if (currentDirection == StickLeft)
     {
         if (axisX->getLastKnownRawValue() >= 0)
         {
             finalDistance = 0.0;
-        }
-        else
+        } else
         {
             finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
         }
-    }
-    else if (currentDirection == StickLeftUp)
+    } else if (currentDirection == StickLeftUp)
     {
         if (button->getJoyNumber() == StickLeft)
         {
             if (axisX->getLastKnownRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateXAxisDistance(axisX->getLastKnownRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickUp)
+        } else if (button->getJoyNumber() == StickUp)
         {
             if (axisY->getLastKnownRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
                 finalDistance = calculateYAxisDistance(axisY->getLastKnownRawValue());
             }
-        }
-        else if (button->getJoyNumber() == StickLeftUp)
+        } else if (button->getJoyNumber() == StickLeftUp)
         {
             if (axisX->getLastKnownRawValue() >= 0 || axisY->getLastKnownRawValue() >= 0)
             {
                 finalDistance = 0.0;
-            }
-            else
+            } else
             {
-                finalDistance = calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
+                finalDistance =
+                    calculateEightWayDiagonalDistance(axisX->getLastKnownRawValue(), axisY->getLastKnownRawValue());
             }
         }
     }
@@ -3770,13 +3429,12 @@ double JoyControlStick::calculateXAxisDistance(int axisXValue)
     if (distance < -1.0)
     {
         distance = -1.0;
-    }
-    else if (distance > 1.0)
+    } else if (distance > 1.0)
     {
         distance = 1.0;
     }
 
-    //qDebug() << "DISTANCE: " << distance;
+    // qDebug() << "DISTANCE: " << distance;
 
     return distance;
 }
@@ -3790,8 +3448,7 @@ double JoyControlStick::calculateYAxisDistance(int axisYValue)
     if (distance < -1.0)
     {
         distance = -1.0;
-    }
-    else if (distance > 1.0)
+    } else if (distance > 1.0)
     {
         distance = 1.0;
     }
@@ -3801,8 +3458,7 @@ double JoyControlStick::calculateYAxisDistance(int axisYValue)
 
 double JoyControlStick::calculateEightWayDiagonalDistanceFromDeadZone()
 {
-    double temp = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getCurrentRawValue(),
-                                                                axisY->getCurrentRawValue());
+    double temp = calculateEightWayDiagonalDistanceFromDeadZone(axisX->getCurrentRawValue(), axisY->getCurrentRawValue());
     return temp;
 }
 
@@ -3848,10 +3504,10 @@ double JoyControlStick::calculateXDiagonalDeadZone(int axisXValue, int axisYValu
 {
     double diagonalDeadZone = 0.0;
     JoyStickDirections direction = calculateStickDirection(axisXValue, axisYValue);
-    //double angle2 = atan2(axisXValue, -axisYValue);
-    //double ang_sin = sin(angle2);
-    //double ang_cos = cos(angle2);
-    //int deadX = abs((int)floor(deadZone * ang_sin + 0.5));
+    // double angle2 = atan2(axisXValue, -axisYValue);
+    // double ang_sin = sin(angle2);
+    // double ang_cos = cos(angle2);
+    // int deadX = abs((int)floor(deadZone * ang_sin + 0.5));
 
     if (diagonalRange < 90)
     {
@@ -3859,44 +3515,39 @@ double JoyControlStick::calculateXDiagonalDeadZone(int axisXValue, int axisYValu
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(3);
-            //double minangle = tempangles.at(1);
+            // double minangle = tempangles.at(1);
             double mindeadX = fabs(deadZone * cos(maxangle * PI / 180.0));
-            //double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
+            // double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
             diagonalDeadZone = mindeadX;
-        }
-        else if (direction == StickRightDown || direction == StickDown)
+        } else if (direction == StickRightDown || direction == StickDown)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(5);
-            //double minangle = tempangles.at(4);
+            // double minangle = tempangles.at(4);
             double mindeadX = fabs(deadZone * cos((maxangle - 90.0) * PI / 180.0));
-            //double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
+            // double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
             diagonalDeadZone = mindeadX;
-        }
-        else if (direction == StickLeftDown || direction == StickLeft)
+        } else if (direction == StickLeftDown || direction == StickLeft)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(7);
-            //double minangle = tempangles.at(6);
+            // double minangle = tempangles.at(6);
             double mindeadX = fabs(deadZone * cos((maxangle - 180.0) * PI / 180.0));
-            //double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
+            // double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
             diagonalDeadZone = mindeadX;
-        }
-        else if (direction == StickLeftUp || direction == StickUp)
+        } else if (direction == StickLeftUp || direction == StickUp)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
             double maxangle = tempangles.at(1);
-            //double minangle = tempangles.at(8);
+            // double minangle = tempangles.at(8);
             double mindeadX = fabs(deadZone * cos((maxangle - 270.0) * PI / 180.0));
-            //double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
+            // double currentDeadX = qMax(mindeadX, static_cast<double>(deadX));
             diagonalDeadZone = mindeadX;
-        }
-        else
+        } else
         {
             diagonalDeadZone = 0.0;
         }
-    }
-    else
+    } else
     {
         diagonalDeadZone = 0.0;
     }
@@ -3908,55 +3559,50 @@ double JoyControlStick::calculateYDiagonalDeadZone(int axisXValue, int axisYValu
 {
     double diagonalDeadZone = 0.0;
     JoyStickDirections direction = calculateStickDirection(axisXValue, axisYValue);
-    //double angle2 = atan2(axisXValue, -axisYValue);
-    //double ang_sin = sin(angle2);
-    //double ang_cos = cos(angle2);
-    //int deadY = abs(floor(deadZone * ang_cos + 0.5));
+    // double angle2 = atan2(axisXValue, -axisYValue);
+    // double ang_sin = sin(angle2);
+    // double ang_cos = cos(angle2);
+    // int deadY = abs(floor(deadZone * ang_cos + 0.5));
 
     if (diagonalRange < 90)
     {
         if (direction == StickRightUp || direction == StickUp)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
-            //double maxangle = tempangles.at(3);
+            // double maxangle = tempangles.at(3);
             double minangle = tempangles.at(1);
             double mindeadY = fabs(deadZone * sin(minangle * PI / 180.0));
-            //double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
+            // double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
             diagonalDeadZone = mindeadY;
-        }
-        else if (direction == StickRightDown || direction == StickRight)
+        } else if (direction == StickRightDown || direction == StickRight)
         {
             QList<double> tempfuck = getDiagonalZoneAngles();
-            //double maxangle = tempfuck.at(5);
+            // double maxangle = tempfuck.at(5);
             double minangle = tempfuck.at(4);
             double mindeadY = fabs(deadZone * sin((minangle - 90.0) * PI / 180.0));
-            //double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
+            // double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
             diagonalDeadZone = mindeadY;
-        }
-        else if (direction == StickLeftDown || direction == StickDown)
+        } else if (direction == StickLeftDown || direction == StickDown)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
-            //double maxangle = tempangles.at(7);
+            // double maxangle = tempangles.at(7);
             double minangle = tempangles.at(6);
             double mindeadY = fabs(deadZone * sin((minangle - 180.0) * PI / 180.0));
-            //double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
+            // double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
             diagonalDeadZone = mindeadY;
-        }
-        else if (direction == StickLeftUp || direction == StickLeft)
+        } else if (direction == StickLeftUp || direction == StickLeft)
         {
             QList<double> tempangles = getDiagonalZoneAngles();
-            //double maxangle = tempangles.at(1);
+            // double maxangle = tempangles.at(1);
             double minangle = tempangles.at(8);
             double mindeadY = fabs(deadZone * sin((minangle - 270.0) * PI / 180.0));
-            //double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
+            // double currentDeadY = qMax(static_cast<double>(deadY), mindeadY);
             diagonalDeadZone = mindeadY;
-        }
-        else
+        } else
         {
             diagonalDeadZone = 0.0;
         }
-    }
-    else
+    } else
     {
         diagonalDeadZone = 0.0;
     }
@@ -3979,8 +3625,7 @@ double JoyControlStick::getSpringDeadCircleX()
         angle2 = atan2(axisX->getLastKnownRawValue(), -axisY->getLastKnownRawValue());
         axis1Value = axisX->getLastKnownRawValue();
         axis2Value = axisY->getLastKnownRawValue();
-    }
-    else
+    } else
     {
         // Use current axis values to find stick angle.
         angle2 = atan2(axisX->getCurrentRawValue(), -axisY->getCurrentRawValue());
@@ -3994,12 +3639,12 @@ double JoyControlStick::getSpringDeadCircleX()
     int deadX = abs((int)floor(deadZone * ang_sin + 0.5));
     double diagonalDeadX = calculateXDiagonalDeadZone(axis1Value, axis2Value);
 
-    double squareStickFullPhi = qMin(ang_sin ? 1/fabs(ang_sin) : 2, ang_cos ? 1/fabs(ang_cos) : 2);
+    double squareStickFullPhi = qMin(ang_sin ? 1 / fabs(ang_sin) : 2, ang_cos ? 1 / fabs(ang_cos) : 2);
     double circle = this->circle;
     double circleStickFull = (squareStickFullPhi - 1) * circle + 1;
 
     double adjustedDeadXZone = circleStickFull > 1.0 ? (deadX / circleStickFull) : deadX;
-    //result = adjustedDeadXZone / static_cast<double>(deadZone);
+    // result = adjustedDeadXZone / static_cast<double>(deadZone);
     double finalDeadZoneX = adjustedDeadXZone - diagonalDeadX;
     double maxRange = static_cast<double>(deadZone - diagonalDeadX);
 
@@ -4026,8 +3671,7 @@ double JoyControlStick::getSpringDeadCircleY()
         angle2 = atan2(axisX->getLastKnownRawValue(), -axisY->getLastKnownRawValue());
         axis1Value = axisX->getLastKnownRawValue();
         axis2Value = axisY->getLastKnownRawValue();
-    }
-    else
+    } else
     {
         // Use current axis values to find stick angle.
         angle2 = atan2(axisX->getCurrentRawValue(), -axisY->getCurrentRawValue());
@@ -4041,12 +3685,12 @@ double JoyControlStick::getSpringDeadCircleY()
     int deadY = abs((int)floor(deadZone * ang_cos + 0.5));
     double diagonalDeadY = calculateYDiagonalDeadZone(axis1Value, axis2Value);
 
-    double squareStickFullPhi = qMin(ang_sin ? 1/fabs(ang_sin) : 2, ang_cos ? 1/fabs(ang_cos) : 2);
+    double squareStickFullPhi = qMin(ang_sin ? 1 / fabs(ang_sin) : 2, ang_cos ? 1 / fabs(ang_cos) : 2);
     double circle = this->circle;
     double circleStickFull = (squareStickFullPhi - 1) * circle + 1;
 
     double adjustedDeadYZone = circleStickFull > 1.0 ? (deadY / circleStickFull) : deadY;
-    //result = adjustedDeadYZone / static_cast<double>(deadZone);
+    // result = adjustedDeadYZone / static_cast<double>(deadZone);
     double finalDeadZoneY = adjustedDeadYZone - diagonalDeadY;
     double maxRange = static_cast<double>(deadZone - diagonalDeadY);
 
@@ -4060,7 +3704,7 @@ double JoyControlStick::getSpringDeadCircleY()
 
 void JoyControlStick::setButtonsExtraAccelCurve(JoyButton::JoyExtraAccelerationCurve curve)
 {
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -4075,7 +3719,7 @@ JoyButton::JoyExtraAccelerationCurve JoyControlStick::getButtonsExtraAcceleratio
 {
     JoyButton::JoyExtraAccelerationCurve result = JoyButton::LinearAccelCurve;
 
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(getApplicableButtons());
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(getApplicableButtons());
     while (iter.hasNext())
     {
         if (!iter.hasPrevious())
@@ -4085,8 +3729,7 @@ JoyButton::JoyExtraAccelerationCurve JoyControlStick::getButtonsExtraAcceleratio
             {
                 result = button->getExtraAccelerationCurve();
             }
-        }
-        else
+        } else
         {
             JoyControlStickButton *button = iter.next().value();
             if (button)
@@ -4104,11 +3747,10 @@ JoyButton::JoyExtraAccelerationCurve JoyControlStick::getButtonsExtraAcceleratio
     return result;
 }
 
-void
-JoyControlStick::setDirButtonsUpdateInitAccel(JoyControlStick::JoyStickDirections direction, bool state)
+void JoyControlStick::setDirButtonsUpdateInitAccel(JoyControlStick::JoyStickDirections direction, bool state)
 {
-    QHash<JoyStickDirections, JoyControlStickButton*> apphash = getButtonsForDirection(direction);
-    QHashIterator<JoyStickDirections, JoyControlStickButton*> iter(apphash);
+    QHash<JoyStickDirections, JoyControlStickButton *> apphash = getButtonsForDirection(direction);
+    QHashIterator<JoyStickDirections, JoyControlStickButton *> iter(apphash);
     while (iter.hasNext())
     {
         JoyControlStickButton *button = iter.next().value();
@@ -4116,11 +3758,10 @@ JoyControlStick::setDirButtonsUpdateInitAccel(JoyControlStick::JoyStickDirection
     }
 }
 
-
-QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*>
+QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *>
 JoyControlStick::getButtonsForDirection(JoyControlStick::JoyStickDirections direction)
 {
-    QHash<JoyStickDirections, JoyControlStickButton*> temphash;
+    QHash<JoyStickDirections, JoyControlStickButton *> temphash;
     if (currentMode == StandardMode)
     {
         if (direction & JoyControlStick::StickUp)
@@ -4146,28 +3787,21 @@ JoyControlStick::getButtonsForDirection(JoyControlStick::JoyStickDirections dire
             JoyControlStickButton *button = this->buttons.value(JoyControlStick::StickLeft);
             temphash.insert(JoyControlStick::StickLeft, button);
         }
-    }
-    else if (currentMode == EightWayMode)
+    } else if (currentMode == EightWayMode)
     {
         temphash.insert(direction, buttons.value(direction));
-    }
-    else if (currentMode == FourWayCardinal)
+    } else if (currentMode == FourWayCardinal)
     {
-        if (direction == JoyControlStick::StickUp ||
-            direction == JoyControlStick::StickDown ||
-            direction == JoyControlStick::StickLeft ||
-            direction == JoyControlStick::StickRight)
+        if (direction == JoyControlStick::StickUp || direction == JoyControlStick::StickDown ||
+            direction == JoyControlStick::StickLeft || direction == JoyControlStick::StickRight)
         {
             temphash.insert(direction, buttons.value(direction));
         }
 
-    }
-    else if (currentMode == FourWayDiagonal)
+    } else if (currentMode == FourWayDiagonal)
     {
-        if (direction == JoyControlStick::StickRightUp ||
-            direction == JoyControlStick::StickRightDown ||
-            direction == JoyControlStick::StickLeftDown ||
-            direction == JoyControlStick::StickLeftUp)
+        if (direction == JoyControlStick::StickRightUp || direction == JoyControlStick::StickRightDown ||
+            direction == JoyControlStick::StickLeftDown || direction == JoyControlStick::StickLeftUp)
         {
             temphash.insert(direction, buttons.value(direction));
         }

@@ -23,18 +23,18 @@
 class SpringModeRegionPreview : public QWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit SpringModeRegionPreview(int width = 0, int height = 0, QWidget *parent = 0);
 
-protected:
+  protected:
     void paintEvent(QPaintEvent *event);
 
     int adjustSpringSizeWidth(int width);
     int adjustSpringSizeHeight(int height);
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     void setSpringWidth(int width);
     void setSpringHeight(int height);
     void setSpringSize(int width, int height);

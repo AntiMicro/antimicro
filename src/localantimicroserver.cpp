@@ -15,14 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QTextStream>
 #include <QLocalSocket>
+#include <QTextStream>
 
-#include "localantimicroserver.h"
 #include "common.h"
+#include "localantimicroserver.h"
 
-LocalAntiMicroServer::LocalAntiMicroServer(QObject *parent) :
-    QObject(parent)
+LocalAntiMicroServer::LocalAntiMicroServer(QObject *parent)
+    : QObject(parent)
 {
     localServer = new QLocalServer(this);
 }
@@ -37,8 +37,7 @@ void LocalAntiMicroServer::startLocalServer()
         QString message("Could not start signal server. Profiles cannot be reloaded\n");
         message.append("from command-line");
         errorstream << tr(message.toStdString().c_str()) << endl;
-    }
-    else
+    } else
     {
         connect(localServer, SIGNAL(newConnection()), this, SLOT(handleOutsideConnection()));
     }
@@ -54,12 +53,6 @@ void LocalAntiMicroServer::handleOutsideConnection()
     }
 }
 
-void LocalAntiMicroServer::handleSocketDisconnect()
-{
-    emit clientdisconnect();
-}
+void LocalAntiMicroServer::handleSocketDisconnect() { emit clientdisconnect(); }
 
-void LocalAntiMicroServer::close()
-{
-    localServer->close();
-}
+void LocalAntiMicroServer::close() { localServer->close(); }

@@ -23,12 +23,12 @@
 class JoyGradientButton : public JoyButton
 {
     Q_OBJECT
-public:
-    explicit JoyGradientButton(int index, int originset, SetJoystick *parentSet, QObject *parent=0);
+  public:
+    explicit JoyGradientButton(int index, int originset, SetJoystick *parentSet, QObject *parent = 0);
 
-signals:
+  signals:
 
-protected slots:
+  protected slots:
     virtual void turboEvent();
     virtual void wheelEventVertical();
     virtual void wheelEventHorizontal();

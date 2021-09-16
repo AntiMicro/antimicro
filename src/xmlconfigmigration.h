@@ -27,24 +27,23 @@
 class XMLConfigMigration : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit XMLConfigMigration(QXmlStreamReader *reader, QObject *parent = 0);
 
     bool requiresMigration();
     QString migrate();
 
-protected:
+  protected:
     QXmlStreamReader *reader;
     int fileVersion;
 
-private:
+  private:
     QString readConfigToString();
     QString version0006Migration();
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // XMLCONFIGMIGRATION_H

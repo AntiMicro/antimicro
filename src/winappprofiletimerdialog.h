@@ -12,20 +12,20 @@ class WinAppProfileTimerDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     explicit WinAppProfileTimerDialog(QWidget *parent = 0);
     ~WinAppProfileTimerDialog();
 
-protected:
+  protected:
     QTimer appTimer;
 
-//slots:
-//    void
+    // slots:
+    //    void
 
-private:
+  private:
     Ui::WinAppProfileTimerDialog *ui;
 
-private slots:
+  private slots:
     void startTimer();
 };
 

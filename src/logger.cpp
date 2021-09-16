@@ -19,7 +19,7 @@
 
 #include "logger.h"
 
-Logger* Logger::instance = 0;
+Logger *Logger::instance = 0;
 
 /**
  * @brief Outputs log messages to a given text stream. Client code
@@ -29,8 +29,8 @@ Logger* Logger::instance = 0;
  * @param Messages based of a given output level or lower will be logged
  * @param Parent object
  */
-Logger::Logger(QTextStream *stream, LogLevel outputLevel, QObject *parent) :
-    QObject(parent)
+Logger::Logger(QTextStream *stream, LogLevel outputLevel, QObject *parent)
+    : QObject(parent)
 {
     instance = this;
     instance->outputStream = stream;
@@ -53,9 +53,8 @@ Logger::Logger(QTextStream *stream, LogLevel outputLevel, QObject *parent) :
  * @param Messages based of a given output level or lower will be logged
  * @param Parent object
  */
-Logger::Logger(QTextStream *stream, QTextStream *errorStream,
-               LogLevel outputLevel, QObject *parent) :
-    QObject(parent)
+Logger::Logger(QTextStream *stream, QTextStream *errorStream, LogLevel outputLevel, QObject *parent)
+    : QObject(parent)
 {
     instance = this;
     instance->outputStream = stream;
@@ -115,7 +114,7 @@ void Logger::setCurrentStream(QTextStream *stream)
     instance->outputStream = stream;
 }
 
-QTextStream* Logger::getCurrentStream()
+QTextStream *Logger::getCurrentStream()
 {
     Q_ASSERT(instance != 0);
 
@@ -137,7 +136,7 @@ void Logger::setCurrentErrorStream(QTextStream *stream)
     instance->errorStream = stream;
 }
 
-QTextStream* Logger::getCurrentErrorStream()
+QTextStream *Logger::getCurrentErrorStream()
 {
     Q_ASSERT(instance != 0);
 
@@ -311,10 +310,7 @@ void Logger::logMessage(LogMessage msg)
  * @brief Get the associated timer used by the logger.
  * @return QTimer instance
  */
-QTimer* Logger::getLogTimer()
-{
-    return &pendingTimer;
-}
+QTimer *Logger::getLogTimer() { return &pendingTimer; }
 
 /**
  * @brief Stop the logger's timer if it is currently active.
@@ -364,28 +360,31 @@ void Logger::startPendingTimer()
     }
 }
 
-void Logger::setCurrentLogFile(QString filename) {
-  Q_ASSERT(instance != 0);
-  
-  if( instance->outputFile.isOpen() ) {
-    instance->closeLogger(true);
-  }
-  instance->outputFile.setFileName( filename );
-  instance->outputFile.open( QIODevice::WriteOnly | QIODevice::Append );
-  instance->outFileStream.setDevice( &instance->outputFile );
-  instance->setCurrentStream( &instance->outFileStream );
-  instance->LogInfo(QObject::tr("Logging started"), true, true);
+void Logger::setCurrentLogFile(QString filename)
+{
+    Q_ASSERT(instance != 0);
+
+    if (instance->outputFile.isOpen())
+    {
+        instance->closeLogger(true);
+    }
+    instance->outputFile.setFileName(filename);
+    instance->outputFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    instance->outFileStream.setDevice(&instance->outputFile);
+    instance->setCurrentStream(&instance->outFileStream);
+    instance->LogInfo(QObject::tr("Logging started"), true, true);
 }
 
-void Logger::setCurrentErrorLogFile(QString filename) {
-  Q_ASSERT(instance != 0);
+void Logger::setCurrentErrorLogFile(QString filename)
+{
+    Q_ASSERT(instance != 0);
 
-  if( instance->errorFile.isOpen() ) {
-    instance->closeErrorLogger(true);
-  }
-  instance->errorFile.setFileName( filename );
-  instance->errorFile.open( QIODevice::WriteOnly | QIODevice::Append );
-  instance->outErrorFileStream.setDevice( &instance->errorFile );
-  instance->setCurrentErrorStream( &instance->outErrorFileStream );
+    if (instance->errorFile.isOpen())
+    {
+        instance->closeErrorLogger(true);
+    }
+    instance->errorFile.setFileName(filename);
+    instance->errorFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    instance->outErrorFileStream.setDevice(&instance->errorFile);
+    instance->setCurrentErrorStream(&instance->outErrorFileStream);
 }
-

@@ -18,18 +18,18 @@
 #ifndef QTUINPUTKEYMAPPER_H
 #define QTUINPUTKEYMAPPER_H
 
-#include <QObject>
 #include <QHash>
+#include <QObject>
 
 #include "qtkeymapperbase.h"
 
 class QtUInputKeyMapper : public QtKeyMapperBase
 {
     Q_OBJECT
-public:
+  public:
     explicit QtUInputKeyMapper(QObject *parent = 0);
 
-protected:
+  protected:
     void populateMappingHashes();
     void populateCharKeyInformation();
 
@@ -38,10 +38,9 @@ protected:
     void populateNumPadHashes();
     void populateSpecialCharHashes();
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // QTUINPUTKEYMAPPER_H

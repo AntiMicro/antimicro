@@ -15,18 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QFileInfo>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QMessageBox>
 
+#include "common.h"
 #include "editalldefaultautoprofiledialog.h"
 #include "ui_editalldefaultautoprofiledialog.h"
-#include "common.h"
 
 EditAllDefaultAutoProfileDialog::EditAllDefaultAutoProfileDialog(AutoProfileInfo *info, AntiMicroSettings *settings,
-                                                                 QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::EditAllDefaultAutoProfileDialog)
+                                                                 QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::EditAllDefaultAutoProfileDialog)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -43,15 +43,13 @@ EditAllDefaultAutoProfileDialog::EditAllDefaultAutoProfileDialog(AutoProfileInfo
     connect(this, SIGNAL(accepted()), this, SLOT(saveAutoProfileInformation()));
 }
 
-EditAllDefaultAutoProfileDialog::~EditAllDefaultAutoProfileDialog()
-{
-    delete ui;
-}
+EditAllDefaultAutoProfileDialog::~EditAllDefaultAutoProfileDialog() { delete ui; }
 
 void EditAllDefaultAutoProfileDialog::openProfileBrowseDialog()
 {
     QString lookupDir = PadderCommon::preferredProfileDir(settings);
-    QString filename = QFileDialog::getOpenFileName(this, tr("Open Config"), lookupDir, QString("Config Files (*.amgp *.xml)"));
+    QString filename =
+        QFileDialog::getOpenFileName(this, tr("Open Config"), lookupDir, QString("Config Files (*.amgp *.xml)"));
     if (!filename.isNull() && !filename.isEmpty())
     {
         ui->profileLineEdit->setText(filename);
@@ -65,10 +63,7 @@ void EditAllDefaultAutoProfileDialog::saveAutoProfileInformation()
     info->setActive(true);
 }
 
-AutoProfileInfo* EditAllDefaultAutoProfileDialog::getAutoProfile()
-{
-    return info;
-}
+AutoProfileInfo *EditAllDefaultAutoProfileDialog::getAutoProfile() { return info; }
 
 void EditAllDefaultAutoProfileDialog::accept()
 {
@@ -88,8 +83,7 @@ void EditAllDefaultAutoProfileDialog::accept()
     if (validForm)
     {
         QDialog::accept();
-    }
-    else
+    } else
     {
         QMessageBox msgBox;
         msgBox.setText(errorString);

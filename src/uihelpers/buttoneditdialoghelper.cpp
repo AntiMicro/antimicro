@@ -17,22 +17,18 @@
 
 #include "buttoneditdialoghelper.h"
 
-ButtonEditDialogHelper::ButtonEditDialogHelper(JoyButton *button, QObject *parent) :
-    QObject(parent)
+ButtonEditDialogHelper::ButtonEditDialogHelper(JoyButton *button, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(button);
 
     this->button = button;
 }
 
-void ButtonEditDialogHelper::setAssignedSlot(int code, unsigned int alias,
-                                             JoyButtonSlot::JoySlotInputAction mode)
+void ButtonEditDialogHelper::setAssignedSlot(int code, unsigned int alias, JoyButtonSlot::JoySlotInputAction mode)
 {
     button->clearSlotsEventReset(false);
     button->setAssignedSlot(code, alias, mode);
 }
 
-void ButtonEditDialogHelper::setUseTurbo(bool useTurbo)
-{
-    button->setUseTurbo(useTurbo);
-}
+void ButtonEditDialogHelper::setUseTurbo(bool useTurbo) { button->setUseTurbo(useTurbo); }

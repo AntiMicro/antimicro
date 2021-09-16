@@ -17,8 +17,8 @@
 
 #include "dpadeditdialoghelper.h"
 
-DPadEditDialogHelper::DPadEditDialogHelper(JoyDPad *dpad, QObject *parent) :
-    QObject(parent)
+DPadEditDialogHelper::DPadEditDialogHelper(JoyDPad *dpad, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(dpad);
 
@@ -29,7 +29,7 @@ void DPadEditDialogHelper::setPendingSlots(QHash<JoyDPadButton::JoyDPadDirection
 {
     pendingSlots.clear();
 
-    QHashIterator<JoyDPadButton::JoyDPadDirections, JoyButtonSlot*> iter(*tempSlots);
+    QHashIterator<JoyDPadButton::JoyDPadDirections, JoyButtonSlot *> iter(*tempSlots);
     while (iter.hasNext())
     {
         iter.next();
@@ -40,16 +40,13 @@ void DPadEditDialogHelper::setPendingSlots(QHash<JoyDPadButton::JoyDPadDirection
     }
 }
 
-void DPadEditDialogHelper::clearPendingSlots()
-{
-    pendingSlots.clear();
-}
+void DPadEditDialogHelper::clearPendingSlots() { pendingSlots.clear(); }
 
 void DPadEditDialogHelper::setFromPendingSlots()
 {
     if (!pendingSlots.isEmpty())
     {
-        QHashIterator<JoyDPadButton::JoyDPadDirections, JoyButtonSlot*> iter(pendingSlots);
+        QHashIterator<JoyDPadButton::JoyDPadDirections, JoyButtonSlot *> iter(pendingSlots);
         while (iter.hasNext())
         {
             iter.next();
@@ -60,8 +57,7 @@ void DPadEditDialogHelper::setFromPendingSlots()
                 JoyDPadButton::JoyDPadDirections tempDir = iter.key();
                 JoyDPadButton *button = dpad->getJoyButton(tempDir);
                 button->clearSlotsEventReset(false);
-                button->setAssignedSlot(slot->getSlotCode(), slot->getSlotCodeAlias(),
-                                        slot->getSlotMode());
+                button->setAssignedSlot(slot->getSlotCode(), slot->getSlotCodeAlias(), slot->getSlotMode());
                 slot->deleteLater();
             }
         }
@@ -70,8 +66,8 @@ void DPadEditDialogHelper::setFromPendingSlots()
 
 void DPadEditDialogHelper::clearButtonsSlotsEventReset()
 {
-    QHash<int, JoyDPadButton*> *buttons = dpad->getButtons();
-    QHashIterator<int, JoyDPadButton*> iter(*buttons);
+    QHash<int, JoyDPadButton *> *buttons = dpad->getButtons();
+    QHashIterator<int, JoyDPadButton *> iter(*buttons);
     while (iter.hasNext())
     {
         JoyDPadButton *button = iter.next().value();

@@ -16,14 +16,14 @@
  */
 
 #include "joydpadbutton.h"
-#include "joydpad.h"
 #include "event.h"
+#include "joydpad.h"
 
 const QString JoyDPadButton::xmlName = "dpadbutton";
 
 // Initially, qualify direction as the button's index
-JoyDPadButton::JoyDPadButton(int direction, int originset, JoyDPad* dpad, SetJoystick *parentSet, QObject *parent) :
-    JoyButton(direction, originset, parentSet, parent)
+JoyDPadButton::JoyDPadButton(int direction, int originset, JoyDPad *dpad, SetJoystick *parentSet, QObject *parent)
+    : JoyButton(direction, originset, parentSet, parent)
 {
     this->direction = direction;
     this->dpad = dpad;
@@ -31,36 +31,29 @@ JoyDPadButton::JoyDPadButton(int direction, int originset, JoyDPad* dpad, SetJoy
 
 QString JoyDPadButton::getDirectionName()
 {
-    QString label = QString ();
+    QString label = QString();
     if (direction == DpadUp)
     {
         label.append(tr("Up"));
-    }
-    else if (direction == DpadDown)
+    } else if (direction == DpadDown)
     {
         label.append(tr("Down"));
-    }
-    else if (direction == DpadLeft)
+    } else if (direction == DpadLeft)
     {
         label.append(tr("Left"));
-    }
-    else if (direction == DpadRight)
+    } else if (direction == DpadRight)
     {
         label.append(tr("Right"));
-    }
-    else if (direction == DpadLeftUp)
+    } else if (direction == DpadLeftUp)
     {
         label.append(tr("Up")).append("+").append(tr("Left"));
-    }
-    else if (direction == DpadLeftDown)
+    } else if (direction == DpadLeftDown)
     {
         label.append(tr("Down")).append("+").append(tr("Left"));
-    }
-    else if (direction == DpadRightUp)
+    } else if (direction == DpadRightUp)
     {
         label.append(tr("Up")).append("+").append(tr("Right"));
-    }
-    else if (direction == DpadRightDown)
+    } else if (direction == DpadRightDown)
     {
         label.append(tr("Down")).append("+").append(tr("Right"));
     }
@@ -68,15 +61,9 @@ QString JoyDPadButton::getDirectionName()
     return label;
 }
 
-QString JoyDPadButton::getXmlName()
-{
-    return this->xmlName;
-}
+QString JoyDPadButton::getXmlName() { return this->xmlName; }
 
-int JoyDPadButton::getRealJoyNumber()
-{
-    return index;
-}
+int JoyDPadButton::getRealJoyNumber() { return index; }
 
 QString JoyDPadButton::getPartialName(bool forceFullFormat, bool displayNames)
 {
@@ -88,16 +75,14 @@ QString JoyDPadButton::getPartialName(bool forceFullFormat, bool displayNames)
             temp.append(tr("Button")).append(" ");
         }
         temp.append(buttonName);
-    }
-    else if (!defaultButtonName.isEmpty() && displayNames)
+    } else if (!defaultButtonName.isEmpty() && displayNames)
     {
         if (forceFullFormat)
         {
             temp.append(tr("Button")).append(" ");
         }
         temp.append(defaultButtonName);
-    }
-    else
+    } else
     {
         temp.append(tr("Button")).append(" ");
         temp.append(getDirectionName());
@@ -105,11 +90,7 @@ QString JoyDPadButton::getPartialName(bool forceFullFormat, bool displayNames)
     return temp;
 }
 
-
-void JoyDPadButton::reset()
-{
-    JoyButton::reset();
-}
+void JoyDPadButton::reset() { JoyButton::reset(); }
 
 void JoyDPadButton::reset(int index)
 {
@@ -127,16 +108,14 @@ void JoyDPadButton::setChangeSetCondition(SetChangeCondition condition, bool pas
         {
             // Set new condition
             emit setAssignmentChanged(index, this->dpad->getJoyNumber(), setSelection, condition);
-        }
-        else if (setSelectionCondition == SetChangeWhileHeld || setSelectionCondition == SetChangeTwoWay)
+        } else if (setSelectionCondition == SetChangeWhileHeld || setSelectionCondition == SetChangeTwoWay)
         {
             // Remove old condition
             emit setAssignmentChanged(index, this->dpad->getJoyNumber(), setSelection, SetChangeDisabled);
         }
 
         setSelectionCondition = condition;
-    }
-    else if (passive)
+    } else if (passive)
     {
         setSelectionCondition = condition;
     }
@@ -153,12 +132,6 @@ void JoyDPadButton::setChangeSetCondition(SetChangeCondition condition, bool pas
     }
 }
 
-JoyDPad* JoyDPadButton::getDPad()
-{
-    return dpad;
-}
+JoyDPad *JoyDPadButton::getDPad() { return dpad; }
 
-int JoyDPadButton::getDirection()
-{
-    return direction;
-}
+int JoyDPadButton::getDirection() { return direction; }

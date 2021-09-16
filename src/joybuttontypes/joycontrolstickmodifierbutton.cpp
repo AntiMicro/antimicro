@@ -24,8 +24,9 @@
 
 const QString JoyControlStickModifierButton::xmlName = "stickmodifierbutton";
 
-JoyControlStickModifierButton::JoyControlStickModifierButton(JoyControlStick *stick, int originset, SetJoystick *parentSet, QObject *parent) :
-    JoyGradientButton(0, originset, parentSet, parent)
+JoyControlStickModifierButton::JoyControlStickModifierButton(JoyControlStick *stick, int originset, SetJoystick *parentSet,
+                                                             QObject *parent)
+    : JoyGradientButton(0, originset, parentSet, parent)
 {
     this->stick = stick;
 }
@@ -44,8 +45,7 @@ QString JoyControlStickModifierButton::getPartialName(bool forceFullFormat, bool
         }
 
         temp.append(buttonName);
-    }
-    else if (!defaultButtonName.isEmpty())
+    } else if (!defaultButtonName.isEmpty())
     {
         if (forceFullFormat)
         {
@@ -53,37 +53,27 @@ QString JoyControlStickModifierButton::getPartialName(bool forceFullFormat, bool
         }
 
         temp.append(defaultButtonName);
-    }
-    else
+    } else
     {
         temp.append(tr("Modifier"));
     }
     return temp;
 }
 
-QString JoyControlStickModifierButton::getXmlName()
-{
-    return this->xmlName;
-}
+QString JoyControlStickModifierButton::getXmlName() { return this->xmlName; }
 
 /**
  * @brief Get the distance that an element is away from its assigned
  *     dead zone
  * @return Normalized distance away from dead zone
  */
-double JoyControlStickModifierButton::getDistanceFromDeadZone()
-{
-    return stick->calculateDirectionalDistance();
-}
+double JoyControlStickModifierButton::getDistanceFromDeadZone() { return stick->calculateDirectionalDistance(); }
 
 /**
  * @brief Get the distance factor that should be used for mouse movement
  * @return Distance factor that should be used for mouse movement
  */
-double JoyControlStickModifierButton::getMouseDistanceFromDeadZone()
-{
-    return getDistanceFromDeadZone();
-}
+double JoyControlStickModifierButton::getMouseDistanceFromDeadZone() { return getDistanceFromDeadZone(); }
 
 void JoyControlStickModifierButton::setChangeSetCondition(SetChangeCondition condition, bool passive)
 {
@@ -97,10 +87,7 @@ void JoyControlStickModifierButton::setChangeSetCondition(SetChangeCondition con
 }
 */
 
-JoyControlStick* JoyControlStickModifierButton::getStick()
-{
-    return stick;
-}
+JoyControlStick *JoyControlStickModifierButton::getStick() { return stick; }
 
 /**
  * @brief Set the turbo mode that the button should use
@@ -120,15 +107,9 @@ void JoyControlStickModifierButton::setTurboMode(TurboMode mode)
  *     type checking.
  * @return Status of being part of a real controller axis
  */
-bool JoyControlStickModifierButton::isPartRealAxis()
-{
-    return true;
-}
+bool JoyControlStickModifierButton::isPartRealAxis() { return true; }
 
-bool JoyControlStickModifierButton::isModifierButton()
-{
-    return true;
-}
+bool JoyControlStickModifierButton::isModifierButton() { return true; }
 
 double JoyControlStickModifierButton::getAccelerationDistance()
 {

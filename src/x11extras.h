@@ -18,17 +18,18 @@
 #ifndef X11EXTRAS_H
 #define X11EXTRAS_H
 
-#include <QObject>
-#include <QString>
 #include <QHash>
+#include <QObject>
 #include <QPoint>
+#include <QString>
 #include <X11/Xlib.h>
 
 class X11Extras : public QObject
 {
     Q_OBJECT
-public:
-    struct ptrInformation {
+  public:
+    struct ptrInformation
+    {
         long id;
         int threshold;
         int accelNum;
@@ -46,7 +47,7 @@ public:
     ~X11Extras();
 
     unsigned long appRootWindow(int screen = -1);
-    Display* display();
+    Display *display();
     bool hasValidDisplay();
     QString getDisplayString(QString xcodestring);
     int getApplicationPid(Window window);
@@ -69,15 +70,14 @@ public:
 
     static void setCustomDisplay(QString displayString);
 
-    static X11Extras* getInstance();
+    static X11Extras *getInstance();
     static void deleteInstance();
 
     static const QString mouseDeviceName;
     static const QString keyboardDeviceName;
     static const QString xtestMouseDeviceName;
 
-
-protected:
+  protected:
     explicit X11Extras(QObject *parent = 0);
 
     void populateKnownAliases();
@@ -90,9 +90,9 @@ protected:
     QHash<QString, QString> knownAliases;
     static QString _customDisplayString;
 
-signals:
-    
-public slots:
+  signals:
+
+  public slots:
     QPoint getPos();
 };
 

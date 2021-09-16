@@ -19,15 +19,15 @@
 #define MAINSETTINGSDIALOG_H
 
 #include <QDialog>
-#include <QTableWidgetItem>
 #include <QHash>
 #include <QList>
-#include <QSettings>
 #include <QMap>
+#include <QSettings>
+#include <QTableWidgetItem>
 
+#include "antimicrosettings.h"
 #include "autoprofileinfo.h"
 #include "inputdevice.h"
-#include "antimicrosettings.h"
 
 namespace Ui {
 class MainSettingsDialog;
@@ -37,13 +37,13 @@ class MainSettingsDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-    explicit MainSettingsDialog(AntiMicroSettings *settings, QList<InputDevice*> *devices, QWidget *parent = 0);
+  public:
+    explicit MainSettingsDialog(AntiMicroSettings *settings, QList<InputDevice *> *devices, QWidget *parent = 0);
     ~MainSettingsDialog();
 
-protected:
+  protected:
     void fillControllerMappingsTable();
-    void insertTempControllerMapping(QHash<QString, QList<QVariant> > &hash, QString newGUID);
+    void insertTempControllerMapping(QHash<QString, QList<QVariant>> &hash, QString newGUID);
     void checkLocaleChange();
     void populateAutoProfiles();
     void fillAutoProfilesTable(QString guid);
@@ -57,27 +57,27 @@ protected:
 
     // GUID, AutoProfileInfo*
     // Default profiles assigned to a specific device
-    QMap<QString, AutoProfileInfo*> defaultAutoProfiles;
+    QMap<QString, AutoProfileInfo *> defaultAutoProfiles;
     // GUID, QList<AutoProfileInfo*>
     // Profiles assigned with an association with an application
-    QMap<QString, QList<AutoProfileInfo*> > deviceAutoProfiles;
+    QMap<QString, QList<AutoProfileInfo *>> deviceAutoProfiles;
     // Path, QList<AutoProfileInfo*>
     // TODO: CHECK IF NEEDED ANYMORE
-    QMap<QString, QList<AutoProfileInfo*> > exeAutoProfiles;
+    QMap<QString, QList<AutoProfileInfo *>> exeAutoProfiles;
 
-    QList<AutoProfileInfo*> defaultList;
-    QList<AutoProfileInfo*> profileList;
+    QList<AutoProfileInfo *> defaultList;
+    QList<AutoProfileInfo *> profileList;
 
-    AutoProfileInfo* allDefaultProfile;
-    QList<InputDevice*> *connectedDevices;
+    AutoProfileInfo *allDefaultProfile;
+    QList<InputDevice *> *connectedDevices;
 
-private:
+  private:
     Ui::MainSettingsDialog *ui;
 
-signals:
+  signals:
     void changeLanguage(QString language);
 
-protected slots:
+  protected slots:
     void mappingsTableItemChanged(QTableWidgetItem *item);
     void insertMappingRow();
     void deleteMappingRow();

@@ -17,10 +17,10 @@
 
 #include "inputdevicebitarraystatus.h"
 
-InputDeviceBitArrayStatus::InputDeviceBitArrayStatus(InputDevice *device, bool readCurrent, QObject *parent) :
-    QObject(parent)
+InputDeviceBitArrayStatus::InputDeviceBitArrayStatus(InputDevice *device, bool readCurrent, QObject *parent)
+    : QObject(parent)
 {
-    for (int i=0; i < device->getNumberRawAxes(); i++)
+    for (int i = 0; i < device->getNumberRawAxes(); i++)
     {
         SetJoystick *currentSet = device->getActiveSetJoystick();
         JoyAxis *axis = currentSet->getJoyAxis(i);
@@ -28,22 +28,20 @@ InputDeviceBitArrayStatus::InputDeviceBitArrayStatus(InputDevice *device, bool r
         if (axis && readCurrent)
         {
             axesStatus.append(!axis->inDeadZone(axis->getCurrentRawValue()) ? true : false);
-        }
-        else
+        } else
         {
             axesStatus.append(false);
         }
     }
 
-    for (int i=0; i < device->getNumberRawHats(); i++)
+    for (int i = 0; i < device->getNumberRawHats(); i++)
     {
         SetJoystick *currentSet = device->getActiveSetJoystick();
         JoyDPad *dpad = currentSet->getJoyDPad(i);
         if (dpad && readCurrent)
         {
             hatButtonStatus.append(dpad->getCurrentDirection() != JoyDPadButton::DpadCentered ? true : false);
-        }
-        else
+        } else
         {
             hatButtonStatus.append(false);
         }
@@ -52,7 +50,7 @@ InputDeviceBitArrayStatus::InputDeviceBitArrayStatus(InputDevice *device, bool r
     buttonStatus.resize(device->getNumberRawButtons());
     buttonStatus.fill(0);
 
-    for (int i=0; i < device->getNumberRawButtons(); i++)
+    for (int i = 0; i < device->getNumberRawButtons(); i++)
     {
         SetJoystick *currentSet = device->getActiveSetJoystick();
         JoyButton *button = currentSet->getJoyButton(i);
@@ -95,19 +93,19 @@ QBitArray InputDeviceBitArrayStatus::generateFinalBitArray()
     QBitArray aggregateBitArray(totalArraySize, false);
     unsigned int currentBit = 0;
 
-    for (int i=0; i < axesStatus.size(); i++)
+    for (int i = 0; i < axesStatus.size(); i++)
     {
         aggregateBitArray.setBit(currentBit, axesStatus.at(i));
         currentBit++;
     }
 
-    for (int i=0; i < hatButtonStatus.size(); i++)
+    for (int i = 0; i < hatButtonStatus.size(); i++)
     {
         aggregateBitArray.setBit(currentBit, hatButtonStatus.at(i));
         currentBit++;
     }
 
-    for (int i=0; i < buttonStatus.size(); i++)
+    for (int i = 0; i < buttonStatus.size(); i++)
     {
         aggregateBitArray.setBit(currentBit, buttonStatus.at(i));
         currentBit++;
@@ -118,12 +116,12 @@ QBitArray InputDeviceBitArrayStatus::generateFinalBitArray()
 
 void InputDeviceBitArrayStatus::clearStatusValues()
 {
-    for (int i=0; i < axesStatus.size(); i++)
+    for (int i = 0; i < axesStatus.size(); i++)
     {
         axesStatus.replace(i, false);
     }
 
-    for (int i=0; i < hatButtonStatus.size(); i++)
+    for (int i = 0; i < hatButtonStatus.size(); i++)
     {
         hatButtonStatus.replace(i, false);
     }

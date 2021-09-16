@@ -18,56 +18,55 @@
 #ifndef AUTOPROFILEWATCHER_H
 #define AUTOPROFILEWATCHER_H
 
-#include <QObject>
-#include <QTimer>
 #include <QHash>
 #include <QList>
+#include <QObject>
 #include <QSet>
+#include <QTimer>
 
-#include "autoprofileinfo.h"
 #include "antimicrosettings.h"
-
+#include "autoprofileinfo.h"
 
 class AutoProfileWatcher : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit AutoProfileWatcher(AntiMicroSettings *settings, QObject *parent = 0);
     void startTimer();
     void stopTimer();
-    QList<AutoProfileInfo*>* getCustomDefaults();
-    AutoProfileInfo* getDefaultAllProfile();
+    QList<AutoProfileInfo *> *getCustomDefaults();
+    AutoProfileInfo *getDefaultAllProfile();
     bool isGUIDLocked(QString guid);
 
     static const int CHECKTIME = 1000; // time in ms
 
-protected:
+  protected:
     QString findAppLocation();
     void clearProfileAssignments();
 
     QTimer appTimer;
     AntiMicroSettings *settings;
     // Path, QList<AutoProfileInfo*>
-    QHash<QString, QList<AutoProfileInfo*> > appProfileAssignments;
+    QHash<QString, QList<AutoProfileInfo *>> appProfileAssignments;
     // WM_CLASS, QList<AutoProfileInfo*>
-    QHash<QString, QList<AutoProfileInfo*> > windowClassProfileAssignments;
+    QHash<QString, QList<AutoProfileInfo *>> windowClassProfileAssignments;
     // WM_NAME, QList<AutoProfileInfo*>
-    QHash<QString, QList<AutoProfileInfo*> > windowNameProfileAssignments;
+    QHash<QString, QList<AutoProfileInfo *>> windowNameProfileAssignments;
     // GUID, AutoProfileInfo*
-    QHash<QString, AutoProfileInfo*> defaultProfileAssignments;
-    //QList<AutoProfileInfo*> *customDefaults;
+    QHash<QString, AutoProfileInfo *> defaultProfileAssignments;
+    // QList<AutoProfileInfo*> *customDefaults;
     AutoProfileInfo *allDefaultInfo;
     QString currentApplication;
     QString currentAppWindowTitle;
     QSet<QString> guidSet;
 
-signals:
+  signals:
     void foundApplicableProfile(AutoProfileInfo *info);
 
-public slots:
+  public slots:
     void syncProfileAssignment();
 
-private slots:
+  private slots:
     void runAppCheck();
 };
 

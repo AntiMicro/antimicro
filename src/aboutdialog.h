@@ -27,15 +27,15 @@ class AboutDialog;
 class AboutDialog : public QDialog
 {
     Q_OBJECT
-    
-public:
+
+  public:
     explicit AboutDialog(QWidget *parent = 0);
     ~AboutDialog();
-    
-private:
+
+  private:
     Ui::AboutDialog *ui;
 
-protected:
+  protected:
     void fillInfoTextBrowser();
     virtual void changeEvent(QEvent *event);
     void retranslateUi();

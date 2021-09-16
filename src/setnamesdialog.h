@@ -30,17 +30,17 @@ class SetNamesDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     explicit SetNamesDialog(InputDevice *device, QWidget *parent = 0);
     ~SetNamesDialog();
 
-protected:
+  protected:
     InputDevice *device;
 
-private:
+  private:
     Ui::SetNamesDialog *ui;
 
-private slots:
+  private slots:
     void saveSetNameChanges();
 };
 

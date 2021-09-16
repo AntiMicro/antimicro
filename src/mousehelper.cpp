@@ -17,8 +17,8 @@
 
 #include "mousehelper.h"
 
-MouseHelper::MouseHelper(QObject *parent) :
-    QObject(parent)
+MouseHelper::MouseHelper(QObject *parent)
+    : QObject(parent)
 {
     springMouseMoving = false;
     previousCursorLocation[0] = 0;
@@ -30,10 +30,7 @@ MouseHelper::MouseHelper(QObject *parent) :
     QObject::connect(&mouseTimer, SIGNAL(timeout()), this, SLOT(resetSpringMouseMoving()));
 }
 
-void MouseHelper::resetSpringMouseMoving()
-{
-    springMouseMoving = false;
-}
+void MouseHelper::resetSpringMouseMoving() { springMouseMoving = false; }
 
 void MouseHelper::initDeskWid()
 {
@@ -52,7 +49,4 @@ void MouseHelper::deleteDeskWid()
     }
 }
 
-QDesktopWidget* MouseHelper::getDesktopWidget()
-{
-    return deskWid;
-}
+QDesktopWidget *MouseHelper::getDesktopWidget() { return deskWid; }

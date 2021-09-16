@@ -18,17 +18,17 @@
 #ifndef SETJOYSTICK_H
 #define SETJOYSTICK_H
 
-#include <QObject>
 #include <QHash>
 #include <QList>
+#include <QObject>
 #include <QTimer>
 #include <QXmlStreamReader>
 #include <QXmlStreamWriter>
 
 #include "joyaxis.h"
+#include "joybutton.h"
 #include "joycontrolstick.h"
 #include "joydpad.h"
-#include "joybutton.h"
 #include "vdpad.h"
 
 class InputDevice;
@@ -36,18 +36,18 @@ class InputDevice;
 class SetJoystick : public QObject
 {
     Q_OBJECT
-public:
-    explicit SetJoystick(InputDevice *device, int index, QObject *parent=0);
-    explicit SetJoystick(InputDevice *device, int index, bool runreset, QObject *parent=0);
+  public:
+    explicit SetJoystick(InputDevice *device, int index, QObject *parent = 0);
+    explicit SetJoystick(InputDevice *device, int index, bool runreset, QObject *parent = 0);
     ~SetJoystick();
 
-    JoyAxis* getJoyAxis(int index);
-    JoyButton* getJoyButton(int index);
-    JoyDPad* getJoyDPad(int index);
-    JoyControlStick* getJoyStick(int index);
+    JoyAxis *getJoyAxis(int index);
+    JoyButton *getJoyButton(int index);
+    JoyDPad *getJoyDPad(int index);
+    JoyControlStick *getJoyStick(int index);
     VDPad *getVDPad(int index);
 
-    int getNumberButtons ();
+    int getNumberButtons();
     int getNumberAxes();
     int getNumberHats();
     int getNumberSticks();
@@ -55,7 +55,7 @@ public:
 
     int getIndex();
     unsigned int getRealIndex();
-    virtual void refreshButtons ();
+    virtual void refreshButtons();
     virtual void refreshAxes();
     virtual void refreshHats();
     void release();
@@ -65,13 +65,13 @@ public:
     void removeVDPad(int index);
     void setIgnoreEventState(bool ignore);
 
-    InputDevice* getInputDevice();
+    InputDevice *getInputDevice();
 
     void setName(QString name);
     QString getName();
     QString getSetLabel();
 
-    void raiseAxesDeadZones(int deadZone=0);
+    void raiseAxesDeadZones(int deadZone = 0);
     void currentAxesDeadZones(QList<int> *axesDeadZones);
     void setAxesDeadZones(QList<int> *axesDeadZones);
     void setAxisThrottle(int axisNum, JoyAxis::ThrottleTypes throttle);
@@ -82,7 +82,7 @@ public:
     static const int MAXNAMELENGTH;
     static const int RAISEDDEADZONE;
 
-protected:
+  protected:
     bool isSetEmpty();
     void deleteButtons();
     void deleteAxes();
@@ -94,17 +94,17 @@ protected:
     void enableAxisConnections(JoyAxis *axis);
     void enableHatConnections(JoyDPad *dpad);
 
-    QHash<int, JoyButton*> buttons;
-    QHash<int, JoyAxis*> axes;
-    QHash<int, JoyDPad*> hats;
-    QHash<int, JoyControlStick*> sticks;
-    QHash<int, VDPad*> vdpads;
+    QHash<int, JoyButton *> buttons;
+    QHash<int, JoyAxis *> axes;
+    QHash<int, JoyDPad *> hats;
+    QHash<int, JoyControlStick *> sticks;
+    QHash<int, VDPad *> vdpads;
 
     int index;
     InputDevice *device;
     QString name;
 
-signals:
+  signals:
     void setChangeActivated(int index);
     void setAssignmentButtonChanged(int button, int originset, int newset, int mode);
     void setAssignmentAxisChanged(int button, int axis, int originset, int newset, int mode);
@@ -134,8 +134,8 @@ signals:
     void setDPadNameChange(int dpadIndex);
     void setVDPadNameChange(int vdpadIndex);
     void propertyUpdated();
-    
-public slots:
+
+  public slots:
     virtual void reset();
     void copyAssignments(SetJoystick *destSet);
     void propogateSetChange(int index);
@@ -147,7 +147,7 @@ public slots:
     void establishPropertyUpdatedConnection();
     void disconnectPropertyUpdatedConnection();
 
-protected slots:
+  protected slots:
     void propogateSetAxisThrottleSetting(int index);
     void propogateSetButtonClick(int button);
     void propogateSetButtonRelease(int button);
@@ -172,6 +172,6 @@ protected slots:
     void propogateSetVDPadNameChange();
 };
 
-Q_DECLARE_METATYPE(SetJoystick*)
+Q_DECLARE_METATYPE(SetJoystick *)
 
 #endif // SETJOYSTICK_H

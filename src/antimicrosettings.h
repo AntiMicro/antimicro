@@ -18,34 +18,33 @@
 #ifndef ANTIMICROSETTINGS_H
 #define ANTIMICROSETTINGS_H
 
-#include <QSettings>
 #include <QMutex>
+#include <QSettings>
 
 #include "commandlineutility.h"
 
 class AntiMicroSettings : public QSettings
 {
     Q_OBJECT
-public:
+  public:
     explicit AntiMicroSettings(const QString &fileName, Format format, QObject *parent = 0);
 
     QVariant runtimeValue(const QString &key, const QVariant &defaultValue = QVariant()) const;
     void importFromCommandLine(CommandLineUtility &cmdutility);
-    QMutex* getLock();
+    QMutex *getLock();
 
     static const bool defaultDisabledWinEnhanced;
     static const bool defaultAssociateProfiles;
     static const int defaultSpringScreen;
     static const unsigned int defaultSDLGamepadPollRate;
 
-protected:
+  protected:
     QSettings cmdSettings;
     QMutex lock;
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // ANTIMICROSETTINGS_H

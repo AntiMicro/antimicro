@@ -23,13 +23,13 @@
 const int InputDevice::NUMBER_JOYSETS = 8;
 const int InputDevice::DEFAULTKEYPRESSTIME = 100;
 const unsigned int InputDevice::DEFAULTKEYREPEATDELAY = 660; // 660 ms
-const unsigned int InputDevice::DEFAULTKEYREPEATRATE = 40; // 40 ms. 25 times per second
+const unsigned int InputDevice::DEFAULTKEYREPEATRATE = 40;   // 40 ms. 25 times per second
 const int InputDevice::RAISEDDEADZONE = 20000;
 
 QRegExp InputDevice::emptyGUID("^[0]+$");
 
-InputDevice::InputDevice(int deviceIndex, AntiMicroSettings *settings, QObject *parent) :
-    QObject(parent)
+InputDevice::InputDevice(int deviceIndex, AntiMicroSettings *settings, QObject *parent)
+    : QObject(parent)
 {
     buttonDownCount = 0;
     joyNumber = deviceIndex;
@@ -51,7 +51,7 @@ InputDevice::InputDevice(int deviceIndex, AntiMicroSettings *settings, QObject *
 
 InputDevice::~InputDevice()
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *setjoystick = iter.next().value();
@@ -65,10 +65,7 @@ InputDevice::~InputDevice()
     joystick_sets.clear();
 }
 
-int InputDevice::getJoyNumber()
-{
-    return joyNumber;
-}
+int InputDevice::getJoyNumber() { return joyNumber; }
 
 int InputDevice::getRealJoyNumber()
 {
@@ -81,14 +78,14 @@ void InputDevice::reset()
     resetButtonDownCount();
     deviceEdited = false;
     profileName = "";
-    //cali.clear();
-    //buttonstates.clear();
-    //axesstates.clear();
-    //dpadstates.clear();
+    // cali.clear();
+    // buttonstates.clear();
+    // axesstates.clear();
+    // dpadstates.clear();
 
-    for (int i=0; i < NUMBER_JOYSETS; i++)
+    for (int i = 0; i < NUMBER_JOYSETS; i++)
     {
-        SetJoystick* set = joystick_sets.value(i);
+        SetJoystick *set = joystick_sets.value(i);
         set->reset();
     }
 }
@@ -130,7 +127,7 @@ void InputDevice::reInitButtons()
     {
         bool value = buttonstates.at(i);
         JoyButton *button = current_set->getJoyButton(i);
-        //button->joyEvent(value);
+        // button->joyEvent(value);
         button->queuePendingEvent(value);
     }
 
@@ -138,7 +135,7 @@ void InputDevice::reInitButtons()
     {
         int value = axesstates.at(i);
         JoyAxis *axis = current_set->getJoyAxis(i);
-        //axis->joyEvent(value);
+        // axis->joyEvent(value);
         axis->queuePendingEvent(value);
     }
 
@@ -146,7 +143,7 @@ void InputDevice::reInitButtons()
     {
         int value = dpadstates.at(i);
         JoyDPad *dpad = current_set->getJoyDPad(i);
-        //dpad->joyEvent(value);
+        // dpad->joyEvent(value);
         dpad->queuePendingEvent(value);
     }
 
@@ -203,12 +200,12 @@ void InputDevice::setActiveSetNumber(int index)
             JoyDPad *dpad = current_set->getJoyDPad(i);
             dpadstates.append(dpad->getCurrentDirection());
             JoyDPadButton::JoyDPadDirections tempDir =
-                    static_cast<JoyDPadButton::JoyDPadDirections>(dpad->getCurrentDirection());
+                static_cast<JoyDPadButton::JoyDPadDirections>(dpad->getCurrentDirection());
             tempSet->getJoyDPad(i)->setDirButtonsUpdateInitAccel(tempDir, false);
             tempSet->getJoyDPad(i)->copyLastDistanceValues(dpad);
         }
 
-        for (int i=0; i < current_set->getNumberSticks(); i++)
+        for (int i = 0; i < current_set->getNumberSticks(); i++)
         {
             // Last distances for elements are taken from associated axes.
             // Copying is not required here.
@@ -222,7 +219,7 @@ void InputDevice::setActiveSetNumber(int index)
             JoyDPad *dpad = current_set->getVDPad(i);
             vdpadstates.append(dpad->getCurrentDirection());
             JoyDPadButton::JoyDPadDirections tempDir =
-                    static_cast<JoyDPadButton::JoyDPadDirections>(dpad->getCurrentDirection());
+                static_cast<JoyDPadButton::JoyDPadDirections>(dpad->getCurrentDirection());
             tempSet->getVDPad(i)->setDirButtonsUpdateInitAccel(tempDir, false);
             tempSet->getVDPad(i)->copyLastDistanceValues(dpad);
         }
@@ -234,13 +231,13 @@ void InputDevice::setActiveSetNumber(int index)
         // Activate all buttons in the switched set
         current_set = joystick_sets.value(active_set);
 
-        for (int i=0; i < current_set->getNumberSticks(); i++)
+        for (int i = 0; i < current_set->getNumberSticks(); i++)
         {
             JoyControlStick::JoyStickDirections value = stickstates.at(i);
-            //bool tempignore = true;
+            // bool tempignore = true;
             bool tempignore = false;
-            QList<JoyControlStickButton*> buttonList;
-            QList<JoyControlStickButton*> oldButtonList;
+            QList<JoyControlStickButton *> buttonList;
+            QList<JoyControlStickButton *> oldButtonList;
             JoyControlStick *stick = current_set->getJoyStick(i);
             JoyControlStick *oldStick = old_set->getJoyStick(i);
 
@@ -248,52 +245,46 @@ void InputDevice::setActiveSetNumber(int index)
             {
                 switch (value)
                 {
-                    case JoyControlStick::StickRightUp:
-                    {
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickUp));
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickRight));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickUp));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickRight));
-                        break;
-                    }
-                    case JoyControlStick::StickRightDown:
-                    {
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickRight));
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickDown));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickRight));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickDown));
-                        break;
-                    }
-                    case JoyControlStick::StickLeftDown:
-                    {
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickDown));
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickLeft));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickDown));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickLeft));
-                        break;
-                    }
-                    case JoyControlStick::StickLeftUp:
-                    {
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickLeft));
-                        buttonList.append(stick->getDirectionButton(JoyControlStick::StickUp));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickLeft));
-                        oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickUp));
-                        break;
-                    }
-                    default:
-                    {
-                        buttonList.append(stick->getDirectionButton(value));
-                        oldButtonList.append(oldStick->getDirectionButton(value));
-                    }
+                case JoyControlStick::StickRightUp: {
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickUp));
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickRight));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickUp));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickRight));
+                    break;
                 }
-            }
-            else if (value)
+                case JoyControlStick::StickRightDown: {
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickRight));
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickDown));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickRight));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickDown));
+                    break;
+                }
+                case JoyControlStick::StickLeftDown: {
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickDown));
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickLeft));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickDown));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickLeft));
+                    break;
+                }
+                case JoyControlStick::StickLeftUp: {
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickLeft));
+                    buttonList.append(stick->getDirectionButton(JoyControlStick::StickUp));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickLeft));
+                    oldButtonList.append(oldStick->getDirectionButton(JoyControlStick::StickUp));
+                    break;
+                }
+                default: {
+                    buttonList.append(stick->getDirectionButton(value));
+                    oldButtonList.append(oldStick->getDirectionButton(value));
+                }
+                }
+            } else if (value)
             {
                 buttonList.append(stick->getDirectionButton(value));
                 oldButtonList.append(oldStick->getDirectionButton(value));
             }
 
-            QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton*> iter(*stick->getButtons());
+            QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton *> iter(*stick->getButtons());
             while (iter.hasNext())
             {
                 JoyControlStickButton *tempButton = iter.next().value();
@@ -303,7 +294,7 @@ void InputDevice::setActiveSetNumber(int index)
                 }
             }
 
-            for (int j=0; j < buttonList.size(); j++)
+            for (int j = 0; j < buttonList.size(); j++)
             {
                 JoyControlStickButton *button = buttonList.at(j);
                 JoyControlStickButton *oldButton = oldButtonList.at(j);
@@ -312,14 +303,14 @@ void InputDevice::setActiveSetNumber(int index)
                 {
                     if (button->getChangeSetCondition() == JoyButton::SetChangeWhileHeld)
                     {
-                        if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld && oldButton->getWhileHeldStatus())
+                        if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld &&
+                            oldButton->getWhileHeldStatus())
                         {
                             // Button from old set involved in a while held set
                             // change. Carry over to new set button to ensure
                             // set changes are done in the proper order.
                             button->setWhileHeldStatus(true);
-                        }
-                        else if (!button->getWhileHeldStatus())
+                        } else if (!button->getWhileHeldStatus())
                         {
                             // Ensure that set change events are performed if needed.
                             tempignore = false;
@@ -333,63 +324,57 @@ void InputDevice::setActiveSetNumber(int index)
         for (int i = 0; i < current_set->getNumberVDPads(); i++)
         {
             int value = vdpadstates.at(i);
-            //bool tempignore = true;
+            // bool tempignore = true;
             bool tempignore = false;
             JoyDPad *dpad = current_set->getVDPad(i);
-            QList<JoyDPadButton*> buttonList;
-            QList<JoyDPadButton*> oldButtonList;
+            QList<JoyDPadButton *> buttonList;
+            QList<JoyDPadButton *> oldButtonList;
 
             if (dpad->getJoyMode() == JoyDPad::StandardMode && value)
             {
                 switch (value)
                 {
-                    case JoyDPadButton::DpadRightUp:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
-                        break;
-                    }
-
-                    case JoyDPadButton::DpadRightDown:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
-                        break;
-                    }
-                    case JoyDPadButton::DpadLeftDown:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
-                        break;
-                    }
-                    case JoyDPadButton::DpadLeftUp:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
-                        break;
-                    }
-                    default:
-                    {
-                        buttonList.append(dpad->getJoyButton(value));
-                        oldButtonList.append(old_set->getVDPad(i)->getJoyButton(value));
-                    }
+                case JoyDPadButton::DpadRightUp: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
+                    break;
                 }
-            }
-            else if (value)
+
+                case JoyDPadButton::DpadRightDown: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
+                    break;
+                }
+                case JoyDPadButton::DpadLeftDown: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
+                    break;
+                }
+                case JoyDPadButton::DpadLeftUp: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
+                    break;
+                }
+                default: {
+                    buttonList.append(dpad->getJoyButton(value));
+                    oldButtonList.append(old_set->getVDPad(i)->getJoyButton(value));
+                }
+                }
+            } else if (value)
             {
                 buttonList.append(dpad->getJoyButton(value));
                 oldButtonList.append(old_set->getVDPad(i)->getJoyButton(value));
             }
 
-            QHashIterator<int, JoyDPadButton*> iter(*dpad->getJoyButtons());
+            QHashIterator<int, JoyDPadButton *> iter(*dpad->getJoyButtons());
             while (iter.hasNext())
             {
                 // Ensure that set change events are performed if needed.
@@ -400,7 +385,7 @@ void InputDevice::setActiveSetNumber(int index)
                 }
             }
 
-            for (int j=0; j < buttonList.size(); j++)
+            for (int j = 0; j < buttonList.size(); j++)
             {
                 JoyDPadButton *button = buttonList.at(j);
                 JoyDPadButton *oldButton = oldButtonList.at(j);
@@ -411,20 +396,19 @@ void InputDevice::setActiveSetNumber(int index)
                     {
                         if (value)
                         {
-                            if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld && oldButton->getWhileHeldStatus())
+                            if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld &&
+                                oldButton->getWhileHeldStatus())
                             {
                                 // Button from old set involved in a while held set
                                 // change. Carry over to new set button to ensure
                                 // set changes are done in the proper order.
                                 button->setWhileHeldStatus(true);
-                            }
-                            else if (!button->getWhileHeldStatus())
+                            } else if (!button->getWhileHeldStatus())
                             {
                                 // Ensure that set change events are performed if needed.
                                 tempignore = false;
                             }
-                        }
-                        else
+                        } else
                         {
                             button->setWhileHeldStatus(false);
                         }
@@ -436,7 +420,7 @@ void InputDevice::setActiveSetNumber(int index)
         for (int i = 0; i < current_set->getNumberButtons(); i++)
         {
             bool value = buttonstates.at(i);
-            //bool tempignore = true;
+            // bool tempignore = true;
             bool tempignore = false;
             JoyButton *button = current_set->getJoyButton(i);
             JoyButton *oldButton = old_set->getJoyButton(i);
@@ -444,28 +428,27 @@ void InputDevice::setActiveSetNumber(int index)
             {
                 if (value)
                 {
-                    if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld && oldButton->getWhileHeldStatus())
+                    if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld &&
+                        oldButton->getWhileHeldStatus())
                     {
                         // Button from old set involved in a while held set
                         // change. Carry over to new set button to ensure
                         // set changes are done in the proper order.
                         button->setWhileHeldStatus(true);
-                    }
-                    else if (!button->getWhileHeldStatus())
+                    } else if (!button->getWhileHeldStatus())
                     {
                         // Ensure that set change events are performed if needed.
                         tempignore = false;
                     }
-                }
-                else
+                } else
                 {
                     // Ensure that set change events are performed if needed.
                     button->setWhileHeldStatus(false);
-                    //tempignore = false;
+                    // tempignore = false;
                 }
             }
 
-            //button->joyEvent(value, tempignore);
+            // button->joyEvent(value, tempignore);
             button->queuePendingEvent(value, tempignore);
         }
 
@@ -473,7 +456,7 @@ void InputDevice::setActiveSetNumber(int index)
         for (int i = 0; i < current_set->getNumberAxes(); i++)
         {
             int value = axesstates.at(i);
-            //bool tempignore = true;
+            // bool tempignore = true;
             bool tempignore = false;
             JoyAxis *axis = current_set->getJoyAxis(i);
             JoyAxisButton *oldButton = old_set->getJoyAxis(i)->getAxisButtonByValue(value);
@@ -483,28 +466,27 @@ void InputDevice::setActiveSetNumber(int index)
             {
                 if (button->getChangeSetCondition() == JoyButton::SetChangeWhileHeld)
                 {
-                    if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld && oldButton->getWhileHeldStatus())
+                    if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld &&
+                        oldButton->getWhileHeldStatus())
                     {
                         // Button from old set involved in a while held set
                         // change. Carry over to new set button to ensure
                         // set changes are done in the proper order.
                         button->setWhileHeldStatus(true);
-                    }
-                    else if (!button->getWhileHeldStatus())
+                    } else if (!button->getWhileHeldStatus())
                     {
                         // Ensure that set change events are performed if needed.
                         tempignore = false;
                     }
                 }
-            }
-            else if (!button)
+            } else if (!button)
             {
                 // Ensure that set change events are performed if needed.
                 axis->getPAxisButton()->setWhileHeldStatus(false);
                 axis->getNAxisButton()->setWhileHeldStatus(false);
             }
 
-            //axis->joyEvent(value, tempignore);
+            // axis->joyEvent(value, tempignore);
             axis->queuePendingEvent(value, tempignore, false);
         }
 
@@ -512,63 +494,57 @@ void InputDevice::setActiveSetNumber(int index)
         for (int i = 0; i < current_set->getNumberHats(); i++)
         {
             int value = dpadstates.at(i);
-            //bool tempignore = true;
+            // bool tempignore = true;
             bool tempignore = false;
             JoyDPad *dpad = current_set->getJoyDPad(i);
-            QList<JoyDPadButton*> buttonList;
-            QList<JoyDPadButton*> oldButtonList;
+            QList<JoyDPadButton *> buttonList;
+            QList<JoyDPadButton *> oldButtonList;
 
             if (dpad->getJoyMode() == JoyDPad::StandardMode && value)
             {
                 switch (value)
                 {
-                    case JoyDPadButton::DpadRightUp:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
-                        break;
-                    }
-
-                    case JoyDPadButton::DpadRightDown:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
-                        break;
-                    }
-                    case JoyDPadButton::DpadLeftDown:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
-                        break;
-                    }
-                    case JoyDPadButton::DpadLeftUp:
-                    {
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
-                        buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
-                        break;
-                    }
-                    default:
-                    {
-                        buttonList.append(dpad->getJoyButton(value));
-                        oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(value));
-                    }
+                case JoyDPadButton::DpadRightUp: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
+                    break;
                 }
-            }
-            else if (value)
+
+                case JoyDPadButton::DpadRightDown: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadRight));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadRight));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
+                    break;
+                }
+                case JoyDPadButton::DpadLeftDown: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadDown));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadDown));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
+                    break;
+                }
+                case JoyDPadButton::DpadLeftUp: {
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadLeft));
+                    buttonList.append(dpad->getJoyButton(JoyDPadButton::DpadUp));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadLeft));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(JoyDPadButton::DpadUp));
+                    break;
+                }
+                default: {
+                    buttonList.append(dpad->getJoyButton(value));
+                    oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(value));
+                }
+                }
+            } else if (value)
             {
                 buttonList.append(dpad->getJoyButton(value));
                 oldButtonList.append(old_set->getJoyDPad(i)->getJoyButton(value));
             }
 
-            QHashIterator<int, JoyDPadButton*> iter(*dpad->getJoyButtons());
+            QHashIterator<int, JoyDPadButton *> iter(*dpad->getJoyButtons());
             while (iter.hasNext())
             {
                 // Ensure that set change events are performed if needed.
@@ -579,7 +555,7 @@ void InputDevice::setActiveSetNumber(int index)
                 }
             }
 
-            for (int j=0; j < buttonList.size(); j++)
+            for (int j = 0; j < buttonList.size(); j++)
             {
                 JoyDPadButton *button = buttonList.at(j);
                 JoyDPadButton *oldButton = oldButtonList.at(j);
@@ -590,29 +566,27 @@ void InputDevice::setActiveSetNumber(int index)
                     {
                         if (value)
                         {
-                            if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld && oldButton->getWhileHeldStatus())
+                            if (oldButton->getChangeSetCondition() == JoyButton::SetChangeWhileHeld &&
+                                oldButton->getWhileHeldStatus())
                             {
                                 // Button from old set involved in a while held set
                                 // change. Carry over to new set button to ensure
                                 // set changes are done in the proper order.
                                 button->setWhileHeldStatus(true);
-                            }
-                            else if (!button->getWhileHeldStatus())
+                            } else if (!button->getWhileHeldStatus())
                             {
                                 // Ensure that set change events are performed if needed.
                                 tempignore = false;
                             }
-                        }
-                        else
+                        } else
                         {
                             button->setWhileHeldStatus(false);
                         }
-
                     }
                 }
             }
 
-            //dpad->joyEvent(value, tempignore);
+            // dpad->joyEvent(value, tempignore);
             dpad->queuePendingEvent(value, tempignore);
         }
 
@@ -630,50 +604,23 @@ void InputDevice::setActiveSetNumber(int index)
     }
 }
 
-int InputDevice::getActiveSetNumber()
-{
-    return active_set;
-}
+int InputDevice::getActiveSetNumber() { return active_set; }
 
-SetJoystick* InputDevice::getActiveSetJoystick()
-{
-    return joystick_sets.value(active_set);
-}
+SetJoystick *InputDevice::getActiveSetJoystick() { return joystick_sets.value(active_set); }
 
-int InputDevice::getNumberButtons()
-{
-    return getActiveSetJoystick()->getNumberButtons();
-}
+int InputDevice::getNumberButtons() { return getActiveSetJoystick()->getNumberButtons(); }
 
-int InputDevice::getNumberAxes()
-{
-    return getActiveSetJoystick()->getNumberAxes();
-}
+int InputDevice::getNumberAxes() { return getActiveSetJoystick()->getNumberAxes(); }
 
-int InputDevice::getNumberHats()
-{
-    return getActiveSetJoystick()->getNumberHats();
-}
+int InputDevice::getNumberHats() { return getActiveSetJoystick()->getNumberHats(); }
 
-int InputDevice::getNumberSticks()
-{
-    return getActiveSetJoystick()->getNumberSticks();
-}
+int InputDevice::getNumberSticks() { return getActiveSetJoystick()->getNumberSticks(); }
 
-int InputDevice::getNumberVDPads()
-{
-    return getActiveSetJoystick()->getNumberVDPads();
-}
+int InputDevice::getNumberVDPads() { return getActiveSetJoystick()->getNumberVDPads(); }
 
-SetJoystick* InputDevice::getSetJoystick(int index)
-{
-    return joystick_sets.value(index);
-}
+SetJoystick *InputDevice::getSetJoystick(int index) { return joystick_sets.value(index); }
 
-void InputDevice::propogateSetChange(int index)
-{
-    emit setChangeActivated(index);
-}
+void InputDevice::propogateSetChange(int index) { emit setChangeActivated(index); }
 
 void InputDevice::changeSetButtonAssociation(int button_index, int originset, int newset, int mode)
 {
@@ -687,7 +634,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
 {
     if (xml->isStartElement() && xml->name() == getXmlName())
     {
-        //reset();
+        // reset();
         transferReset();
 
         xml->readNextStartElement();
@@ -707,8 +654,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             joystick_sets.value(index)->readConfig(xml);
                         }
-                    }
-                    else
+                    } else
                     {
                         // If none of the above, skip the element
                         xml->skipCurrentElement();
@@ -716,8 +662,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
 
                     xml->readNextStartElement();
                 }
-            }
-            else if (xml->name() == "stickAxisAssociation" && xml->isStartElement())
+            } else if (xml->name() == "stickAxisAssociation" && xml->isStartElement())
             {
                 int stickIndex = xml->attributes().value("index").toString().toInt();
                 int xAxis = xml->attributes().value("xAxis").toString().toInt();
@@ -729,7 +674,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                     yAxis -= 1;
                     stickIndex -= 1;
 
-                    for (int i=0; i <joystick_sets.size(); i++)
+                    for (int i = 0; i < joystick_sets.size(); i++)
                     {
                         SetJoystick *currentset = joystick_sets.value(i);
                         JoyAxis *axis1 = currentset->getJoyAxis(xAxis);
@@ -742,25 +687,23 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                     }
 
                     xml->readNext();
-                }
-                else
+                } else
                 {
                     xml->skipCurrentElement();
                 }
-            }
-            else if (xml->name() == "vdpadButtonAssociations" && xml->isStartElement())
+            } else if (xml->name() == "vdpadButtonAssociations" && xml->isStartElement())
             {
                 int vdpadIndex = xml->attributes().value("index").toString().toInt();
                 if (vdpadIndex > 0)
                 {
-                    for (int i=0; i <joystick_sets.size(); i++)
+                    for (int i = 0; i < joystick_sets.size(); i++)
                     {
                         SetJoystick *currentset = joystick_sets.value(i);
-                        VDPad *vdpad = currentset->getVDPad(vdpadIndex-1);
+                        VDPad *vdpad = currentset->getVDPad(vdpadIndex - 1);
                         if (!vdpad)
                         {
-                            vdpad = new VDPad(vdpadIndex-1, i, currentset, currentset);
-                            currentset->addVDPad(vdpadIndex-1, vdpad);
+                            vdpad = new VDPad(vdpadIndex - 1, i, currentset, currentset);
+                            currentset->addVDPad(vdpadIndex - 1, vdpad);
                         }
                     }
 
@@ -776,10 +719,10 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                             if (vdpadAxisIndex > 0 && vdpadDirection > 0)
                             {
                                 vdpadAxisIndex -= 1;
-                                for (int i=0; i < joystick_sets.size(); i++)
+                                for (int i = 0; i < joystick_sets.size(); i++)
                                 {
                                     SetJoystick *currentset = joystick_sets.value(i);
-                                    VDPad *vdpad = currentset->getVDPad(vdpadIndex-1);
+                                    VDPad *vdpad = currentset->getVDPad(vdpadIndex - 1);
                                     if (vdpad)
                                     {
                                         JoyAxis *axis = currentset->getJoyAxis(vdpadAxisIndex);
@@ -789,8 +732,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                                             if (vdpadButtonIndex == 0)
                                             {
                                                 button = axis->getNAxisButton();
-                                            }
-                                            else if (vdpadButtonIndex == 1)
+                                            } else if (vdpadButtonIndex == 1)
                                             {
                                                 button = axis->getPAxisButton();
                                             }
@@ -802,15 +744,14 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                                         }
                                     }
                                 }
-                            }
-                            else if (vdpadButtonIndex > 0 && vdpadDirection > 0)
+                            } else if (vdpadButtonIndex > 0 && vdpadDirection > 0)
                             {
                                 vdpadButtonIndex -= 1;
 
-                                for (int i=0; i < joystick_sets.size(); i++)
+                                for (int i = 0; i < joystick_sets.size(); i++)
                                 {
                                     SetJoystick *currentset = joystick_sets.value(i);
-                                    VDPad *vdpad = currentset->getVDPad(vdpadIndex-1);
+                                    VDPad *vdpad = currentset->getVDPad(vdpadIndex - 1);
                                     if (vdpad)
                                     {
                                         JoyButton *button = currentset->getJoyButton(vdpadButtonIndex);
@@ -822,8 +763,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                                 }
                             }
                             xml->readNext();
-                        }
-                        else
+                        } else
                         {
                             xml->skipCurrentElement();
                         }
@@ -832,10 +772,10 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                     }
                 }
 
-                for (int i=0; i < joystick_sets.size(); i++)
+                for (int i = 0; i < joystick_sets.size(); i++)
                 {
                     SetJoystick *currentset = joystick_sets.value(i);
-                    for (int j=0; j < currentset->getNumberVDPads(); j++)
+                    for (int j = 0; j < currentset->getNumberVDPads(); j++)
                     {
                         VDPad *vdpad = currentset->getVDPad(j);
                         if (vdpad && vdpad->isEmpty())
@@ -844,8 +784,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         }
                     }
                 }
-            }
-            else if (xml->name() == "names" && xml->isStartElement())
+            } else if (xml->name() == "names" && xml->isStartElement())
             {
                 xml->readNextStartElement();
                 while (!xml->atEnd() && (!xml->isEndElement() && xml->name() != "names"))
@@ -859,8 +798,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setButtonName(index, temp);
                         }
-                    }
-                    else if (xml->name() == "axisbuttonname" && xml->isStartElement())
+                    } else if (xml->name() == "axisbuttonname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         int buttonIndex = xml->attributes().value("button").toString().toInt();
@@ -871,8 +809,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setAxisButtonName(index, buttonIndex, temp);
                         }
-                    }
-                    else if (xml->name() == "controlstickbuttonname" && xml->isStartElement())
+                    } else if (xml->name() == "controlstickbuttonname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         int buttonIndex = xml->attributes().value("button").toString().toInt();
@@ -882,8 +819,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setStickButtonName(index, buttonIndex, temp);
                         }
-                    }
-                    else if (xml->name() == "dpadbuttonname" && xml->isStartElement())
+                    } else if (xml->name() == "dpadbuttonname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         int buttonIndex = xml->attributes().value("button").toString().toInt();
@@ -893,8 +829,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setDPadButtonName(index, buttonIndex, temp);
                         }
-                    }
-                    else if (xml->name() == "vdpadbuttonname" && xml->isStartElement())
+                    } else if (xml->name() == "vdpadbuttonname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         int buttonIndex = xml->attributes().value("button").toString().toInt();
@@ -904,8 +839,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setVDPadButtonName(index, buttonIndex, temp);
                         }
-                    }
-                    else if (xml->name() == "axisname" && xml->isStartElement())
+                    } else if (xml->name() == "axisname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         QString temp = xml->readElementText();
@@ -914,8 +848,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setAxisName(index, temp);
                         }
-                    }
-                    else if (xml->name() == "controlstickname" && xml->isStartElement())
+                    } else if (xml->name() == "controlstickname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         QString temp = xml->readElementText();
@@ -924,8 +857,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setStickName(index, temp);
                         }
-                    }
-                    else if (xml->name() == "dpadname" && xml->isStartElement())
+                    } else if (xml->name() == "dpadname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         QString temp = xml->readElementText();
@@ -934,8 +866,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setDPadName(index, temp);
                         }
-                    }
-                    else if (xml->name() == "vdpadname" && xml->isStartElement())
+                    } else if (xml->name() == "vdpadname" && xml->isStartElement())
                     {
                         int index = xml->attributes().value("index").toString().toInt();
                         QString temp = xml->readElementText();
@@ -944,8 +875,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                         {
                             setVDPadName(index, temp);
                         }
-                    }
-                    else
+                    } else
                     {
                         // If none of the above, skip the element
                         xml->skipCurrentElement();
@@ -953,8 +883,7 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
 
                     xml->readNextStartElement();
                 }
-            }
-            else if (xml->name() == "keyPressTime" && xml->isStartElement())
+            } else if (xml->name() == "keyPressTime" && xml->isStartElement())
             {
                 QString temptext = xml->readElementText();
                 int tempchoice = temptext.toInt();
@@ -962,13 +891,11 @@ void InputDevice::readConfig(QXmlStreamReader *xml)
                 {
                     this->setDeviceKeyPressTime(tempchoice);
                 }
-            }
-            else if (xml->name() == "profilename" && xml->isStartElement())
+            } else if (xml->name() == "profilename" && xml->isStartElement())
             {
                 QString temptext = xml->readElementText();
                 this->setProfileName(temptext);
-            }
-            else
+            } else
             {
                 // If none of the above, skip the element
                 xml->skipCurrentElement();
@@ -999,7 +926,7 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
         xml->writeTextElement("profilename", profileName);
     }
 
-    for (int i=0; i < getNumberSticks(); i++)
+    for (int i = 0; i < getNumberSticks(); i++)
     {
         JoyControlStick *stick = getActiveSetJoystick()->getJoyStick(i);
         xml->writeStartElement("stickAxisAssociation");
@@ -1009,7 +936,7 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
         xml->writeEndElement();
     }
 
-    for (int i=0; i < getNumberVDPads(); i++)
+    for (int i = 0; i < getNumberVDPads(); i++)
     {
         VDPad *vdpad = getActiveSetJoystick()->getVDPad(i);
         xml->writeStartElement("vdpadButtonAssociations");
@@ -1022,11 +949,10 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
 
             if (typeid(*button) == typeid(JoyAxisButton))
             {
-                JoyAxisButton *axisbutton = static_cast<JoyAxisButton*>(button);
+                JoyAxisButton *axisbutton = static_cast<JoyAxisButton *>(button);
                 xml->writeAttribute("axis", QString::number(axisbutton->getAxis()->getRealJoyIndex()));
                 xml->writeAttribute("button", QString::number(button->getJoyNumber()));
-            }
-            else
+            } else
             {
                 xml->writeAttribute("axis", QString::number(0));
                 xml->writeAttribute("button", QString::number(button->getRealJoyNumber()));
@@ -1043,11 +969,10 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
 
             if (typeid(*button) == typeid(JoyAxisButton))
             {
-                JoyAxisButton *axisbutton = static_cast<JoyAxisButton*>(button);
+                JoyAxisButton *axisbutton = static_cast<JoyAxisButton *>(button);
                 xml->writeAttribute("axis", QString::number(axisbutton->getAxis()->getRealJoyIndex()));
                 xml->writeAttribute("button", QString::number(button->getJoyNumber()));
-            }
-            else
+            } else
             {
                 xml->writeAttribute("axis", QString::number(0));
                 xml->writeAttribute("button", QString::number(button->getRealJoyNumber()));
@@ -1064,11 +989,10 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
 
             if (typeid(*button) == typeid(JoyAxisButton))
             {
-                JoyAxisButton *axisbutton = static_cast<JoyAxisButton*>(button);
+                JoyAxisButton *axisbutton = static_cast<JoyAxisButton *>(button);
                 xml->writeAttribute("axis", QString::number(axisbutton->getAxis()->getRealJoyIndex()));
                 xml->writeAttribute("button", QString::number(button->getJoyNumber()));
-            }
-            else
+            } else
             {
                 xml->writeAttribute("axis", QString::number(0));
                 xml->writeAttribute("button", QString::number(button->getRealJoyNumber()));
@@ -1085,11 +1009,10 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
 
             if (typeid(*button) == typeid(JoyAxisButton))
             {
-                JoyAxisButton *axisbutton = static_cast<JoyAxisButton*>(button);
+                JoyAxisButton *axisbutton = static_cast<JoyAxisButton *>(button);
                 xml->writeAttribute("axis", QString::number(axisbutton->getAxis()->getRealJoyIndex()));
                 xml->writeAttribute("button", QString::number(button->getJoyNumber()));
-            }
-            else
+            } else
             {
                 xml->writeAttribute("axis", QString::number(0));
                 xml->writeAttribute("button", QString::number(button->getRealJoyNumber()));
@@ -1108,7 +1031,7 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
         xml->writeStartElement("names"); // <name>
 
         SetJoystick *tempSet = getActiveSetJoystick();
-        for (int i=0; i < getNumberButtons(); i++)
+        for (int i = 0; i < getNumberButtons(); i++)
         {
             JoyButton *button = tempSet->getJoyButton(i);
             if (button && !button->getButtonName().isEmpty())
@@ -1120,7 +1043,7 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
             }
         }
 
-        for (int i=0; i < getNumberAxes(); i++)
+        for (int i = 0; i < getNumberAxes(); i++)
         {
             JoyAxis *axis = tempSet->getJoyAxis(i);
             if (axis)
@@ -1155,7 +1078,7 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
             }
         }
 
-        for (int i=0; i < getNumberSticks(); i++)
+        for (int i = 0; i < getNumberSticks(); i++)
         {
             JoyControlStick *stick = tempSet->getJoyStick(i);
             if (stick)
@@ -1168,8 +1091,8 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
                     xml->writeEndElement();
                 }
 
-                QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*> *buttons = stick->getButtons();
-                QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton*> iter(*buttons);
+                QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *> *buttons = stick->getButtons();
+                QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton *> iter(*buttons);
                 while (iter.hasNext())
                 {
                     JoyControlStickButton *button = iter.next().value();
@@ -1185,7 +1108,7 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
             }
         }
 
-        for (int i=0; i < getNumberHats(); i++)
+        for (int i = 0; i < getNumberHats(); i++)
         {
             JoyDPad *dpad = tempSet->getJoyDPad(i);
             if (dpad)
@@ -1198,8 +1121,8 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
                     xml->writeEndElement();
                 }
 
-                QHash<int, JoyDPadButton*> *temp = dpad->getButtons();
-                QHashIterator<int, JoyDPadButton*> iter(*temp);
+                QHash<int, JoyDPadButton *> *temp = dpad->getButtons();
+                QHashIterator<int, JoyDPadButton *> iter(*temp);
                 while (iter.hasNext())
                 {
                     JoyDPadButton *button = iter.next().value();
@@ -1215,7 +1138,7 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
             }
         }
 
-        for (int i=0; i < getNumberVDPads(); i++)
+        for (int i = 0; i < getNumberVDPads(); i++)
         {
             VDPad *vdpad = getActiveSetJoystick()->getVDPad(i);
             if (vdpad)
@@ -1228,8 +1151,8 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
                     xml->writeEndElement();
                 }
 
-                QHash<int, JoyDPadButton*> *temp = vdpad->getButtons();
-                QHashIterator<int, JoyDPadButton*> iter(*temp);
+                QHash<int, JoyDPadButton *> *temp = vdpad->getButtons();
+                QHashIterator<int, JoyDPadButton *> iter(*temp);
                 while (iter.hasNext())
                 {
                     JoyDPadButton *button = iter.next().value();
@@ -1248,14 +1171,13 @@ void InputDevice::writeConfig(QXmlStreamWriter *xml)
         xml->writeEndElement(); // </names>
     }
 
-
     if (keyPressTime > 0 && keyPressTime != DEFAULTKEYPRESSTIME)
     {
         xml->writeTextElement("keyPressTime", QString::number(keyPressTime));
     }
 
     xml->writeStartElement("sets");
-    for (int i=0; i < joystick_sets.size(); i++)
+    for (int i = 0; i < joystick_sets.size(); i++)
     {
         joystick_sets.value(i)->writeConfig(xml);
     }
@@ -1270,8 +1192,7 @@ void InputDevice::changeSetAxisButtonAssociation(int button_index, int axis_inde
     if (button_index == 0)
     {
         button = joystick_sets.value(newset)->getJoyAxis(axis_index)->getNAxisButton();
-    }
-    else if (button_index == 1)
+    } else if (button_index == 1)
     {
         button = joystick_sets.value(newset)->getJoyAxis(axis_index)->getPAxisButton();
     }
@@ -1283,7 +1204,9 @@ void InputDevice::changeSetAxisButtonAssociation(int button_index, int axis_inde
 
 void InputDevice::changeSetStickButtonAssociation(int button_index, int stick_index, int originset, int newset, int mode)
 {
-    JoyControlStickButton *button = joystick_sets.value(newset)->getJoyStick(stick_index)->getDirectionButton((JoyControlStick::JoyStickDirections)button_index);
+    JoyControlStickButton *button = joystick_sets.value(newset)
+                                        ->getJoyStick(stick_index)
+                                        ->getDirectionButton((JoyControlStick::JoyStickDirections)button_index);
 
     JoyButton::SetChangeCondition tempmode = (JoyButton::SetChangeCondition)mode;
     button->setChangeSetSelection(originset);
@@ -1318,7 +1241,7 @@ void InputDevice::propogateSetAxisThrottleChange(int index, int originset)
         {
             int throttleSetting = axis->getThrottle();
 
-            QHashIterator<int, SetJoystick*> iter(joystick_sets);
+            QHashIterator<int, SetJoystick *> iter(joystick_sets);
             while (iter.hasNext())
             {
                 iter.next();
@@ -1335,7 +1258,7 @@ void InputDevice::propogateSetAxisThrottleChange(int index, int originset)
 
 void InputDevice::removeControlStick(int index)
 {
-    for (int i=0; i < NUMBER_JOYSETS; i++)
+    for (int i = 0; i < NUMBER_JOYSETS; i++)
     {
         SetJoystick *currentset = getSetJoystick(i);
         if (currentset->getJoyStick(index))
@@ -1345,10 +1268,7 @@ void InputDevice::removeControlStick(int index)
     }
 }
 
-bool InputDevice::isActive()
-{
-    return buttonDownCount > 0;
-}
+bool InputDevice::isActive() { return buttonDownCount > 0; }
 
 void InputDevice::buttonDownEvent(int setindex, int buttonindex)
 {
@@ -1381,15 +1301,9 @@ void InputDevice::buttonUpEvent(int setindex, int buttonindex)
     }
 }
 
-void InputDevice::buttonClickEvent(int buttonindex)
-{
-    emit rawButtonClick(buttonindex);
-}
+void InputDevice::buttonClickEvent(int buttonindex) { emit rawButtonClick(buttonindex); }
 
-void InputDevice::buttonReleaseEvent(int buttonindex)
-{
-    emit rawButtonRelease(buttonindex);
-}
+void InputDevice::buttonReleaseEvent(int buttonindex) { emit rawButtonRelease(buttonindex); }
 
 void InputDevice::axisButtonDownEvent(int setindex, int axisindex, int buttonindex)
 {
@@ -1407,7 +1321,7 @@ void InputDevice::axisButtonUpEvent(int setindex, int axisindex, int buttonindex
 
 void InputDevice::dpadButtonClickEvent(int buttonindex)
 {
-    JoyDPadButton *dpadbutton = static_cast<JoyDPadButton*>(sender());
+    JoyDPadButton *dpadbutton = static_cast<JoyDPadButton *>(sender());
     if (dpadbutton)
     {
         emit rawDPadButtonClick(dpadbutton->getDPad()->getIndex(), buttonindex);
@@ -1416,7 +1330,7 @@ void InputDevice::dpadButtonClickEvent(int buttonindex)
 
 void InputDevice::dpadButtonReleaseEvent(int buttonindex)
 {
-    JoyDPadButton *dpadbutton = static_cast<JoyDPadButton*>(sender());
+    JoyDPadButton *dpadbutton = static_cast<JoyDPadButton *>(sender());
     if (dpadbutton)
     {
         emit rawDPadButtonRelease(dpadbutton->getDPad()->getIndex(), buttonindex);
@@ -1453,7 +1367,7 @@ void InputDevice::stickButtonUpEvent(int setindex, int stickindex, int buttonind
 
 void InputDevice::setButtonName(int index, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
@@ -1469,11 +1383,11 @@ void InputDevice::setButtonName(int index, QString tempName)
 
 void InputDevice::setAxisButtonName(int axisIndex, int buttonIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
-        disconnect(tempSet, SIGNAL(setAxisButtonNameChange(int,int)), this, SLOT(updateSetAxisButtonNames(int,int)));
+        disconnect(tempSet, SIGNAL(setAxisButtonNameChange(int, int)), this, SLOT(updateSetAxisButtonNames(int, int)));
         JoyAxis *axis = tempSet->getJoyAxis(axisIndex);
         if (axis)
         {
@@ -1481,8 +1395,7 @@ void InputDevice::setAxisButtonName(int axisIndex, int buttonIndex, QString temp
             if (buttonIndex == 0)
             {
                 button = axis->getNAxisButton();
-            }
-            else if (buttonIndex == 1)
+            } else if (buttonIndex == 1)
             {
                 button = axis->getPAxisButton();
             }
@@ -1492,17 +1405,17 @@ void InputDevice::setAxisButtonName(int axisIndex, int buttonIndex, QString temp
                 button->setButtonName(tempName);
             }
         }
-        connect(tempSet, SIGNAL(setAxisButtonNameChange(int,int)), this, SLOT(updateSetAxisButtonNames(int,int)));
+        connect(tempSet, SIGNAL(setAxisButtonNameChange(int, int)), this, SLOT(updateSetAxisButtonNames(int, int)));
     }
 }
 
 void InputDevice::setStickButtonName(int stickIndex, int buttonIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
-        disconnect(tempSet, SIGNAL(setStickButtonNameChange(int,int)), this, SLOT(updateSetStickButtonNames(int,int)));
+        disconnect(tempSet, SIGNAL(setStickButtonNameChange(int, int)), this, SLOT(updateSetStickButtonNames(int, int)));
         JoyControlStick *stick = tempSet->getJoyStick(stickIndex);
         if (stick)
         {
@@ -1512,17 +1425,17 @@ void InputDevice::setStickButtonName(int stickIndex, int buttonIndex, QString te
                 button->setButtonName(tempName);
             }
         }
-        connect(tempSet, SIGNAL(setStickButtonNameChange(int,int)), this, SLOT(updateSetStickButtonNames(int,int)));
+        connect(tempSet, SIGNAL(setStickButtonNameChange(int, int)), this, SLOT(updateSetStickButtonNames(int, int)));
     }
 }
 
 void InputDevice::setDPadButtonName(int dpadIndex, int buttonIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
-        disconnect(tempSet, SIGNAL(setDPadButtonNameChange(int,int)), this, SLOT(updateSetDPadButtonNames(int,int)));
+        disconnect(tempSet, SIGNAL(setDPadButtonNameChange(int, int)), this, SLOT(updateSetDPadButtonNames(int, int)));
         JoyDPad *dpad = tempSet->getJoyDPad(dpadIndex);
         if (dpad)
         {
@@ -1532,17 +1445,17 @@ void InputDevice::setDPadButtonName(int dpadIndex, int buttonIndex, QString temp
                 button->setButtonName(tempName);
             }
         }
-        connect(tempSet, SIGNAL(setDPadButtonNameChange(int,int)), this, SLOT(updateSetDPadButtonNames(int,int)));
+        connect(tempSet, SIGNAL(setDPadButtonNameChange(int, int)), this, SLOT(updateSetDPadButtonNames(int, int)));
     }
 }
 
 void InputDevice::setVDPadButtonName(int vdpadIndex, int buttonIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
-        disconnect(tempSet, SIGNAL(setVDPadButtonNameChange(int,int)), this, SLOT(updateSetVDPadButtonNames(int,int)));
+        disconnect(tempSet, SIGNAL(setVDPadButtonNameChange(int, int)), this, SLOT(updateSetVDPadButtonNames(int, int)));
         VDPad *vdpad = tempSet->getVDPad(vdpadIndex);
         if (vdpad)
         {
@@ -1552,13 +1465,13 @@ void InputDevice::setVDPadButtonName(int vdpadIndex, int buttonIndex, QString te
                 button->setButtonName(tempName);
             }
         }
-        connect(tempSet, SIGNAL(setVDPadButtonNameChange(int,int)), this, SLOT(updateSetVDPadButtonNames(int,int)));
+        connect(tempSet, SIGNAL(setVDPadButtonNameChange(int, int)), this, SLOT(updateSetVDPadButtonNames(int, int)));
     }
 }
 
 void InputDevice::setAxisName(int axisIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
@@ -1574,7 +1487,7 @@ void InputDevice::setAxisName(int axisIndex, QString tempName)
 
 void InputDevice::setStickName(int stickIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
@@ -1590,7 +1503,7 @@ void InputDevice::setStickName(int stickIndex, QString tempName)
 
 void InputDevice::setDPadName(int dpadIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
@@ -1606,7 +1519,7 @@ void InputDevice::setDPadName(int dpadIndex, QString tempName)
 
 void InputDevice::setVDPadName(int vdpadIndex, QString tempName)
 {
-    QHashIterator<int, SetJoystick*> iter(joystick_sets);
+    QHashIterator<int, SetJoystick *> iter(joystick_sets);
     while (iter.hasNext())
     {
         SetJoystick *tempSet = iter.next().value();
@@ -1619,7 +1532,6 @@ void InputDevice::setVDPadName(int vdpadIndex, QString tempName)
         connect(tempSet, SIGNAL(setVDPadNameChange(int)), this, SLOT(updateSetVDPadNames(int)));
     }
 }
-
 
 void InputDevice::updateSetButtonNames(int index)
 {
@@ -1639,8 +1551,7 @@ void InputDevice::updateSetAxisButtonNames(int axisIndex, int buttonIndex)
         if (buttonIndex == 0)
         {
             button = axis->getNAxisButton();
-        }
-        else if (buttonIndex == 1)
+        } else if (buttonIndex == 1)
         {
             button = axis->getPAxisButton();
         }
@@ -1738,34 +1649,40 @@ void InputDevice::enableSetConnections(SetJoystick *setstick)
     connect(setstick, SIGNAL(setChangeActivated(int)), this, SLOT(resetButtonDownCount()));
     connect(setstick, SIGNAL(setChangeActivated(int)), this, SLOT(setActiveSetNumber(int)));
     connect(setstick, SIGNAL(setChangeActivated(int)), this, SLOT(propogateSetChange(int)));
-    connect(setstick, SIGNAL(setAssignmentButtonChanged(int,int,int,int)), this, SLOT(changeSetButtonAssociation(int,int,int,int)));
+    connect(setstick, SIGNAL(setAssignmentButtonChanged(int, int, int, int)), this,
+            SLOT(changeSetButtonAssociation(int, int, int, int)));
 
-    connect(setstick, SIGNAL(setAssignmentAxisChanged(int,int,int,int,int)), this, SLOT(changeSetAxisButtonAssociation(int,int,int,int,int)));
-    connect(setstick, SIGNAL(setAssignmentDPadChanged(int,int,int,int,int)), this, SLOT(changeSetDPadButtonAssociation(int,int,int,int,int)));
-    connect(setstick, SIGNAL(setAssignmentVDPadChanged(int,int,int,int,int)), this, SLOT(changeSetVDPadButtonAssociation(int,int,int,int,int)));
-    connect(setstick, SIGNAL(setAssignmentStickChanged(int,int,int,int,int)), this, SLOT(changeSetStickButtonAssociation(int,int,int,int,int)));
-    connect(setstick, SIGNAL(setAssignmentAxisThrottleChanged(int,int)), this, SLOT(propogateSetAxisThrottleChange(int, int)));
+    connect(setstick, SIGNAL(setAssignmentAxisChanged(int, int, int, int, int)), this,
+            SLOT(changeSetAxisButtonAssociation(int, int, int, int, int)));
+    connect(setstick, SIGNAL(setAssignmentDPadChanged(int, int, int, int, int)), this,
+            SLOT(changeSetDPadButtonAssociation(int, int, int, int, int)));
+    connect(setstick, SIGNAL(setAssignmentVDPadChanged(int, int, int, int, int)), this,
+            SLOT(changeSetVDPadButtonAssociation(int, int, int, int, int)));
+    connect(setstick, SIGNAL(setAssignmentStickChanged(int, int, int, int, int)), this,
+            SLOT(changeSetStickButtonAssociation(int, int, int, int, int)));
+    connect(setstick, SIGNAL(setAssignmentAxisThrottleChanged(int, int)), this,
+            SLOT(propogateSetAxisThrottleChange(int, int)));
 
-    connect(setstick, SIGNAL(setButtonClick(int,int)), this, SLOT(buttonDownEvent(int,int)));
+    connect(setstick, SIGNAL(setButtonClick(int, int)), this, SLOT(buttonDownEvent(int, int)));
 
-    connect(setstick, SIGNAL(setButtonRelease(int,int)), this, SLOT(buttonUpEvent(int,int)));
+    connect(setstick, SIGNAL(setButtonRelease(int, int)), this, SLOT(buttonUpEvent(int, int)));
 
-    connect(setstick, SIGNAL(setAxisButtonClick(int,int,int)), this, SLOT(axisButtonDownEvent(int,int,int)));
-    connect(setstick, SIGNAL(setAxisButtonRelease(int,int,int)), this, SLOT(axisButtonUpEvent(int,int,int)));
-    connect(setstick, SIGNAL(setAxisActivated(int,int, int)), this, SLOT(axisActivatedEvent(int,int,int)));
-    connect(setstick, SIGNAL(setAxisReleased(int,int,int)), this, SLOT(axisReleasedEvent(int,int,int)));
+    connect(setstick, SIGNAL(setAxisButtonClick(int, int, int)), this, SLOT(axisButtonDownEvent(int, int, int)));
+    connect(setstick, SIGNAL(setAxisButtonRelease(int, int, int)), this, SLOT(axisButtonUpEvent(int, int, int)));
+    connect(setstick, SIGNAL(setAxisActivated(int, int, int)), this, SLOT(axisActivatedEvent(int, int, int)));
+    connect(setstick, SIGNAL(setAxisReleased(int, int, int)), this, SLOT(axisReleasedEvent(int, int, int)));
 
-    connect(setstick, SIGNAL(setDPadButtonClick(int,int,int)), this, SLOT(dpadButtonDownEvent(int,int,int)));
-    connect(setstick, SIGNAL(setDPadButtonRelease(int,int,int)), this, SLOT(dpadButtonUpEvent(int,int,int)));
+    connect(setstick, SIGNAL(setDPadButtonClick(int, int, int)), this, SLOT(dpadButtonDownEvent(int, int, int)));
+    connect(setstick, SIGNAL(setDPadButtonRelease(int, int, int)), this, SLOT(dpadButtonUpEvent(int, int, int)));
 
-    connect(setstick, SIGNAL(setStickButtonClick(int,int,int)), this, SLOT(stickButtonDownEvent(int,int,int)));
-    connect(setstick, SIGNAL(setStickButtonRelease(int,int,int)), this, SLOT(stickButtonUpEvent(int,int,int)));
+    connect(setstick, SIGNAL(setStickButtonClick(int, int, int)), this, SLOT(stickButtonDownEvent(int, int, int)));
+    connect(setstick, SIGNAL(setStickButtonRelease(int, int, int)), this, SLOT(stickButtonUpEvent(int, int, int)));
 
     connect(setstick, SIGNAL(setButtonNameChange(int)), this, SLOT(updateSetButtonNames(int)));
-    connect(setstick, SIGNAL(setAxisButtonNameChange(int,int)), this, SLOT(updateSetAxisButtonNames(int,int)));
-    connect(setstick, SIGNAL(setStickButtonNameChange(int,int)), this, SLOT(updateSetStickButtonNames(int,int)));
-    connect(setstick, SIGNAL(setDPadButtonNameChange(int,int)), this, SLOT(updateSetDPadButtonNames(int,int)));
-    connect(setstick, SIGNAL(setVDPadButtonNameChange(int,int)), this, SLOT(updateSetVDPadButtonNames(int,int)));
+    connect(setstick, SIGNAL(setAxisButtonNameChange(int, int)), this, SLOT(updateSetAxisButtonNames(int, int)));
+    connect(setstick, SIGNAL(setStickButtonNameChange(int, int)), this, SLOT(updateSetStickButtonNames(int, int)));
+    connect(setstick, SIGNAL(setDPadButtonNameChange(int, int)), this, SLOT(updateSetDPadButtonNames(int, int)));
+    connect(setstick, SIGNAL(setVDPadButtonNameChange(int, int)), this, SLOT(updateSetVDPadButtonNames(int, int)));
 
     connect(setstick, SIGNAL(setAxisNameChange(int)), this, SLOT(updateSetAxisNames(int)));
     connect(setstick, SIGNAL(setStickNameChange(int)), this, SLOT(updateSetStickNames(int)));
@@ -1792,8 +1709,7 @@ void InputDevice::setIndex(int index)
     if (index >= 0)
     {
         joyNumber = index;
-    }
-    else
+    } else
     {
         joyNumber = 0;
     }
@@ -1805,10 +1721,7 @@ void InputDevice::setDeviceKeyPressTime(unsigned int newPressTime)
     emit propertyUpdated();
 }
 
-unsigned int InputDevice::getDeviceKeyPressTime()
-{
-    return keyPressTime;
-}
+unsigned int InputDevice::getDeviceKeyPressTime() { return keyPressTime; }
 
 void InputDevice::profileEdited()
 {
@@ -1819,15 +1732,9 @@ void InputDevice::profileEdited()
     }
 }
 
-bool InputDevice::isDeviceEdited()
-{
-    return deviceEdited;
-}
+bool InputDevice::isDeviceEdited() { return deviceEdited; }
 
-void InputDevice::revertProfileEdited()
-{
-    deviceEdited = false;
-}
+void InputDevice::revertProfileEdited() { deviceEdited = false; }
 
 QString InputDevice::getStringIdentifier()
 {
@@ -1837,8 +1744,7 @@ QString InputDevice::getStringIdentifier()
     if (!tempGUID.isEmpty())
     {
         identifier = tempGUID;
-    }
-    else if (!tempName.isEmpty())
+    } else if (!tempName.isEmpty())
     {
         identifier = tempName;
     }
@@ -1856,10 +1762,7 @@ void InputDevice::disconnectPropertyUpdatedConnection()
     disconnect(this, SIGNAL(propertyUpdated()), this, SLOT(profileEdited()));
 }
 
-void InputDevice::setKeyRepeatStatus(bool enabled)
-{
-    keyRepeatEnabled = enabled;
-}
+void InputDevice::setKeyRepeatStatus(bool enabled) { keyRepeatEnabled = enabled; }
 
 void InputDevice::setKeyRepeatDelay(int delay)
 {
@@ -1877,10 +1780,7 @@ void InputDevice::setKeyRepeatRate(int rate)
     }
 }
 
-bool InputDevice::isKeyRepeatEnabled()
-{
-    return keyRepeatEnabled;
-}
+bool InputDevice::isKeyRepeatEnabled() { return keyRepeatEnabled; }
 
 int InputDevice::getKeyRepeatDelay()
 {
@@ -1920,15 +1820,9 @@ void InputDevice::setProfileName(QString value)
     }
 }
 
-QString InputDevice::getProfileName()
-{
-    return profileName;
-}
+QString InputDevice::getProfileName() { return profileName; }
 
-int InputDevice::getButtonDownCount()
-{
-    return buttonDownCount;
-}
+int InputDevice::getButtonDownCount() { return buttonDownCount; }
 
 #ifdef USE_SDL_2
 QString InputDevice::getSDLPlatform()
@@ -1943,10 +1837,7 @@ QString InputDevice::getSDLPlatform()
  * @brief Check if device is using the SDL Game Controller API
  * @return Status showing if device is using the Game Controller API
  */
-bool InputDevice::isGameController()
-{
-    return false;
-}
+bool InputDevice::isGameController() { return false; }
 
 bool InputDevice::hasCalibrationThrottle(int axisNum)
 {
@@ -1959,16 +1850,13 @@ bool InputDevice::hasCalibrationThrottle(int axisNum)
     return result;
 }
 
-JoyAxis::ThrottleTypes InputDevice::getCalibrationThrottle(int axisNum)
-{
-    return cali.value(axisNum);
-}
+JoyAxis::ThrottleTypes InputDevice::getCalibrationThrottle(int axisNum) { return cali.value(axisNum); }
 
 void InputDevice::setCalibrationThrottle(int axisNum, JoyAxis::ThrottleTypes throttle)
 {
     if (!cali.contains(axisNum))
     {
-        for (int i=0; i < NUMBER_JOYSETS; i++)
+        for (int i = 0; i < NUMBER_JOYSETS; i++)
         {
             joystick_sets.value(i)->setAxisThrottle(axisNum, throttle);
         }
@@ -2001,10 +1889,7 @@ void InputDevice::sendLoadProfileRequest(QString location)
     }
 }
 
-AntiMicroSettings* InputDevice::getSettings()
-{
-    return settings;
-}
+AntiMicroSettings *InputDevice::getSettings() { return settings; }
 
 bool InputDevice::isKnownController()
 {
@@ -2012,15 +1897,13 @@ bool InputDevice::isKnownController()
     if (isGameController())
     {
         result = true;
-    }
-    else
+    } else
     {
         settings->beginGroup("Mappings");
         if (settings->contains(getGUIDString()))
         {
             result = true;
-        }
-        else if (settings->contains(QString("%1%2").arg(getGUIDString()).arg("Disabled")))
+        } else if (settings->contains(QString("%1%2").arg(getGUIDString()).arg("Disabled")))
         {
             result = true;
         }
@@ -2043,7 +1926,7 @@ void InputDevice::activatePossiblePendingEvents()
 void InputDevice::activatePossibleControlStickEvents()
 {
     SetJoystick *currentSet = getActiveSetJoystick();
-    for (int i=0; i < currentSet->getNumberSticks(); i++)
+    for (int i = 0; i < currentSet->getNumberSticks(); i++)
     {
         JoyControlStick *tempStick = currentSet->getJoyStick(i);
         if (tempStick && tempStick->hasPendingEvent())
@@ -2056,7 +1939,7 @@ void InputDevice::activatePossibleControlStickEvents()
 void InputDevice::activatePossibleAxisEvents()
 {
     SetJoystick *currentSet = getActiveSetJoystick();
-    for (int i=0; i < currentSet->getNumberAxes(); i++)
+    for (int i = 0; i < currentSet->getNumberAxes(); i++)
     {
         JoyAxis *tempAxis = currentSet->getJoyAxis(i);
         if (tempAxis && tempAxis->hasPendingEvent())
@@ -2069,7 +1952,7 @@ void InputDevice::activatePossibleAxisEvents()
 void InputDevice::activatePossibleDPadEvents()
 {
     SetJoystick *currentSet = getActiveSetJoystick();
-    for (int i=0; i < currentSet->getNumberHats(); i++)
+    for (int i = 0; i < currentSet->getNumberHats(); i++)
     {
         JoyDPad *tempDPad = currentSet->getJoyDPad(i);
         if (tempDPad && tempDPad->hasPendingEvent())
@@ -2082,7 +1965,7 @@ void InputDevice::activatePossibleDPadEvents()
 void InputDevice::activatePossibleVDPadEvents()
 {
     SetJoystick *currentSet = getActiveSetJoystick();
-    for (int i=0; i < currentSet->getNumberVDPads(); i++)
+    for (int i = 0; i < currentSet->getNumberVDPads(); i++)
     {
         VDPad *tempVDPad = currentSet->getVDPad(i);
         if (tempVDPad && tempVDPad->hasPendingEvent())
@@ -2095,7 +1978,7 @@ void InputDevice::activatePossibleVDPadEvents()
 void InputDevice::activatePossibleButtonEvents()
 {
     SetJoystick *currentSet = getActiveSetJoystick();
-    for (int i=0; i < currentSet->getNumberButtons(); i++)
+    for (int i = 0; i < currentSet->getNumberButtons(); i++)
     {
         JoyButton *tempButton = currentSet->getJoyButton(i);
         if (tempButton && tempButton->hasPendingEvent())
@@ -2110,7 +1993,7 @@ bool InputDevice::elementsHaveNames()
     bool result = false;
 
     SetJoystick *tempSet = getActiveSetJoystick();
-    for (int i=0; i < getNumberButtons() && !result; i++)
+    for (int i = 0; i < getNumberButtons() && !result; i++)
     {
         JoyButton *button = tempSet->getJoyButton(i);
         if (button && !button->getButtonName().isEmpty())
@@ -2119,7 +2002,7 @@ bool InputDevice::elementsHaveNames()
         }
     }
 
-    for (int i=0; i < getNumberAxes() && !result; i++)
+    for (int i = 0; i < getNumberAxes() && !result; i++)
     {
         JoyAxis *axis = tempSet->getJoyAxis(i);
         if (axis)
@@ -2143,7 +2026,7 @@ bool InputDevice::elementsHaveNames()
         }
     }
 
-    for (int i=0; i < getNumberSticks() && !result; i++)
+    for (int i = 0; i < getNumberSticks() && !result; i++)
     {
         JoyControlStick *stick = tempSet->getJoyStick(i);
         if (stick)
@@ -2153,8 +2036,8 @@ bool InputDevice::elementsHaveNames()
                 result = true;
             }
 
-            QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*> *buttons = stick->getButtons();
-            QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton*> iter(*buttons);
+            QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *> *buttons = stick->getButtons();
+            QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton *> iter(*buttons);
             while (iter.hasNext() && !result)
             {
                 JoyControlStickButton *button = iter.next().value();
@@ -2166,7 +2049,7 @@ bool InputDevice::elementsHaveNames()
         }
     }
 
-    for (int i=0; i < getNumberHats() && !result; i++)
+    for (int i = 0; i < getNumberHats() && !result; i++)
     {
         JoyDPad *dpad = tempSet->getJoyDPad(i);
         if (dpad)
@@ -2176,8 +2059,8 @@ bool InputDevice::elementsHaveNames()
                 result = true;
             }
 
-            QHash<int, JoyDPadButton*> *temp = dpad->getButtons();
-            QHashIterator<int, JoyDPadButton*> iter(*temp);
+            QHash<int, JoyDPadButton *> *temp = dpad->getButtons();
+            QHashIterator<int, JoyDPadButton *> iter(*temp);
             while (iter.hasNext() && !result)
             {
                 JoyDPadButton *button = iter.next().value();
@@ -2189,7 +2072,7 @@ bool InputDevice::elementsHaveNames()
         }
     }
 
-    for (int i=0; i < getNumberVDPads() && !result; i++)
+    for (int i = 0; i < getNumberVDPads() && !result; i++)
     {
         VDPad *vdpad = getActiveSetJoystick()->getVDPad(i);
         if (vdpad)
@@ -2199,8 +2082,8 @@ bool InputDevice::elementsHaveNames()
                 result = true;
             }
 
-            QHash<int, JoyDPadButton*> *temp = vdpad->getButtons();
-            QHashIterator<int, JoyDPadButton*> iter(*temp);
+            QHash<int, JoyDPadButton *> *temp = vdpad->getButtons();
+            QHashIterator<int, JoyDPadButton *> iter(*temp);
             while (iter.hasNext() && !result)
             {
                 JoyDPadButton *button = iter.next().value();
@@ -2255,10 +2138,7 @@ QString InputDevice::getRawGUIDString()
     return temp;
 }
 
-void InputDevice::haltServices()
-{
-    emit requestWait();
-}
+void InputDevice::haltServices() { emit requestWait(); }
 
 void InputDevice::finalRemoval()
 {
@@ -2271,19 +2151,12 @@ void InputDevice::setRawAxisDeadZone(int deadZone)
     if (deadZone > 0 && deadZone <= JoyAxis::AXISMAX)
     {
         this->rawAxisDeadZone = deadZone;
-    }
-    else
+    } else
     {
         this->rawAxisDeadZone = RAISEDDEADZONE;
     }
 }
 
-int InputDevice::getRawAxisDeadZone()
-{
-    return rawAxisDeadZone;
-}
+int InputDevice::getRawAxisDeadZone() { return rawAxisDeadZone; }
 
-void InputDevice::rawAxisEvent(int index, int value)
-{
-    emit rawAxisMoved(index, value);
-}
+void InputDevice::rawAxisEvent(int index, int value) { emit rawAxisMoved(index, value); }

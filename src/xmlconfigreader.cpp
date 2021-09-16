@@ -19,14 +19,13 @@
 #include <QDir>
 #include <QStringList>
 
-#include "xmlconfigreader.h"
-#include "xmlconfigmigration.h"
-#include "xmlconfigwriter.h"
 #include "common.h"
+#include "xmlconfigmigration.h"
+#include "xmlconfigreader.h"
+#include "xmlconfigwriter.h"
 
-
-XMLConfigReader::XMLConfigReader(QObject *parent) :
-    QObject(parent)
+XMLConfigReader::XMLConfigReader(QObject *parent)
+    : QObject(parent)
 {
     xml = new QXmlStreamReader();
     configFile = 0;
@@ -54,10 +53,7 @@ XMLConfigReader::~XMLConfigReader()
     }
 }
 
-void XMLConfigReader::setJoystick(InputDevice *joystick)
-{
-    this->joystick = joystick;
-}
+void XMLConfigReader::setJoystick(InputDevice *joystick) { this->joystick = joystick; }
 
 void XMLConfigReader::setFileName(QString filename)
 {
@@ -65,8 +61,7 @@ void XMLConfigReader::setFileName(QString filename)
     if (temp->exists())
     {
         configFile = temp;
-    }
-    else
+    } else
     {
         delete temp;
         temp = 0;
@@ -97,8 +92,7 @@ bool XMLConfigReader::read()
         if (!deviceTypes.contains(xml->name().toString()))
         {
             xml->raiseError("Root node is not a joystick or controller");
-        }
-        else if (xml->name() == Joystick::xmlName)
+        } else if (xml->name() == Joystick::xmlName)
         {
             XMLConfigMigration migration(xml);
             if (migration.requiresMigration())
@@ -121,8 +115,7 @@ bool XMLConfigReader::read()
                     {
                         configFile->write(migrationString.toLocal8Bit());
                         configFile->close();
-                    }
-                    else
+                    } else
                     {
                         xml->raiseError(tr("Could not write updated profile XML to file %1.").arg(configFile->fileName()));
                     }
@@ -135,8 +128,7 @@ bool XMLConfigReader::read()
             if (xml->isStartElement() && deviceTypes.contains(xml->name().toString()))
             {
                 joystick->readConfig(xml);
-            }
-            else
+            } else
             {
                 // If none of the above, skip the element
                 xml->skipCurrentElement();
@@ -153,8 +145,7 @@ bool XMLConfigReader::read()
         if (xml->hasError() && xml->error() != QXmlStreamReader::PrematureEndOfDocumentError)
         {
             error = true;
-        }
-        else if (xml->hasError() && xml->error() == QXmlStreamReader::PrematureEndOfDocumentError)
+        } else if (xml->hasError() && xml->error() == QXmlStreamReader::PrematureEndOfDocumentError)
         {
             xml->clear();
         }
@@ -174,10 +165,7 @@ QString XMLConfigReader::getErrorString()
     return temp;
 }
 
-bool XMLConfigReader::hasError()
-{
-    return xml->hasError();
-}
+bool XMLConfigReader::hasError() { return xml->hasError(); }
 
 void XMLConfigReader::initDeviceTypes()
 {

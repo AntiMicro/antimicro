@@ -21,8 +21,8 @@
 #include "joybutton.h"
 #include "joybuttonmousehelper.h"
 
-JoyButtonMouseHelper::JoyButtonMouseHelper(QObject *parent) :
-    QObject(parent)
+JoyButtonMouseHelper::JoyButtonMouseHelper(QObject *parent)
+    : QObject(parent)
 {
     firstSpringEvent = false;
 }
@@ -64,8 +64,8 @@ void JoyButtonMouseHelper::mouseEvent()
 {
     if (!JoyButton::hasCursorEvents() && !JoyButton::hasSpringEvents())
     {
-        QList<JoyButton*> *buttonList = JoyButton::getPendingMouseButtons();
-        QListIterator<JoyButton*> iter(*buttonList);
+        QList<JoyButton *> *buttonList = JoyButton::getPendingMouseButtons();
+        QListIterator<JoyButton *> iter(*buttonList);
         while (iter.hasNext())
         {
             JoyButton *temp = iter.next();
@@ -86,8 +86,8 @@ void JoyButtonMouseHelper::mouseEvent()
 
 void JoyButtonMouseHelper::resetButtonMouseDistances()
 {
-    QList<JoyButton*> *buttonList = JoyButton::getPendingMouseButtons();
-    QListIterator<JoyButton*> iter(*buttonList);
+    QList<JoyButton *> *buttonList = JoyButton::getPendingMouseButtons();
+    QListIterator<JoyButton *> iter(*buttonList);
     while (iter.hasNext())
     {
         JoyButton *temp = iter.next();
@@ -95,27 +95,15 @@ void JoyButtonMouseHelper::resetButtonMouseDistances()
     }
 }
 
-void JoyButtonMouseHelper::setFirstSpringStatus(bool status)
-{
-    firstSpringEvent = status;
-}
+void JoyButtonMouseHelper::setFirstSpringStatus(bool status) { firstSpringEvent = status; }
 
-bool JoyButtonMouseHelper::getFirstSpringStatus()
-{
-    return firstSpringEvent;
-}
+bool JoyButtonMouseHelper::getFirstSpringStatus() { return firstSpringEvent; }
 
-void JoyButtonMouseHelper::carryGamePollRateUpdate(unsigned int pollRate)
-{
-    emit gamepadRefreshRateUpdated(pollRate);
-}
+void JoyButtonMouseHelper::carryGamePollRateUpdate(unsigned int pollRate) { emit gamepadRefreshRateUpdated(pollRate); }
 
 void JoyButtonMouseHelper::carryMouseRefreshRateUpdate(unsigned int refreshRate)
 {
     emit mouseRefreshRateUpdated(refreshRate);
 }
 
-void JoyButtonMouseHelper::changeThread(QThread *thread)
-{
-    JoyButton::setStaticMouseThread(thread);
-}
+void JoyButtonMouseHelper::changeThread(QThread *thread) { JoyButton::setStaticMouseThread(thread); }

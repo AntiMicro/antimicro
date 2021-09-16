@@ -27,19 +27,18 @@ class JoyAxis;
 class JoyAxisButton : public JoyGradientButton
 {
     Q_OBJECT
-public:
-    explicit JoyAxisButton(JoyAxis *axis, int index, int originset, SetJoystick *parentSet, QObject *parent=0);
+  public:
+    explicit JoyAxisButton(JoyAxis *axis, int index, int originset, SetJoystick *parentSet, QObject *parent = 0);
 
-    virtual QString getPartialName(bool forceFullFormat=false, bool displayNames=false);
+    virtual QString getPartialName(bool forceFullFormat = false, bool displayNames = false);
     virtual QString getXmlName();
     virtual double getDistanceFromDeadZone();
 
     virtual double getMouseDistanceFromDeadZone();
     virtual double getLastMouseDistanceFromDeadZone();
 
-    virtual void setChangeSetCondition(SetChangeCondition condition, bool passive=false,
-                                       bool updateActiveString=true);
-    JoyAxis* getAxis();
+    virtual void setChangeSetCondition(SetChangeCondition condition, bool passive = false, bool updateActiveString = true);
+    JoyAxis *getAxis();
     virtual void setVDPad(VDPad *vdpad);
     virtual void setTurboMode(TurboMode mode);
     virtual bool isPartRealAxis();
@@ -49,12 +48,11 @@ public:
 
     static const QString xmlName;
 
-protected:
+  protected:
     JoyAxis *axis;
 
-signals:
+  signals:
     void setAssignmentChanged(int current_button, int axis_index, int associated_set, int mode);
-
 };
 
 #endif // JOYAXISBUTTON_H

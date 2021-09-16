@@ -21,8 +21,8 @@ const unsigned int QtKeyMapperBase::customQtKeyPrefix;
 const unsigned int QtKeyMapperBase::customKeyPrefix;
 const unsigned int QtKeyMapperBase::nativeKeyPrefix;
 
-QtKeyMapperBase::QtKeyMapperBase(QObject *parent) :
-    QObject(parent)
+QtKeyMapperBase::QtKeyMapperBase(QObject *parent)
+    : QObject(parent)
 {
 }
 
@@ -33,10 +33,7 @@ unsigned int QtKeyMapperBase::returnQtKey(unsigned int key, unsigned int scancod
     return virtualKeyToQtKey.value(key);
 }
 
-unsigned int QtKeyMapperBase::returnVirtualKey(unsigned int qkey)
-{
-    return qtKeyToVirtualKey.value(qkey);
-}
+unsigned int QtKeyMapperBase::returnVirtualKey(unsigned int qkey) { return qtKeyToVirtualKey.value(qkey); }
 
 bool QtKeyMapperBase::isModifier(unsigned int qkey)
 {
@@ -46,16 +43,13 @@ bool QtKeyMapperBase::isModifier(unsigned int qkey)
     if (qtKeyValue == Qt::Key_Shift)
     {
         modifier = true;
-    }
-    else if (qtKeyValue == Qt::Key_Control)
+    } else if (qtKeyValue == Qt::Key_Control)
     {
         modifier = true;
-    }
-    else if (qtKeyValue == Qt::Key_Alt)
+    } else if (qtKeyValue == Qt::Key_Alt)
     {
         modifier = true;
-    }
-    else if (qtKeyValue == Qt::Key_Meta)
+    } else if (qtKeyValue == Qt::Key_Meta)
     {
         modifier = true;
     }
@@ -81,7 +75,4 @@ QtKeyMapperBase::charKeyInformation QtKeyMapperBase::getCharKeyInformation(QChar
  * @brief Obtain identifier string for key mapper.
  * @return Identifier string.
  */
-QString QtKeyMapperBase::getIdentifier()
-{
-    return identifier;
-}
+QString QtKeyMapperBase::getIdentifier() { return identifier; }

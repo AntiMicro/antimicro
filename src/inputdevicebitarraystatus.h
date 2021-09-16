@@ -18,16 +18,16 @@
 #ifndef INPUTDEVICESTATUSEVENT_H
 #define INPUTDEVICESTATUSEVENT_H
 
-#include <QObject>
-#include <QList>
 #include <QBitArray>
+#include <QList>
+#include <QObject>
 
 #include "inputdevice.h"
 
 class InputDeviceBitArrayStatus : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit InputDeviceBitArrayStatus(InputDevice *device, bool readCurrent = true, QObject *parent = 0);
 
     void changeAxesStatus(int axisIndex, bool value);
@@ -37,15 +37,14 @@ public:
     QBitArray generateFinalBitArray();
     void clearStatusValues();
 
-protected:
+  protected:
     QList<bool> axesStatus;
     QList<bool> hatButtonStatus;
     QBitArray buttonStatus;
 
-signals:
+  signals:
 
-public slots:
-
+  public slots:
 };
 
 #endif // INPUTDEVICESTATUSEVENT_H

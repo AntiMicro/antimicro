@@ -30,17 +30,17 @@ class ExtraProfileSettingsDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     explicit ExtraProfileSettingsDialog(InputDevice *device, QWidget *parent = 0);
     ~ExtraProfileSettingsDialog();
 
-protected:
+  protected:
     InputDevice *device;
 
-private:
+  private:
     Ui::ExtraProfileSettingsDialog *ui;
 
-private slots:
+  private slots:
     void changeDeviceKeyPress(int value);
 };
 

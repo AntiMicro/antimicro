@@ -17,11 +17,10 @@
 
 #include "mousedpadsettingsdialoghelper.h"
 
-MouseDpadSettingsDialogHelper::MouseDpadSettingsDialogHelper(JoyDPad *dpad, QObject *parent) :
-    QObject(parent)
+MouseDpadSettingsDialogHelper::MouseDpadSettingsDialogHelper(JoyDPad *dpad, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(dpad);
 
     this->dpad = dpad;
 }
-

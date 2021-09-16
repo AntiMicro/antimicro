@@ -20,12 +20,11 @@
 
 #include "joybuttoncontextmenu.h"
 
-#include "inputdevice.h"
 #include "common.h"
+#include "inputdevice.h"
 
-
-JoyButtonContextMenu::JoyButtonContextMenu(JoyButton *button, QWidget *parent) :
-    QMenu(parent)
+JoyButtonContextMenu::JoyButtonContextMenu(JoyButton *button, QWidget *parent)
+    : QMenu(parent)
 {
     this->button = button;
 
@@ -68,10 +67,10 @@ void JoyButtonContextMenu::buildMenu()
 
     setSectionMenu->addSeparator();
 
-    for (int i=0; i < InputDevice::NUMBER_JOYSETS; i++)
+    for (int i = 0; i < InputDevice::NUMBER_JOYSETS; i++)
     {
-        QMenu *tempSetMenu = setSectionMenu->addMenu(tr("Set %1").arg(i+1));
-        int setSelection = i*3;
+        QMenu *tempSetMenu = setSectionMenu->addMenu(tr("Set %1").arg(i + 1));
+        int setSelection = i * 3;
 
         if (i == button->getSetSelection())
         {
@@ -82,33 +81,30 @@ void JoyButtonContextMenu::buildMenu()
 
         QActionGroup *tempGroup = new QActionGroup(tempSetMenu);
 
-        action = tempSetMenu->addAction(tr("Set %1 1W").arg(i+1));
+        action = tempSetMenu->addAction(tr("Set %1 1W").arg(i + 1));
         action->setData(QVariant(setSelection + 0));
         action->setCheckable(true);
-        if (button->getSetSelection() == i &&
-            button->getChangeSetCondition() == JoyButton::SetChangeOneWay)
+        if (button->getSetSelection() == i && button->getChangeSetCondition() == JoyButton::SetChangeOneWay)
         {
             action->setChecked(true);
         }
         connect(action, SIGNAL(triggered()), this, SLOT(switchSetMode()));
         tempGroup->addAction(action);
 
-        action = tempSetMenu->addAction(tr("Set %1 2W").arg(i+1));
+        action = tempSetMenu->addAction(tr("Set %1 2W").arg(i + 1));
         action->setData(QVariant(setSelection + 1));
         action->setCheckable(true);
-        if (button->getSetSelection() == i &&
-            button->getChangeSetCondition() == JoyButton::SetChangeTwoWay)
+        if (button->getSetSelection() == i && button->getChangeSetCondition() == JoyButton::SetChangeTwoWay)
         {
             action->setChecked(true);
         }
         connect(action, SIGNAL(triggered()), this, SLOT(switchSetMode()));
         tempGroup->addAction(action);
 
-        action = tempSetMenu->addAction(tr("Set %1 WH").arg(i+1));
+        action = tempSetMenu->addAction(tr("Set %1 WH").arg(i + 1));
         action->setData(QVariant(setSelection + 2));
         action->setCheckable(true);
-        if (button->getSetSelection() == i &&
-            button->getChangeSetCondition() == JoyButton::SetChangeWhileHeld)
+        if (button->getSetSelection() == i && button->getChangeSetCondition() == JoyButton::SetChangeWhileHeld)
         {
             action->setChecked(true);
         }
@@ -140,7 +136,7 @@ void JoyButtonContextMenu::switchTurbo()
 
 void JoyButtonContextMenu::switchSetMode()
 {
-    QAction *action = static_cast<QAction*>(sender());
+    QAction *action = static_cast<QAction *>(sender());
     int item = action->data().toInt();
     int setSelection = item / 3;
     int setChangeCondition = item % 3;
@@ -149,12 +145,10 @@ void JoyButtonContextMenu::switchSetMode()
     if (setChangeCondition == 0)
     {
         temp = JoyButton::SetChangeOneWay;
-    }
-    else if (setChangeCondition == 1)
+    } else if (setChangeCondition == 1)
     {
         temp = JoyButton::SetChangeTwoWay;
-    }
-    else if (setChangeCondition == 2)
+    } else if (setChangeCondition == 2)
     {
         temp = JoyButton::SetChangeWhileHeld;
     }
@@ -175,7 +169,4 @@ void JoyButtonContextMenu::disableSetMode()
     PadderCommon::inputDaemonMutex.unlock();
 }
 
-void JoyButtonContextMenu::clearButton()
-{
-    QMetaObject::invokeMethod(button, "clearSlotsEventReset");
-}
+void JoyButtonContextMenu::clearButton() { QMetaObject::invokeMethod(button, "clearSlotsEventReset"); }

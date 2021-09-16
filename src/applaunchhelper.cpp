@@ -15,19 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QTextStream>
-#include <QMapIterator>
 #include <QDesktopWidget>
+#include <QMapIterator>
+#include <QTextStream>
 
 #include "applaunchhelper.h"
 
 #ifdef Q_OS_WIN
-#include <winextras.h>
+    #include <winextras.h>
 #endif
 
-AppLaunchHelper::AppLaunchHelper(AntiMicroSettings *settings, bool graphical,
-                                 QObject *parent) :
-    QObject(parent)
+AppLaunchHelper::AppLaunchHelper(AntiMicroSettings *settings, bool graphical, QObject *parent)
+    : QObject(parent)
 {
     this->settings = settings;
     this->graphical = graphical;
@@ -79,8 +78,7 @@ void AppLaunchHelper::changeMouseRefreshRate()
 
 void AppLaunchHelper::changeGamepadPollRate()
 {
-    unsigned int pollRate = settings->value("GamepadPollRate",
-                                            AntiMicroSettings::defaultSDLGamepadPollRate).toUInt();
+    unsigned int pollRate = settings->value("GamepadPollRate", AntiMicroSettings::defaultSDLGamepadPollRate).toUInt();
     if (pollRate > 0)
     {
         JoyButton::setGamepadRefreshRate(pollRate);
@@ -95,7 +93,7 @@ void AppLaunchHelper::printControllerList(QMap<SDL_JoystickID, InputDevice *> *j
     outstream << endl;
     outstream << QObject::tr("List Joysticks:") << endl;
     outstream << QObject::tr("---------------") << endl;
-    QMapIterator<SDL_JoystickID, InputDevice*> iter(*joysticks);
+    QMapIterator<SDL_JoystickID, InputDevice *> iter(*joysticks);
     unsigned int indexNumber = 1;
     while (iter.hasNext())
     {
@@ -107,8 +105,7 @@ void AppLaunchHelper::printControllerList(QMap<SDL_JoystickID, InputDevice *> *j
 #endif
         outstream << "  " << QObject::tr("Name:            %1").arg(tempdevice->getSDLName()) << endl;
 #ifdef USE_SDL_2
-        QString gameControllerStatus = tempdevice->isGameController() ?
-                                       QObject::tr("Yes") : QObject::tr("No");
+        QString gameControllerStatus = tempdevice->isGameController() ? QObject::tr("Yes") : QObject::tr("No");
         outstream << "  " << QObject::tr("Game Controller: %1").arg(gameControllerStatus) << endl;
 #endif
 
@@ -127,14 +124,12 @@ void AppLaunchHelper::printControllerList(QMap<SDL_JoystickID, InputDevice *> *j
 void AppLaunchHelper::changeSpringModeScreen()
 {
     QDesktopWidget deskWid;
-    int springScreen = settings->value("Mouse/SpringScreen",
-                                       AntiMicroSettings::defaultSpringScreen).toInt();
+    int springScreen = settings->value("Mouse/SpringScreen", AntiMicroSettings::defaultSpringScreen).toInt();
 
     if (springScreen >= deskWid.screenCount())
     {
         springScreen = -1;
-        settings->setValue("Mouse/SpringScreen",
-                           AntiMicroSettings::defaultSpringScreen);
+        settings->setValue("Mouse/SpringScreen", AntiMicroSettings::defaultSpringScreen);
         settings->sync();
     }
 
@@ -145,8 +140,8 @@ void AppLaunchHelper::changeSpringModeScreen()
 void AppLaunchHelper::checkPointerPrecision()
 {
     WinExtras::grabCurrentPointerPrecision();
-    bool disableEnhandedPoint = settings->value("Mouse/DisableWinEnhancedPointer",
-                                                AntiMicroSettings::defaultDisabledWinEnhanced).toBool();
+    bool disableEnhandedPoint =
+        settings->value("Mouse/DisableWinEnhancedPointer", AntiMicroSettings::defaultDisabledWinEnhanced).toBool();
     if (disableEnhandedPoint)
     {
         WinExtras::disablePointerPrecision();
@@ -155,8 +150,8 @@ void AppLaunchHelper::checkPointerPrecision()
 
 void AppLaunchHelper::appQuitPointerPrecision()
 {
-    bool disableEnhancedPoint = settings->value("Mouse/DisableWinEnhancedPointer",
-                                                AntiMicroSettings::defaultDisabledWinEnhanced).toBool();
+    bool disableEnhancedPoint =
+        settings->value("Mouse/DisableWinEnhancedPointer", AntiMicroSettings::defaultDisabledWinEnhanced).toBool();
     if (disableEnhancedPoint && !WinExtras::isUsingEnhancedPointerPrecision())
     {
         WinExtras::enablePointerPrecision();
@@ -165,17 +160,8 @@ void AppLaunchHelper::appQuitPointerPrecision()
 
 #endif
 
-void AppLaunchHelper::revertMouseThread()
-{
-    JoyButton::indirectStaticMouseThread(QThread::currentThread());
-}
+void AppLaunchHelper::revertMouseThread() { JoyButton::indirectStaticMouseThread(QThread::currentThread()); }
 
-void AppLaunchHelper::changeMouseThread(QThread *thread)
-{
-    JoyButton::setStaticMouseThread(thread);
-}
+void AppLaunchHelper::changeMouseThread(QThread *thread) { JoyButton::setStaticMouseThread(thread); }
 
-void AppLaunchHelper::establishMouseTimerConnections()
-{
-    JoyButton::establishMouseTimerConnections();
-}
+void AppLaunchHelper::establishMouseTimerConnections() { JoyButton::establishMouseTimerConnections(); }

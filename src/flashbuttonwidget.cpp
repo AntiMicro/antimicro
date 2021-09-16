@@ -16,22 +16,22 @@
  */
 
 //#include <QDebug>
-#include <QStyle>
 #include <QFontMetrics>
 #include <QPainter>
+#include <QStyle>
 
 #include "flashbuttonwidget.h"
 
-FlashButtonWidget::FlashButtonWidget(QWidget *parent) :
-    QPushButton(parent)
+FlashButtonWidget::FlashButtonWidget(QWidget *parent)
+    : QPushButton(parent)
 {
     isflashing = false;
     displayNames = false;
     leftAlignText = false;
 }
 
-FlashButtonWidget::FlashButtonWidget(bool displayNames, QWidget *parent) :
-    QPushButton(parent)
+FlashButtonWidget::FlashButtonWidget(bool displayNames, QWidget *parent)
+    : QPushButton(parent)
 {
     isflashing = false;
     this->displayNames = displayNames;
@@ -58,15 +58,9 @@ void FlashButtonWidget::unflash()
     emit flashed(isflashing);
 }
 
-void FlashButtonWidget::refreshLabel()
-{
-    setText(generateLabel());
-}
+void FlashButtonWidget::refreshLabel() { setText(generateLabel()); }
 
-bool FlashButtonWidget::isButtonFlashing()
-{
-    return isflashing;
-}
+bool FlashButtonWidget::isButtonFlashing() { return isflashing; }
 
 void FlashButtonWidget::toggleNameDisplay()
 {
@@ -74,15 +68,9 @@ void FlashButtonWidget::toggleNameDisplay()
     refreshLabel();
 }
 
-void FlashButtonWidget::setDisplayNames(bool display)
-{
-    displayNames = display;
-}
+void FlashButtonWidget::setDisplayNames(bool display) { displayNames = display; }
 
-bool FlashButtonWidget::isDisplayingNames()
-{
-    return displayNames;
-}
+bool FlashButtonWidget::isDisplayingNames() { return displayNames; }
 
 void FlashButtonWidget::paintEvent(QPaintEvent *event)
 {
@@ -96,7 +84,7 @@ void FlashButtonWidget::paintEvent(QPaintEvent *event)
     bool reduce = false;
     while ((this->width() < fm.width(text())) && tempScaledFont.pointSize() >= 7)
     {
-        tempScaledFont.setPointSize(tempScaledFont.pointSize()-1);
+        tempScaledFont.setPointSize(tempScaledFont.pointSize() - 1);
         painter.setFont(tempScaledFont);
         fm = painter.fontMetrics();
         reduce = true;
@@ -111,8 +99,7 @@ void FlashButtonWidget::paintEvent(QPaintEvent *event)
             setStyleSheet("text-align: left;");
             this->style()->unpolish(this);
             this->style()->polish(this);
-        }
-        else if (!reduce && leftAlignText)
+        } else if (!reduce && leftAlignText)
         {
             leftAlignText = !leftAlignText;
             setStyleSheet("text-align: center;");
@@ -126,7 +113,4 @@ void FlashButtonWidget::paintEvent(QPaintEvent *event)
     QPushButton::paintEvent(event);
 }
 
-void FlashButtonWidget::retranslateUi()
-{
-    refreshLabel();
-}
+void FlashButtonWidget::retranslateUi() { refreshLabel(); }

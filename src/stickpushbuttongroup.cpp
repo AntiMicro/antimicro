@@ -17,12 +17,12 @@
 
 #include <QHash>
 
-#include "stickpushbuttongroup.h"
 #include "buttoneditdialog.h"
 #include "joycontrolstickeditdialog.h"
+#include "stickpushbuttongroup.h"
 
-StickPushButtonGroup::StickPushButtonGroup(JoyControlStick *stick, bool displayNames, QWidget *parent) :
-    QGridLayout(parent)
+StickPushButtonGroup::StickPushButtonGroup(JoyControlStick *stick, bool displayNames, QWidget *parent)
+    : QGridLayout(parent)
 {
     this->stick = stick;
     this->displayNames = displayNames;
@@ -35,7 +35,7 @@ StickPushButtonGroup::StickPushButtonGroup(JoyControlStick *stick, bool displayN
 
 void StickPushButtonGroup::generateButtons()
 {
-    QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*> *stickButtons = stick->getButtons();
+    QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *> *stickButtons = stick->getButtons();
 
     JoyControlStickButton *button = 0;
     JoyControlStickButtonPushButton *pushbutton = 0;
@@ -122,16 +122,14 @@ void StickPushButtonGroup::generateButtons()
 
 void StickPushButtonGroup::changeButtonLayout()
 {
-    if (stick->getJoyMode() == JoyControlStick::StandardMode ||
-        stick->getJoyMode() == JoyControlStick::EightWayMode ||
+    if (stick->getJoyMode() == JoyControlStick::StandardMode || stick->getJoyMode() == JoyControlStick::EightWayMode ||
         stick->getJoyMode() == JoyControlStick::FourWayCardinal)
     {
         upButton->setVisible(true);
         downButton->setVisible(true);
         leftButton->setVisible(true);
         rightButton->setVisible(true);
-    }
-    else
+    } else
     {
         upButton->setVisible(false);
         downButton->setVisible(false);
@@ -139,15 +137,13 @@ void StickPushButtonGroup::changeButtonLayout()
         rightButton->setVisible(false);
     }
 
-    if (stick->getJoyMode() == JoyControlStick::EightWayMode ||
-        stick->getJoyMode() == JoyControlStick::FourWayDiagonal)
+    if (stick->getJoyMode() == JoyControlStick::EightWayMode || stick->getJoyMode() == JoyControlStick::FourWayDiagonal)
     {
         upLeftButton->setVisible(true);
         upRightButton->setVisible(true);
         downLeftButton->setVisible(true);
         downRightButton->setVisible(true);
-    }
-    else
+    } else
     {
         upLeftButton->setVisible(false);
         upRightButton->setVisible(false);
@@ -156,19 +152,13 @@ void StickPushButtonGroup::changeButtonLayout()
     }
 }
 
-void StickPushButtonGroup::propogateSlotsChanged()
-{
-    emit buttonSlotChanged();
-}
+void StickPushButtonGroup::propogateSlotsChanged() { emit buttonSlotChanged(); }
 
-JoyControlStick* StickPushButtonGroup::getStick()
-{
-    return stick;
-}
+JoyControlStick *StickPushButtonGroup::getStick() { return stick; }
 
 void StickPushButtonGroup::openStickButtonDialog()
 {
-    JoyControlStickButtonPushButton *pushbutton = static_cast<JoyControlStickButtonPushButton*>(sender());
+    JoyControlStickButtonPushButton *pushbutton = static_cast<JoyControlStickButtonPushButton *>(sender());
     ButtonEditDialog *dialog = new ButtonEditDialog(pushbutton->getButton(), parentWidget());
     dialog->show();
 }

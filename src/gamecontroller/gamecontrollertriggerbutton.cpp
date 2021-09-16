@@ -15,22 +15,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <setjoystick.h>
 #include <inputdevice.h>
+#include <setjoystick.h>
 
 #include "gamecontrollertriggerbutton.h"
 
 const QString GameControllerTriggerButton::xmlName = "triggerbutton";
 
-GameControllerTriggerButton::GameControllerTriggerButton(JoyAxis *axis, int index, int originset, SetJoystick *parentSet, QObject *parent) :
-    JoyAxisButton(axis, index, originset, parentSet, parent)
+GameControllerTriggerButton::GameControllerTriggerButton(JoyAxis *axis, int index, int originset, SetJoystick *parentSet,
+                                                         QObject *parent)
+    : JoyAxisButton(axis, index, originset, parentSet, parent)
 {
 }
 
-QString GameControllerTriggerButton::getXmlName()
-{
-    return this->xmlName;
-}
+QString GameControllerTriggerButton::getXmlName() { return this->xmlName; }
 
 void GameControllerTriggerButton::readJoystickConfig(QXmlStreamReader *xml)
 {

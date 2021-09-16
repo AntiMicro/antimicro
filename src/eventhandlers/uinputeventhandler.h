@@ -18,16 +18,16 @@
 #ifndef UINPUTEVENTHANDLER_H
 #define UINPUTEVENTHANDLER_H
 
-#include "baseeventhandler.h"
 #include "../qtx11keymapper.h"
+#include "baseeventhandler.h"
 
-#include <springmousemoveinfo.h>
 #include <joybuttonslot.h>
+#include <springmousemoveinfo.h>
 
 class UInputEventHandler : public BaseEventHandler
 {
     Q_OBJECT
-public:
+  public:
     explicit UInputEventHandler(QObject *parent = 0);
     ~UInputEventHandler();
 
@@ -38,8 +38,7 @@ public:
     virtual void sendMouseEvent(int xDis, int yDis);
     virtual void sendMouseAbsEvent(int xDis, int yDis, int screen);
 
-    virtual void sendMouseSpringEvent(unsigned int xDis, unsigned int yDis,
-                                      unsigned int width, unsigned int height);
+    virtual void sendMouseSpringEvent(unsigned int xDis, unsigned int yDis, unsigned int width, unsigned int height);
     virtual void sendMouseSpringEvent(int xDis, int yDis);
 
     virtual QString getName();
@@ -48,7 +47,7 @@ public:
 
     virtual void sendTextEntryEvent(QString maintext);
 
-protected:
+  protected:
     int openUInputHandle();
     void setKeyboardEvents(int filehandle);
     void setRelMouseEvents(int filehandle);
@@ -58,19 +57,18 @@ protected:
     void createUInputMouseDevice(int filehandle);
     void createUInputSpringMouseDevice(int filehandle);
     void closeUInputDevice(int filehandle);
-    void write_uinput_event(int filehandle, unsigned int type,
-                            unsigned int code, int value, bool syn=true);
+    void write_uinput_event(int filehandle, unsigned int type, unsigned int code, int value, bool syn = true);
 
     int keyboardFileHandler;
     int mouseFileHandler;
     int springMouseFileHandler;
     QString uinputDeviceLocation;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
 
-private slots:
+  private slots:
 #ifdef WITH_X11
     void x11ResetMouseAccelerationChange();
 #endif

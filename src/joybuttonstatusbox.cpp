@@ -19,8 +19,8 @@
 
 #include "joybuttonstatusbox.h"
 
-JoyButtonStatusBox::JoyButtonStatusBox(JoyButton *button, QWidget *parent) :
-    QPushButton(parent)
+JoyButtonStatusBox::JoyButtonStatusBox(JoyButton *button, QWidget *parent)
+    : QPushButton(parent)
 {
     this->button = button;
     isflashing = false;
@@ -31,15 +31,9 @@ JoyButtonStatusBox::JoyButtonStatusBox(JoyButton *button, QWidget *parent) :
     connect(button, SIGNAL(released(int)), this, SLOT(unflash()));
 }
 
-JoyButton* JoyButtonStatusBox::getJoyButton()
-{
-    return button;
-}
+JoyButton *JoyButtonStatusBox::getJoyButton() { return button; }
 
-bool JoyButtonStatusBox::isButtonFlashing()
-{
-    return isflashing;
-}
+bool JoyButtonStatusBox::isButtonFlashing() { return isflashing; }
 
 void JoyButtonStatusBox::flash()
 {

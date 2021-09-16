@@ -26,21 +26,20 @@
 class JoyTabWidgetContainer : public QTabWidget
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyTabWidgetContainer(QWidget *parent = 0);
 
     int addTab(QWidget *widget, const QString &string);
     int addTab(JoyTabWidget *widget, const QString &string);
 
-protected:
+  protected:
+  signals:
 
-signals:
-
-public slots:
+  public slots:
     void disableFlashes(InputDevice *joystick);
     void enableFlashes(InputDevice *joystick);
 
-private slots:
+  private slots:
     void flash();
     void unflash();
     void unflashAll();

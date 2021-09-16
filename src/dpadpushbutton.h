@@ -27,24 +27,24 @@ class DPadPushButton : public FlashButtonWidget
 {
     Q_OBJECT
 
-public:
+  public:
     explicit DPadPushButton(JoyDPad *dpad, bool displayNames, QWidget *parent = 0);
 
-    JoyDPad* getDPad();
+    JoyDPad *getDPad();
     void tryFlash();
 
-protected:
+  protected:
     QString generateLabel();
 
     JoyDPad *dpad;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     void disableFlashes();
     void enableFlashes();
 
-private slots:
+  private slots:
     void showContextMenu(const QPoint &point);
 };
 

@@ -18,15 +18,15 @@
 #ifndef GAMECONTROLLERMAPPINGDIALOG_H
 #define GAMECONTROLLERMAPPINGDIALOG_H
 
+#include <QAbstractButton>
 #include <QDialog>
 #include <QHash>
 #include <QList>
-#include <QAbstractButton>
 
-#include "uihelpers/gamecontrollermappingdialoghelper.h"
-#include "inputdevice.h"
-#include "gamecontroller/gamecontroller.h"
 #include "antimicrosettings.h"
+#include "gamecontroller/gamecontroller.h"
+#include "inputdevice.h"
+#include "uihelpers/gamecontrollermappingdialoghelper.h"
 
 namespace Ui {
 class GameControllerMappingDialog;
@@ -36,7 +36,7 @@ class GameControllerMappingDialog : public QDialog
 {
     Q_OBJECT
 
-public:
+  public:
     explicit GameControllerMappingDialog(InputDevice *device, AntiMicroSettings *settings, QWidget *parent = 0);
     ~GameControllerMappingDialog();
 
@@ -44,7 +44,7 @@ public:
     static QHash<SDL_GameControllerButton, int> buttonPlacement;
     static QHash<SDL_GameControllerAxis, int> axisPlacement;
 
-protected:
+  protected:
     void populateGameControllerBindings(GameController *controller);
     void removeControllerMapping();
     void enableDeviceConnections();
@@ -64,13 +64,13 @@ protected:
     int currentDeadZoneValue;
     bool usingGameController;
 
-private:
+  private:
     Ui::GameControllerMappingDialog *ui;
 
-signals:
+  signals:
     void mappingUpdate(QString mapping, InputDevice *device);
 
-private slots:
+  private slots:
     void buttonAssign(int buttonindex);
     void axisAssign(int axis, int value);
     void dpadAssign(int dpad, int buttonindex);

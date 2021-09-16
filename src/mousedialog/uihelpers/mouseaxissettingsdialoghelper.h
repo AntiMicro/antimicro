@@ -25,15 +25,15 @@
 class MouseAxisSettingsDialogHelper : public QObject
 {
     Q_OBJECT
-public:
+  public:
     explicit MouseAxisSettingsDialogHelper(JoyAxis *axis, QObject *parent = 0);
 
-protected:
+  protected:
     JoyAxis *axis;
 
-signals:
+  signals:
 
-public slots:
+  public slots:
     void updateExtraAccelerationStatus(bool checked);
     void updateExtraAccelerationMultiplier(double value);
 

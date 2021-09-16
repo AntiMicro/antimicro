@@ -17,11 +17,11 @@
 
 #include <QMenu>
 
-#include "joybuttonwidget.h"
 #include "joybuttoncontextmenu.h"
+#include "joybuttonwidget.h"
 
-JoyButtonWidget::JoyButtonWidget(JoyButton *button, bool displayNames, QWidget *parent) :
-    FlashButtonWidget(displayNames, parent)
+JoyButtonWidget::JoyButtonWidget(JoyButton *button, bool displayNames, QWidget *parent)
+    : FlashButtonWidget(displayNames, parent)
 {
     this->button = button;
 
@@ -31,17 +31,14 @@ JoyButtonWidget::JoyButtonWidget(JoyButton *button, bool displayNames, QWidget *
     tryFlash();
 
     this->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(showContextMenu(const QPoint&)));
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showContextMenu(const QPoint &)));
 
-    //connect(button, SIGNAL(slotsChanged()), this, SLOT(refreshLabel()));
+    // connect(button, SIGNAL(slotsChanged()), this, SLOT(refreshLabel()));
     connect(button, SIGNAL(propertyUpdated()), this, SLOT(refreshLabel()));
     connect(button, SIGNAL(activeZoneChanged()), this, SLOT(refreshLabel()));
 }
 
-JoyButton* JoyButtonWidget::getJoyButton()
-{
-    return button;
-}
+JoyButton *JoyButtonWidget::getJoyButton() { return button; }
 
 void JoyButtonWidget::disableFlashes()
 {

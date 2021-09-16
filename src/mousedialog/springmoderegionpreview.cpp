@@ -18,17 +18,18 @@
 //#include <QDebug>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QPainter>
 #include <QPaintEvent>
+#include <QPainter>
 
 #include "springmoderegionpreview.h"
 
-SpringModeRegionPreview::SpringModeRegionPreview(int width, int height, QWidget *parent) :
-    #if defined(Q_OS_WIN)
-        QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
-    #else
-        QWidget(parent, Qt::FramelessWindowHint)
-    #endif
+SpringModeRegionPreview::SpringModeRegionPreview(int width, int height, QWidget *parent)
+    :
+#if defined(Q_OS_WIN)
+    QWidget(parent, Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint)
+#else
+    QWidget(parent, Qt::FramelessWindowHint)
+#endif
 {
     int tempwidth = adjustSpringSizeWidth(width);
     int tempheight = adjustSpringSizeHeight(height);
@@ -50,8 +51,7 @@ SpringModeRegionPreview::SpringModeRegionPreview(int width, int height, QWidget 
 
         setGeometry(cw, ch, tempwidth, tempheight);
         show();
-    }
-    else
+    } else
     {
         resize(0, 0);
         move(0, 0);
@@ -69,7 +69,7 @@ void SpringModeRegionPreview::paintEvent(QPaintEvent *event)
     border.setColor(Qt::black);
     p.setPen(border);
 
-    p.drawRect(1, 1, width()-3, height()-3);
+    p.drawRect(1, 1, width() - 3, height() - 3);
 }
 
 int SpringModeRegionPreview::adjustSpringSizeWidth(int width)
@@ -78,8 +78,7 @@ int SpringModeRegionPreview::adjustSpringSizeWidth(int width)
     if (width >= 2)
     {
         tempwidth = width;
-    }
-    else
+    } else
     {
         tempwidth = 0;
     }
@@ -94,8 +93,7 @@ int SpringModeRegionPreview::adjustSpringSizeHeight(int height)
     if (height >= 2)
     {
         tempheight = height;
-    }
-    else
+    } else
     {
         tempheight = 0;
     }
@@ -123,8 +121,7 @@ void SpringModeRegionPreview::setSpringWidth(int width)
         {
             show();
         }
-    }
-    else
+    } else
     {
 #ifndef Q_OS_UNIX
         hide();
@@ -154,8 +151,7 @@ void SpringModeRegionPreview::setSpringHeight(int height)
         {
             show();
         }
-    }
-    else
+    } else
     {
 #ifndef Q_OS_UNIX
         hide();

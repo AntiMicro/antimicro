@@ -18,19 +18,19 @@
 //#include <QDebug>
 #include <QList>
 
-#include "axiseditdialog.h"
-#include "ui_axiseditdialog.h"
-#include "buttoneditdialog.h"
-#include "mousedialog/mouseaxissettingsdialog.h"
-#include "event.h"
 #include "antkeymapper.h"
-#include "setjoystick.h"
-#include "inputdevice.h"
+#include "axiseditdialog.h"
+#include "buttoneditdialog.h"
 #include "common.h"
+#include "event.h"
+#include "inputdevice.h"
+#include "mousedialog/mouseaxissettingsdialog.h"
+#include "setjoystick.h"
+#include "ui_axiseditdialog.h"
 
-AxisEditDialog::AxisEditDialog(JoyAxis *axis, QWidget *parent) :
-    QDialog(parent, Qt::Window),
-    ui(new Ui::AxisEditDialog)
+AxisEditDialog::AxisEditDialog(JoyAxis *axis, QWidget *parent)
+    : QDialog(parent, Qt::Window)
+    , ui(new Ui::AxisEditDialog)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -43,8 +43,7 @@ AxisEditDialog::AxisEditDialog(JoyAxis *axis, QWidget *parent) :
 
     initialThrottleState = axis->getThrottle();
     bool actAsTrigger = false;
-    if (initialThrottleState == JoyAxis::PositiveThrottle ||
-        initialThrottleState == JoyAxis::PositiveHalfThrottle)
+    if (initialThrottleState == JoyAxis::PositiveThrottle || initialThrottleState == JoyAxis::PositiveHalfThrottle)
     {
         actAsTrigger = true;
     }
@@ -65,8 +64,7 @@ AxisEditDialog::AxisEditDialog(JoyAxis *axis, QWidget *parent) :
     if (!nButton->getActionName().isEmpty())
     {
         ui->nPushButton->setText(nButton->getActionName());
-    }
-    else
+    } else
     {
         ui->nPushButton->setText(nButton->getSlotsSummary());
     }
@@ -76,22 +74,20 @@ AxisEditDialog::AxisEditDialog(JoyAxis *axis, QWidget *parent) :
     if (!pButton->getActionName().isEmpty())
     {
         ui->pPushButton->setText(pButton->getActionName());
-    }
-    else
+    } else
     {
         ui->pPushButton->setText(pButton->getSlotsSummary());
     }
 
     int currentThrottle = axis->getThrottle();
-    //ui->comboBox_2->setCurrentIndex(currentThrottle+1);
+    // ui->comboBox_2->setCurrentIndex(currentThrottle+1);
     if (currentThrottle == JoyAxis::NegativeThrottle || currentThrottle == JoyAxis::NegativeHalfThrottle)
     {
         int tempindex = currentThrottle == JoyAxis::NegativeHalfThrottle ? 0 : 1;
         ui->comboBox_2->setCurrentIndex(tempindex);
         ui->nPushButton->setEnabled(true);
         ui->pPushButton->setEnabled(false);
-    }
-    else if (currentThrottle == JoyAxis::PositiveThrottle || currentThrottle == JoyAxis::PositiveHalfThrottle)
+    } else if (currentThrottle == JoyAxis::PositiveThrottle || currentThrottle == JoyAxis::PositiveHalfThrottle)
     {
         int tempindex = currentThrottle == JoyAxis::PositiveThrottle ? 3 : 4;
         ui->comboBox_2->setCurrentIndex(tempindex);
@@ -109,8 +105,7 @@ AxisEditDialog::AxisEditDialog(JoyAxis *axis, QWidget *parent) :
     if (!actAsTrigger)
     {
         selectAxisCurrentPreset();
-    }
-    else
+    } else
     {
         selectTriggerPreset();
     }
@@ -146,17 +141,13 @@ AxisEditDialog::AxisEditDialog(JoyAxis *axis, QWidget *parent) :
     connect(this, SIGNAL(finished(int)), this, SLOT(checkFinalSettings()));
 }
 
-AxisEditDialog::~AxisEditDialog()
-{
-    delete ui;
-}
+AxisEditDialog::~AxisEditDialog() { delete ui; }
 
 void AxisEditDialog::implementPresets(int index)
 {
     bool actAsTrigger = false;
     int currentThrottle = axis->getThrottle();
-    if (currentThrottle == JoyAxis::PositiveThrottle ||
-        currentThrottle == JoyAxis::PositiveHalfThrottle)
+    if (currentThrottle == JoyAxis::PositiveThrottle || currentThrottle == JoyAxis::PositiveHalfThrottle)
     {
         actAsTrigger = true;
     }
@@ -164,8 +155,7 @@ void AxisEditDialog::implementPresets(int index)
     if (actAsTrigger)
     {
         implementTriggerPresets(index);
-    }
-    else
+    } else
     {
         implementAxisPresets(index);
     }
@@ -184,53 +174,55 @@ void AxisEditDialog::implementAxisPresets(int index)
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseRight, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseLeft, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (index == 3)
+    } else if (index == 3)
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (index == 4)
+    } else if (index == 4)
     {
         nbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseDown, JoyButtonSlot::JoyMouseMovement, this);
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseUp, JoyButtonSlot::JoyMouseMovement, this);
-    }
-    else if (index == 5)
+    } else if (index == 5)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up), Qt::Key_Up, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down), Qt::Key_Down, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (index == 6)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up), Qt::Key_Up,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down), Qt::Key_Down,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (index == 6)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left), Qt::Key_Left, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right), Qt::Key_Right, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (index == 7)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left), Qt::Key_Left,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right), Qt::Key_Right,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (index == 7)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W), Qt::Key_W, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S), Qt::Key_S, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (index == 8)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W), Qt::Key_W,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S), Qt::Key_S,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (index == 8)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A), Qt::Key_A, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D), Qt::Key_D, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (index == 9)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A), Qt::Key_A,
+                                        JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D), Qt::Key_D,
+                                        JoyButtonSlot::JoyKeyboard, this);
+    } else if (index == 9)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8), QtKeyMapperBase::AntKey_KP_8, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2), QtKeyMapperBase::AntKey_KP_2, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (index == 10)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8),
+                                        QtKeyMapperBase::AntKey_KP_8, JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2),
+                                        QtKeyMapperBase::AntKey_KP_2, JoyButtonSlot::JoyKeyboard, this);
+    } else if (index == 10)
     {
-        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4), QtKeyMapperBase::AntKey_KP_4, JoyButtonSlot::JoyKeyboard, this);
-        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6), QtKeyMapperBase::AntKey_KP_6, JoyButtonSlot::JoyKeyboard, this);
-    }
-    else if (index == 11)
+        nbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4),
+                                        QtKeyMapperBase::AntKey_KP_4, JoyButtonSlot::JoyKeyboard, this);
+        pbuttonslot = new JoyButtonSlot(AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6),
+                                        QtKeyMapperBase::AntKey_KP_6, JoyButtonSlot::JoyKeyboard, this);
+    } else if (index == 11)
     {
         JoyAxisButton *nbutton = axis->getNAxisButton();
         JoyAxisButton *pbutton = axis->getPAxisButton();
@@ -245,8 +237,7 @@ void AxisEditDialog::implementAxisPresets(int index)
     if (nbuttonslot)
     {
         JoyAxisButton *button = axis->getNAxisButton();
-        QMetaObject::invokeMethod(button, "clearSlotsEventReset",
-                                  Q_ARG(bool, false));
+        QMetaObject::invokeMethod(button, "clearSlotsEventReset", Q_ARG(bool, false));
 
         QMetaObject::invokeMethod(button, "setAssignedSlot", Qt::BlockingQueuedConnection,
                                   Q_ARG(int, nbuttonslot->getSlotCode()),
@@ -274,15 +265,9 @@ void AxisEditDialog::implementAxisPresets(int index)
     PadderCommon::unlockInputDevices();
 }
 
-void AxisEditDialog::updateDeadZoneBox(int value)
-{
-    ui->lineEdit->setText(QString::number(value));
-}
+void AxisEditDialog::updateDeadZoneBox(int value) { ui->lineEdit->setText(QString::number(value)); }
 
-void AxisEditDialog::updateMaxZoneBox(int value)
-{
-    ui->lineEdit_2->setText(QString::number(value));
-}
+void AxisEditDialog::updateMaxZoneBox(int value) { ui->lineEdit_2->setText(QString::number(value)); }
 
 void AxisEditDialog::updateThrottleUi(int index)
 {
@@ -292,14 +277,12 @@ void AxisEditDialog::updateThrottleUi(int index)
         ui->nPushButton->setEnabled(true);
         ui->pPushButton->setEnabled(false);
         tempthrottle = index == 0 ? JoyAxis::NegativeHalfThrottle : JoyAxis::NegativeThrottle;
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         ui->nPushButton->setEnabled(true);
         ui->pPushButton->setEnabled(true);
         tempthrottle = JoyAxis::NormalThrottle;
-    }
-    else if (index == 3 || index == 4)
+    } else if (index == 3 || index == 4)
     {
         ui->pPushButton->setEnabled(true);
         ui->nPushButton->setEnabled(false);
@@ -310,10 +293,7 @@ void AxisEditDialog::updateThrottleUi(int index)
     ui->axisstatusBox->setThrottle(tempthrottle);
 }
 
-void AxisEditDialog::updateJoyValue(int value)
-{
-    ui->joyValueLabel->setText(QString::number(value));
-}
+void AxisEditDialog::updateJoyValue(int value) { ui->joyValueLabel->setText(QString::number(value)); }
 
 void AxisEditDialog::updateDeadZoneSlider(QString value)
 {
@@ -375,7 +355,6 @@ void AxisEditDialog::refreshPButtonLabel()
         ui->pPushButton->setText(axis->getPAxisButton()->getSlotsSummary());
     }*/
     ui->pPushButton->setText(axis->getPAxisButton()->getSlotsSummary());
-
 }
 
 void AxisEditDialog::checkFinalSettings()
@@ -389,9 +368,9 @@ void AxisEditDialog::checkFinalSettings()
 void AxisEditDialog::selectAxisCurrentPreset()
 {
     JoyAxisButton *naxisbutton = axis->getNAxisButton();
-    QList<JoyButtonSlot*> *naxisslots = naxisbutton->getAssignedSlots();
+    QList<JoyButtonSlot *> *naxisslots = naxisbutton->getAssignedSlots();
     JoyAxisButton *paxisbutton = axis->getPAxisButton();
-    QList<JoyButtonSlot*> *paxisslots = paxisbutton->getAssignedSlots();
+    QList<JoyButtonSlot *> *paxisslots = paxisbutton->getAssignedSlots();
 
     if (naxisslots->length() == 1 && paxisslots->length() == 1)
     {
@@ -401,62 +380,71 @@ void AxisEditDialog::selectAxisCurrentPreset()
             pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseRight)
         {
             ui->presetsComboBox->setCurrentIndex(1);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && nslot->getSlotCode() == JoyButtonSlot::MouseRight &&
-            pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseLeft)
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   nslot->getSlotCode() == JoyButtonSlot::MouseRight &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   pslot->getSlotCode() == JoyButtonSlot::MouseLeft)
         {
             ui->presetsComboBox->setCurrentIndex(2);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && nslot->getSlotCode() == JoyButtonSlot::MouseUp &&
-            pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseDown)
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   nslot->getSlotCode() == JoyButtonSlot::MouseUp &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   pslot->getSlotCode() == JoyButtonSlot::MouseDown)
         {
             ui->presetsComboBox->setCurrentIndex(3);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && nslot->getSlotCode() == JoyButtonSlot::MouseDown &&
-            pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseUp)
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement &&
+                   nslot->getSlotCode() == JoyButtonSlot::MouseDown &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyMouseMovement && pslot->getSlotCode() == JoyButtonSlot::MouseUp)
         {
             ui->presetsComboBox->setCurrentIndex(4);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Up) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Down))
         {
             ui->presetsComboBox->setCurrentIndex(5);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Left) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_Right))
         {
             ui->presetsComboBox->setCurrentIndex(6);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_W) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_S))
         {
             ui->presetsComboBox->setCurrentIndex(7);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_A) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(Qt::Key_D))
         {
             ui->presetsComboBox->setCurrentIndex(8);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_8) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_2))
         {
             ui->presetsComboBox->setCurrentIndex(9);
-        }
-        else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)nslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4) &&
-                 pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard && (unsigned int)pslot->getSlotCode() == AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6))
+        } else if (nslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)nslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_4) &&
+                   pslot->getSlotMode() == JoyButtonSlot::JoyKeyboard &&
+                   (unsigned int)pslot->getSlotCode() ==
+                       AntKeyMapper::getInstance()->returnVirtualKey(QtKeyMapperBase::AntKey_KP_6))
         {
             ui->presetsComboBox->setCurrentIndex(10);
-        }
-        else
+        } else
         {
             ui->presetsComboBox->setCurrentIndex(0);
         }
-    }
-    else if (naxisslots->length() == 0 && paxisslots->length() == 0)
+    } else if (naxisslots->length() == 0 && paxisslots->length() == 0)
     {
         ui->presetsComboBox->setCurrentIndex(11);
-    }
-    else
+    } else
     {
         ui->presetsComboBox->setCurrentIndex(0);
     }
@@ -465,7 +453,7 @@ void AxisEditDialog::selectAxisCurrentPreset()
 void AxisEditDialog::selectTriggerPreset()
 {
     JoyAxisButton *paxisbutton = axis->getPAxisButton();
-    QList<JoyButtonSlot*> *paxisslots = paxisbutton->getAssignedSlots();
+    QList<JoyButtonSlot *> *paxisslots = paxisbutton->getAssignedSlots();
 
     if (paxisslots->length() == 1)
     {
@@ -473,21 +461,17 @@ void AxisEditDialog::selectTriggerPreset()
         if (pslot->getSlotMode() == JoyButtonSlot::JoyMouseButton && pslot->getSlotCode() == JoyButtonSlot::MouseLB)
         {
             ui->presetsComboBox->setCurrentIndex(1);
-        }
-        else if (pslot->getSlotMode() == JoyButtonSlot::JoyMouseButton && pslot->getSlotCode() == JoyButtonSlot::MouseRB)
+        } else if (pslot->getSlotMode() == JoyButtonSlot::JoyMouseButton && pslot->getSlotCode() == JoyButtonSlot::MouseRB)
         {
             ui->presetsComboBox->setCurrentIndex(2);
-        }
-        else
+        } else
         {
             ui->presetsComboBox->setCurrentIndex(0);
         }
-    }
-    else if (paxisslots->length() == 0)
+    } else if (paxisslots->length() == 0)
     {
         ui->presetsComboBox->setCurrentIndex(3);
-    }
-    else
+    } else
     {
         ui->presetsComboBox->setCurrentIndex(0);
     }
@@ -500,12 +484,10 @@ void AxisEditDialog::implementTriggerPresets(int index)
     if (index == 1)
     {
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseLB, JoyButtonSlot::JoyMouseButton, this);
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         pbuttonslot = new JoyButtonSlot(JoyButtonSlot::MouseRB, JoyButtonSlot::JoyMouseButton, this);
-    }
-    else if (index == 3)
+    } else if (index == 3)
     {
         JoyAxisButton *nbutton = axis->getNAxisButton();
         JoyAxisButton *pbutton = axis->getPAxisButton();
@@ -524,13 +506,11 @@ void AxisEditDialog::implementTriggerPresets(int index)
         JoyAxisButton *pbutton = axis->getPAxisButton();
         if (nbutton->getAssignedSlots()->length() > 0)
         {
-            QMetaObject::invokeMethod(nbutton, "clearSlotsEventReset", Qt::BlockingQueuedConnection,
-                                      Q_ARG(bool, false));
+            QMetaObject::invokeMethod(nbutton, "clearSlotsEventReset", Qt::BlockingQueuedConnection, Q_ARG(bool, false));
             refreshNButtonLabel();
         }
 
-        QMetaObject::invokeMethod(pbutton, "clearSlotsEventReset",
-                                  Q_ARG(bool, false));
+        QMetaObject::invokeMethod(pbutton, "clearSlotsEventReset", Q_ARG(bool, false));
 
         QMetaObject::invokeMethod(pbutton, "setAssignedSlot", Qt::BlockingQueuedConnection,
                                   Q_ARG(int, pbuttonslot->getSlotCode()),
@@ -562,10 +542,7 @@ void AxisEditDialog::openMouseSettingsDialog()
     connect(dialog, SIGNAL(finished(int)), this, SLOT(enableMouseSettingButton()));
 }
 
-void AxisEditDialog::enableMouseSettingButton()
-{
-    ui->mouseSettingsPushButton->setEnabled(true);
-}
+void AxisEditDialog::enableMouseSettingButton() { ui->mouseSettingsPushButton->setEnabled(true); }
 
 void AxisEditDialog::updateWindowTitleAxisName()
 {
@@ -574,8 +551,7 @@ void AxisEditDialog::updateWindowTitleAxisName()
     if (!axis->getAxisName().isEmpty())
     {
         temp.append(axis->getPartialName(false, true));
-    }
-    else
+    } else
     {
         temp.append(axis->getPartialName());
     }
@@ -631,8 +607,7 @@ void AxisEditDialog::presetForThrottleChange(int index)
 
     bool actAsTrigger = false;
     int currentThrottle = axis->getThrottle();
-    if (currentThrottle == JoyAxis::PositiveThrottle ||
-        currentThrottle == JoyAxis::PositiveHalfThrottle)
+    if (currentThrottle == JoyAxis::PositiveThrottle || currentThrottle == JoyAxis::PositiveHalfThrottle)
     {
         actAsTrigger = true;
     }
@@ -642,8 +617,7 @@ void AxisEditDialog::presetForThrottleChange(int index)
     {
         buildTriggerPresetsMenu();
         selectTriggerPreset();
-    }
-    else
+    } else
     {
         buildAxisPresetsMenu();
         selectAxisCurrentPreset();

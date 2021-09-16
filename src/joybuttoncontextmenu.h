@@ -18,22 +18,22 @@
 #ifndef JOYBUTTONCONTEXTMENU_H
 #define JOYBUTTONCONTEXTMENU_H
 
-#include <QMenu>
 #include "joybutton.h"
+#include <QMenu>
 
 class JoyButtonContextMenu : public QMenu
 {
     Q_OBJECT
-public:
+  public:
     explicit JoyButtonContextMenu(JoyButton *button, QWidget *parent = 0);
     void buildMenu();
 
-protected:
+  protected:
     JoyButton *button;
 
-signals:
+  signals:
 
-private slots:
+  private slots:
     void switchToggle();
     void switchTurbo();
     void switchSetMode();

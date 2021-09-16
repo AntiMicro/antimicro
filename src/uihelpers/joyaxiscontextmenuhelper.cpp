@@ -17,24 +17,22 @@
 
 #include "joyaxiscontextmenuhelper.h"
 
-JoyAxisContextMenuHelper::JoyAxisContextMenuHelper(JoyAxis *axis, QObject *parent) :
-    QObject(parent)
+JoyAxisContextMenuHelper::JoyAxisContextMenuHelper(JoyAxis *axis, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(axis);
 
     this->axis = axis;
 }
 
-void JoyAxisContextMenuHelper::setNAssignedSlot(int code, unsigned int alias,
-                                               JoyButtonSlot::JoySlotInputAction mode)
+void JoyAxisContextMenuHelper::setNAssignedSlot(int code, unsigned int alias, JoyButtonSlot::JoySlotInputAction mode)
 {
     JoyButton *button = axis->getNAxisButton();
     button->clearSlotsEventReset(false);
     button->setAssignedSlot(code, alias, mode);
 }
 
-void JoyAxisContextMenuHelper::setPAssignedSlot(int code, unsigned int alias,
-                                               JoyButtonSlot::JoySlotInputAction mode)
+void JoyAxisContextMenuHelper::setPAssignedSlot(int code, unsigned int alias, JoyButtonSlot::JoySlotInputAction mode)
 {
     JoyButton *button = axis->getPAxisButton();
     button->clearSlotsEventReset(false);

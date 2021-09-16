@@ -18,19 +18,19 @@
 #include "mousedpadsettingsdialog.h"
 #include "ui_mousesettingsdialog.h"
 
-#include <QSpinBox>
 #include <QComboBox>
+#include <QSpinBox>
 
 #include <inputdevice.h>
 #include <setjoystick.h>
 
-MouseDPadSettingsDialog::MouseDPadSettingsDialog(JoyDPad *dpad, QWidget *parent) :
-    MouseSettingsDialog(parent),
-    helper(dpad)
+MouseDPadSettingsDialog::MouseDPadSettingsDialog(JoyDPad *dpad, QWidget *parent)
+    : MouseSettingsDialog(parent)
+    , helper(dpad)
 {
     setAttribute(Qt::WA_DeleteOnClose);
     resize(size().width(), 450);
-    //setGeometry(geometry().x(), geometry().y(), size().width(), 450);
+    // setGeometry(geometry().x(), geometry().y(), size().width(), 450);
 
     this->dpad = dpad;
     helper.moveToThread(dpad->thread());
@@ -49,10 +49,8 @@ MouseDPadSettingsDialog::MouseDPadSettingsDialog(JoyDPad *dpad, QWidget *parent)
 
     if (ui->mouseModeComboBox->currentIndex() == 2)
     {
-        springPreviewWidget = new SpringModeRegionPreview(ui->springWidthSpinBox->value(),
-                                                          ui->springHeightSpinBox->value());
-    }
-    else
+        springPreviewWidget = new SpringModeRegionPreview(ui->springWidthSpinBox->value(), ui->springHeightSpinBox->value());
+    } else
     {
         springPreviewWidget = new SpringModeRegionPreview(0, 0);
     }
@@ -102,8 +100,8 @@ MouseDPadSettingsDialog::MouseDPadSettingsDialog(JoyDPad *dpad, QWidget *parent)
     connect(ui->extraAccelCurveComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateExtraAccelerationCurve(int)));
 
     JoyButtonMouseHelper *mouseHelper = JoyButton::getMouseHelper();
-    connect(mouseHelper, SIGNAL(mouseCursorMoved(int,int,int)), this, SLOT(updateMouseCursorStatusLabels(int,int,int)));
-    connect(mouseHelper, SIGNAL(mouseSpringMoved(int,int)), this, SLOT(updateMouseSpringStatusLabels(int,int)));
+    connect(mouseHelper, SIGNAL(mouseCursorMoved(int, int, int)), this, SLOT(updateMouseCursorStatusLabels(int, int, int)));
+    connect(mouseHelper, SIGNAL(mouseSpringMoved(int, int)), this, SLOT(updateMouseSpringStatusLabels(int, int)));
     lastMouseStatUpdate.start();
 }
 
@@ -116,8 +114,7 @@ void MouseDPadSettingsDialog::changeMouseMode(int index)
         {
             springPreviewWidget->hide();
         }
-    }
-    else if (index == 2)
+    } else if (index == 2)
     {
         dpad->setButtonsMouseMode(JoyButton::MouseSpring);
         if (!springPreviewWidget->isVisible())
@@ -136,7 +133,7 @@ void MouseDPadSettingsDialog::changeMouseCurve(int index)
 
 void MouseDPadSettingsDialog::updateConfigHorizontalSpeed(int value)
 {
-    QHashIterator<int, JoyDPadButton*> iter(*dpad->getButtons());
+    QHashIterator<int, JoyDPadButton *> iter(*dpad->getButtons());
     while (iter.hasNext())
     {
         JoyDPadButton *button = iter.next().value();
@@ -146,7 +143,7 @@ void MouseDPadSettingsDialog::updateConfigHorizontalSpeed(int value)
 
 void MouseDPadSettingsDialog::updateConfigVerticalSpeed(int value)
 {
-    QHashIterator<int, JoyDPadButton*> iter(*dpad->getButtons());
+    QHashIterator<int, JoyDPadButton *> iter(*dpad->getButtons());
     while (iter.hasNext())
     {
         JoyDPadButton *button = iter.next().value();
@@ -154,15 +151,9 @@ void MouseDPadSettingsDialog::updateConfigVerticalSpeed(int value)
     }
 }
 
-void MouseDPadSettingsDialog::updateSpringWidth(int value)
-{
-    dpad->setButtonsSpringWidth(value);
-}
+void MouseDPadSettingsDialog::updateSpringWidth(int value) { dpad->setButtonsSpringWidth(value); }
 
-void MouseDPadSettingsDialog::updateSpringHeight(int value)
-{
-    dpad->setButtonsSpringHeight(value);
-}
+void MouseDPadSettingsDialog::updateSpringHeight(int value) { dpad->setButtonsSpringHeight(value); }
 
 void MouseDPadSettingsDialog::selectCurrentMouseModePreset()
 {
@@ -173,13 +164,11 @@ void MouseDPadSettingsDialog::selectCurrentMouseModePreset()
         if (mode == JoyButton::MouseCursor)
         {
             ui->mouseModeComboBox->setCurrentIndex(1);
-        }
-        else if (mode == JoyButton::MouseSpring)
+        } else if (mode == JoyButton::MouseSpring)
         {
             ui->mouseModeComboBox->setCurrentIndex(2);
         }
-    }
-    else
+    } else
     {
         ui->mouseModeComboBox->setCurrentIndex(0);
     }
@@ -203,7 +192,7 @@ void MouseDPadSettingsDialog::calculateSpringPreset()
 
 void MouseDPadSettingsDialog::calculateMouseSpeedPreset()
 {
-    QHashIterator<int, JoyDPadButton*> iter(*dpad->getButtons());
+    QHashIterator<int, JoyDPadButton *> iter(*dpad->getButtons());
     int tempMouseSpeedX = 0;
     while (iter.hasNext())
     {
@@ -223,10 +212,7 @@ void MouseDPadSettingsDialog::calculateMouseSpeedPreset()
     ui->verticalSpinBox->setValue(tempMouseSpeedY);
 }
 
-void MouseDPadSettingsDialog::updateSensitivity(double value)
-{
-    dpad->setButtonsSensitivity(value);
-}
+void MouseDPadSettingsDialog::updateSensitivity(double value) { dpad->setButtonsSensitivity(value); }
 
 void MouseDPadSettingsDialog::updateAccelerationCurvePresetComboBox()
 {
@@ -236,7 +222,7 @@ void MouseDPadSettingsDialog::updateAccelerationCurvePresetComboBox()
 
 void MouseDPadSettingsDialog::calculateWheelSpeedPreset()
 {
-    QHashIterator<int, JoyDPadButton*> iter(*dpad->getButtons());
+    QHashIterator<int, JoyDPadButton *> iter(*dpad->getButtons());
     int tempWheelSpeedX = 0;
     int tempWheelSpeedY = 0;
     while (iter.hasNext())
@@ -250,20 +236,11 @@ void MouseDPadSettingsDialog::calculateWheelSpeedPreset()
     ui->wheelVertSpeedSpinBox->setValue(tempWheelSpeedY);
 }
 
-void MouseDPadSettingsDialog::updateWheelSpeedHorizontalSpeed(int value)
-{
-    dpad->setButtonsWheelSpeedX(value);
-}
+void MouseDPadSettingsDialog::updateWheelSpeedHorizontalSpeed(int value) { dpad->setButtonsWheelSpeedX(value); }
 
-void MouseDPadSettingsDialog::updateWheelSpeedVerticalSpeed(int value)
-{
-    dpad->setButtonsWheelSpeedY(value);
-}
+void MouseDPadSettingsDialog::updateWheelSpeedVerticalSpeed(int value) { dpad->setButtonsWheelSpeedY(value); }
 
-void MouseDPadSettingsDialog::updateSpringRelativeStatus(bool value)
-{
-    dpad->setButtonsSpringRelativeStatus(value);
-}
+void MouseDPadSettingsDialog::updateSpringRelativeStatus(bool value) { dpad->setButtonsSpringRelativeStatus(value); }
 
 void MouseDPadSettingsDialog::updateWindowTitleDPadName()
 {
@@ -272,8 +249,7 @@ void MouseDPadSettingsDialog::updateWindowTitleDPadName()
     if (!dpad->getDpadName().isEmpty())
     {
         temp.append(dpad->getName(false, true));
-    }
-    else
+    } else
     {
         temp.append(dpad->getName());
     }
@@ -295,10 +271,7 @@ void MouseDPadSettingsDialog::updateWindowTitleDPadName()
     setWindowTitle(temp);
 }
 
-void MouseDPadSettingsDialog::updateReleaseSpringRadius(int value)
-{
-    dpad->setButtonsSpringDeadCircleMultiplier(value);
-}
+void MouseDPadSettingsDialog::updateReleaseSpringRadius(int value) { dpad->setButtonsSpringDeadCircleMultiplier(value); }
 
 void MouseDPadSettingsDialog::calculateReleaseSpringRadius()
 {

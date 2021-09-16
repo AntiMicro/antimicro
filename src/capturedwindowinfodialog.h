@@ -29,8 +29,7 @@ class CapturedWindowInfoDialog : public QDialog
 {
     Q_OBJECT
 
-public:
-
+  public:
 #ifdef Q_OS_WIN
     explicit CapturedWindowInfoDialog(QWidget *parent = 0);
 #else
@@ -39,7 +38,8 @@ public:
 
     ~CapturedWindowInfoDialog();
 
-    enum {
+    enum
+    {
         WindowNone = 0,
         WindowClass = (1 << 0),
         WindowName = (1 << 1),
@@ -53,10 +53,10 @@ public:
     bool useFullWindowPath();
     CapturedWindowOption getSelectedOptions();
 
-private:
+  private:
     Ui::CapturedWindowInfoDialog *ui;
 
-protected:
+  protected:
     CapturedWindowOption selectedMatch;
 
     QString winClass;
@@ -64,7 +64,7 @@ protected:
     QString winPath;
     bool fullWinPath;
 
-private slots:
+  private slots:
     void populateOption();
 };
 

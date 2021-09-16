@@ -21,12 +21,12 @@
 #include "quicksetdialog.h"
 #include "ui_quicksetdialog.h"
 
-#include "setjoystick.h"
 #include "buttoneditdialog.h"
+#include "setjoystick.h"
 
-QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::QuickSetDialog)
+QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::QuickSetDialog)
 {
     ui->setupUi(this);
 
@@ -45,11 +45,11 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
     temp = temp.arg(joystick->getSDLName()).arg(joystick->getName());
     ui->joystickDialogLabel->setText(temp);
 
-    for (int i=0; i < currentset->getNumberSticks(); i++)
+    for (int i = 0; i < currentset->getNumberSticks(); i++)
     {
         JoyControlStick *stick = currentset->getJoyStick(i);
-        QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*> *stickButtons = stick->getButtons();
-        QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton*> iter(*stickButtons);
+        QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *> *stickButtons = stick->getButtons();
+        QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton *> iter(*stickButtons);
         while (iter.hasNext())
         {
             JoyControlStickButton *stickbutton = iter.next().value();
@@ -63,8 +63,7 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
                 {
                     connect(stickbutton, SIGNAL(clicked(int)), this, SLOT(showStickButtonDialog()));
                 }
-            }
-            else
+            } else
             {
                 connect(stickbutton, SIGNAL(clicked(int)), this, SLOT(showStickButtonDialog()));
             }
@@ -76,7 +75,7 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
         }
     }
 
-    for (int i=0; i < currentset->getNumberAxes(); i++)
+    for (int i = 0; i < currentset->getNumberAxes(); i++)
     {
         JoyAxis *axis = currentset->getJoyAxis(i);
 
@@ -100,11 +99,11 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
         }
     }
 
-    for (int i=0; i < currentset->getNumberHats(); i++)
+    for (int i = 0; i < currentset->getNumberHats(); i++)
     {
         JoyDPad *dpad = currentset->getJoyDPad(i);
-        QHash<int, JoyDPadButton*>* dpadbuttons = dpad->getButtons();
-        QHashIterator<int, JoyDPadButton*> iter(*dpadbuttons);
+        QHash<int, JoyDPadButton *> *dpadbuttons = dpad->getButtons();
+        QHashIterator<int, JoyDPadButton *> iter(*dpadbuttons);
         while (iter.hasNext())
         {
             JoyDPadButton *dpadbutton = iter.next().value();
@@ -118,8 +117,7 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
                 {
                     connect(dpadbutton, SIGNAL(clicked(int)), this, SLOT(showDPadButtonDialog()));
                 }
-            }
-            else
+            } else
             {
                 connect(dpadbutton, SIGNAL(clicked(int)), this, SLOT(showDPadButtonDialog()));
             }
@@ -131,13 +129,13 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
         }
     }
 
-    for (int i=0; i < currentset->getNumberVDPads(); i++)
+    for (int i = 0; i < currentset->getNumberVDPads(); i++)
     {
         VDPad *dpad = currentset->getVDPad(i);
         if (dpad)
         {
-            QHash<int, JoyDPadButton*>* dpadbuttons = dpad->getButtons();
-            QHashIterator<int, JoyDPadButton*> iter(*dpadbuttons);
+            QHash<int, JoyDPadButton *> *dpadbuttons = dpad->getButtons();
+            QHashIterator<int, JoyDPadButton *> iter(*dpadbuttons);
             while (iter.hasNext())
             {
                 JoyDPadButton *dpadbutton = iter.next().value();
@@ -151,8 +149,7 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
                     {
                         connect(dpadbutton, SIGNAL(clicked(int)), this, SLOT(showDPadButtonDialog()));
                     }
-                }
-                else
+                } else
                 {
                     connect(dpadbutton, SIGNAL(clicked(int)), this, SLOT(showDPadButtonDialog()));
                 }
@@ -165,7 +162,7 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
         }
     }
 
-    for (int i=0; i < currentset->getNumberButtons(); i++)
+    for (int i = 0; i < currentset->getNumberButtons(); i++)
     {
         JoyButton *button = currentset->getJoyButton(i);
         if (button && !button->isPartVDPad())
@@ -181,16 +178,13 @@ QuickSetDialog::QuickSetDialog(InputDevice *joystick, QWidget *parent) :
     connect(this, SIGNAL(finished(int)), this, SLOT(restoreButtonStates()));
 }
 
-QuickSetDialog::~QuickSetDialog()
-{
-    delete ui;
-}
+QuickSetDialog::~QuickSetDialog() { delete ui; }
 
 void QuickSetDialog::showAxisButtonDialog()
 {
     if (!currentButtonDialog)
     {
-        JoyAxisButton *axisbutton = static_cast<JoyAxisButton*>(sender());
+        JoyAxisButton *axisbutton = static_cast<JoyAxisButton *>(sender());
         currentButtonDialog = new ButtonEditDialog(axisbutton, this);
         currentButtonDialog->show();
         connect(currentButtonDialog, SIGNAL(finished(int)), this, SLOT(nullifyDialogPointer()));
@@ -201,7 +195,7 @@ void QuickSetDialog::showButtonDialog()
 {
     if (!currentButtonDialog)
     {
-        JoyButton *button = static_cast<JoyButton*>(sender());
+        JoyButton *button = static_cast<JoyButton *>(sender());
         currentButtonDialog = new ButtonEditDialog(button, this);
         currentButtonDialog->show();
         connect(currentButtonDialog, SIGNAL(finished(int)), this, SLOT(nullifyDialogPointer()));
@@ -212,7 +206,7 @@ void QuickSetDialog::showStickButtonDialog()
 {
     if (!currentButtonDialog)
     {
-        JoyControlStickButton *stickbutton = static_cast<JoyControlStickButton*>(sender());
+        JoyControlStickButton *stickbutton = static_cast<JoyControlStickButton *>(sender());
         currentButtonDialog = new ButtonEditDialog(stickbutton, this);
         currentButtonDialog->show();
         connect(currentButtonDialog, SIGNAL(finished(int)), this, SLOT(nullifyDialogPointer()));
@@ -223,7 +217,7 @@ void QuickSetDialog::showDPadButtonDialog()
 {
     if (!currentButtonDialog)
     {
-        JoyDPadButton *dpadbutton = static_cast<JoyDPadButton*>(sender());
+        JoyDPadButton *dpadbutton = static_cast<JoyDPadButton *>(sender());
         currentButtonDialog = new ButtonEditDialog(dpadbutton, this);
         currentButtonDialog->show();
         connect(currentButtonDialog, SIGNAL(finished(int)), this, SLOT(nullifyDialogPointer()));
@@ -243,11 +237,11 @@ void QuickSetDialog::restoreButtonStates()
 {
     SetJoystick *currentset = joystick->getActiveSetJoystick();
 
-    for (int i=0; i < currentset->getNumberSticks(); i++)
+    for (int i = 0; i < currentset->getNumberSticks(); i++)
     {
         JoyControlStick *stick = currentset->getJoyStick(i);
-        QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton*> *stickButtons = stick->getButtons();
-        QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton*> iter(*stickButtons);
+        QHash<JoyControlStick::JoyStickDirections, JoyControlStickButton *> *stickButtons = stick->getButtons();
+        QHashIterator<JoyControlStick::JoyStickDirections, JoyControlStickButton *> iter(*stickButtons);
         while (iter.hasNext())
         {
             JoyControlStickButton *stickbutton = iter.next().value();
@@ -260,7 +254,7 @@ void QuickSetDialog::restoreButtonStates()
         }
     }
 
-    for (int i=0; i < currentset->getNumberAxes(); i++)
+    for (int i = 0; i < currentset->getNumberAxes(); i++)
     {
         JoyAxis *axis = currentset->getJoyAxis(i);
 
@@ -281,11 +275,11 @@ void QuickSetDialog::restoreButtonStates()
         }
     }
 
-    for (int i=0; i < currentset->getNumberHats(); i++)
+    for (int i = 0; i < currentset->getNumberHats(); i++)
     {
         JoyDPad *dpad = currentset->getJoyDPad(i);
-        QHash<int, JoyDPadButton*>* dpadbuttons = dpad->getButtons();
-        QHashIterator<int, JoyDPadButton*> iter(*dpadbuttons);
+        QHash<int, JoyDPadButton *> *dpadbuttons = dpad->getButtons();
+        QHashIterator<int, JoyDPadButton *> iter(*dpadbuttons);
         while (iter.hasNext())
         {
             JoyDPadButton *dpadbutton = iter.next().value();
@@ -297,13 +291,13 @@ void QuickSetDialog::restoreButtonStates()
         }
     }
 
-    for (int i=0; i < currentset->getNumberVDPads(); i++)
+    for (int i = 0; i < currentset->getNumberVDPads(); i++)
     {
         VDPad *dpad = currentset->getVDPad(i);
         if (dpad)
         {
-            QHash<int, JoyDPadButton*>* dpadbuttons = dpad->getButtons();
-            QHashIterator<int, JoyDPadButton*> iter(*dpadbuttons);
+            QHash<int, JoyDPadButton *> *dpadbuttons = dpad->getButtons();
+            QHashIterator<int, JoyDPadButton *> iter(*dpadbuttons);
             while (iter.hasNext())
             {
                 JoyDPadButton *dpadbutton = iter.next().value();
@@ -316,7 +310,7 @@ void QuickSetDialog::restoreButtonStates()
         }
     }
 
-    for (int i=0; i < currentset->getNumberButtons(); i++)
+    for (int i = 0; i < currentset->getNumberButtons(); i++)
     {
         JoyButton *button = currentset->getJoyButton(i);
         if (button && !button->isPartVDPad())

@@ -17,8 +17,8 @@
 
 #include "mousebuttonsettingsdialoghelper.h"
 
-MouseButtonSettingsDialogHelper::MouseButtonSettingsDialogHelper(JoyButton *button, QObject *parent) :
-    QObject(parent)
+MouseButtonSettingsDialogHelper::MouseButtonSettingsDialogHelper(JoyButton *button, QObject *parent)
+    : QObject(parent)
 {
     Q_ASSERT(button);
 
@@ -35,32 +35,14 @@ void MouseButtonSettingsDialogHelper::updateExtraAccelerationMultiplier(double v
     button->setExtraAccelerationMultiplier(value);
 }
 
-void MouseButtonSettingsDialogHelper::updateStartMultiPercentage(double value)
-{
-    button->setStartAccelMultiplier(value);
-}
+void MouseButtonSettingsDialogHelper::updateStartMultiPercentage(double value) { button->setStartAccelMultiplier(value); }
 
-void MouseButtonSettingsDialogHelper::updateMinAccelThreshold(double value)
-{
-    button->setMinAccelThreshold(value);
-}
+void MouseButtonSettingsDialogHelper::updateMinAccelThreshold(double value) { button->setMinAccelThreshold(value); }
 
-void MouseButtonSettingsDialogHelper::updateMaxAccelThreshold(double value)
-{
-    button->setMaxAccelThreshold(value);
-}
+void MouseButtonSettingsDialogHelper::updateMaxAccelThreshold(double value) { button->setMaxAccelThreshold(value); }
 
-void MouseButtonSettingsDialogHelper::updateAccelExtraDuration(double value)
-{
-    button->setAccelExtraDuration(value);
-}
+void MouseButtonSettingsDialogHelper::updateAccelExtraDuration(double value) { button->setAccelExtraDuration(value); }
 
-void MouseButtonSettingsDialogHelper::updateReleaseSpringRadius(int value)
-{
-    button->setSpringDeadCircleMultiplier(value);
-}
+void MouseButtonSettingsDialogHelper::updateReleaseSpringRadius(int value) { button->setSpringDeadCircleMultiplier(value); }
 
-void MouseButtonSettingsDialogHelper::updateSpringRelativeStatus(bool value)
-{
-    button->setSpringRelativeStatus(value);
-}
+void MouseButtonSettingsDialogHelper::updateSpringRelativeStatus(bool value) { button->setSpringRelativeStatus(value); }

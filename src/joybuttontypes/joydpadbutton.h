@@ -25,33 +25,40 @@ class JoyDPad;
 class JoyDPadButton : public JoyButton
 {
     Q_OBJECT
-public:
-    JoyDPadButton(int direction, int originset, JoyDPad* dpad, SetJoystick *parentSet, QObject *parent=0);
+  public:
+    JoyDPadButton(int direction, int originset, JoyDPad *dpad, SetJoystick *parentSet, QObject *parent = 0);
 
     QString getDirectionName();
     int getDirection();
     virtual int getRealJoyNumber();
-    virtual QString getPartialName(bool forceFullFormat=false, bool displayNames=false);
+    virtual QString getPartialName(bool forceFullFormat = false, bool displayNames = false);
     virtual QString getXmlName();
     JoyDPad *getDPad();
 
-    virtual void setChangeSetCondition(SetChangeCondition condition, bool passive=false);
+    virtual void setChangeSetCondition(SetChangeCondition condition, bool passive = false);
 
-    enum JoyDPadDirections {
-        DpadCentered = 0, DpadUp = 1, DpadRight = 2,
-        DpadDown = 4, DpadLeft = 8, DpadRightUp = 3,
-        DpadRightDown = 6, DpadLeftUp = 9, DpadLeftDown = 12
+    enum JoyDPadDirections
+    {
+        DpadCentered = 0,
+        DpadUp = 1,
+        DpadRight = 2,
+        DpadDown = 4,
+        DpadLeft = 8,
+        DpadRightUp = 3,
+        DpadRightDown = 6,
+        DpadLeftUp = 9,
+        DpadLeftDown = 12
     };
     static const QString xmlName;
 
-protected:
+  protected:
     int direction;
     JoyDPad *dpad;
 
-signals:
+  signals:
     void setAssignmentChanged(int current_button, int dpad_index, int associated_set, int mode);
 
-public slots:
+  public slots:
     virtual void reset();
     virtual void reset(int index);
 };
