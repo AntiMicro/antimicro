@@ -16,11 +16,10 @@ See the README  for download options, there are RPM, DEB, AUR packages and flatp
 
 ## Windows users
 
-The currently maintained version, `antimicrox` fails to build for Windows. We are planning to fix it, but help is greatly appreciated!
+Recently `antimicrox` project restored full support for Windows.
 
-**We are looking for Windows developers!** See this issue: https://github.com/AntiMicroX/antimicrox/issues/4
+You can download `antimicrox-x.x.x-AMD64.exe` from [release page](https://github.com/AntiMicroX/antimicrox/releases/latest)
 
-In the meantime, continue using the current Windows binaries, and keep an eye out on here!
 
 ## What happens to this repo?
 
