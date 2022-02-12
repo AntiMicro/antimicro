@@ -1,25 +1,13 @@
 # antimicro
 
-# 🚨 Important update 🚨
+# 🚨 Important information 🚨
 
 This repo is currently unmaintained. The code hasn't been updated for a while.
 
-But not all is lost, `antimicro` has a future!
+There is new recommended version of this app called [AntiMicroX](https://github.com/AntiMicroX/antimicrox/)  
+Installers can be downloaded from [release page](https://github.com/AntiMicroX/antimicrox/releases/latest).
 
-## Linux users
-
-We are maintaining an extended and updated Linux version, `antimicrox` at https://github.com/AntiMicroX/antimicroX.
-
-**Please use `antimicrox` instead of `antimicro`!**
-
-See the README  for download options, there are RPM, DEB, AUR packages and flatpaks available.
-
-## Windows users
-
-Recently `antimicrox` project restored full support for Windows.
-
-You can download `antimicrox-x.x.x-AMD64.exe` from [release page](https://github.com/AntiMicroX/antimicrox/releases/latest)
-
+In case of Windows you can just download `antimicrox-x.x.x-AMD64.exe` from [release page](https://github.com/AntiMicroX/antimicrox/releases/latest)
 
 ## What happens to this repo?
 
