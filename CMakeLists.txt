@@ -15,9 +15,7 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Debian Wheezy has a package for version 2.8.9 so
-# that will be the minimum supported version.
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 3.0)
 project(antimicro)
 
 if(WIN32)
@@ -421,6 +419,7 @@ endif(UNIX)
 set(USE_QT5 OFF)
 set(USE_QT4 OFF)
 
+set(CMAKE_AUTOMOC ON)
 if(UNIX)
     # Check if Qt 4 or 5 was specified using an environment variable
     # or by specifying -DQT_QMAKE_EXECUTABLE.
@@ -491,7 +490,6 @@ if (UNIX)
         # Find includes in corresponding build directories
         #set(CMAKE_INCLUDE_CURRENT_DIR ON)
         # Instruct CMake to run moc automatically when needed.
-        set(CMAKE_AUTOMOC ON)
 
         find_package(Qt5Widgets REQUIRED)
         find_package(Qt5Core REQUIRED)
@@ -526,7 +524,6 @@ if (UNIX)
         find_package(Qt4 REQUIRED)
         set(QT_USE_QTNETWORK TRUE)
 
-        QT4_WRAP_CPP(antimicro_HEADERS_MOC ${antimicro_HEADERS})
         QT4_WRAP_UI(antimicro_FORMS_HEADERS ${antimicro_FORMS})
         QT4_ADD_RESOURCES(antimicro_RESOURCES_RCC ${antimicro_RESOURCES})
 
@@ -541,7 +538,6 @@ elseif(WIN32)
     # Find includes in corresponding build directories
     #set(CMAKE_INCLUDE_CURRENT_DIR ON)
     # Instruct CMake to run moc automatically when needed.
-    set(CMAKE_AUTOMOC ON)
 
     find_package(Qt5Widgets REQUIRED)
     find_package(Qt5Core REQUIRED)

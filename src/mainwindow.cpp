@@ -366,7 +366,7 @@ void MainWindow::makeJoystickTabs()
         ui->tabWidget->addTab(tabwidget, joytabName);
     }
 
-    if (joysticks != nullptr)
+    if (joysticks->size() > 0)
     {
         ui->tabWidget->setCurrentIndex(0);
         ui->stackedWidget->setCurrentIndex(1);
