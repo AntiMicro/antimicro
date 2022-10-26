@@ -1,0 +1,52 @@
+name: Build
+
+concurrency:
+    group: build-${{ github.head_ref }}
+    cancel-in-progress: true
+
+on: [ push, pull_request]
+
+jobs:
+    # Build job for Windows
+    build-windows:
+        name: Windows Server 2019 MinGW Debug
+        runs-on: windows-2019
+        defaults:
+            run:
+                shell: msys2 {0}
+
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Install Dependencies
+              uses: msys2/setup-msys2@v2
+              with:
+                  install: >-
+                      mingw-w64-x86_64-toolchain
+                      mingw-w64-x86_64-ninja
+                  msystem: mingw64
+                  release: false
+            #mingw-w64-x86_64-SDL2 not installed above because of: https://github.com/AntiMicroX/antimicrox/issues/465
+            - name: Install sdl2
+              run: |
+                curl -L -o mingw-w64-x86_64-SDL2-2.0.14-2-any.pkg.tar.zst https://mirror.msys2.org/mingw/mingw64/mingw-w64-x86_64-SDL2-2.0.14-2-any.pkg.tar.zst
+                pacman --noconfirm -U mingw-w64-x86_64-SDL2-2.0.14-2-any.pkg.tar.zst
+
+
+            - name: Install Qt
+              uses: jurplel/install-qt-action@v3
+              with:
+                  version: "5.12.*"
+                  host: "windows"
+                  target: "desktop"
+                  arch: "win64_mingw73"
+                  dir: "${{ github.workspace }}/qt/"
+                  install-deps: "true"
+
+            - name: Configure CMake
+              run: cmake -DCMAKE_PREFIX_PATH="${{ env.Qt5_Dir }}" -DCMAKE_BUILD_TYPE=Debug -B '${{ github.workspace }}'/build
+              env:
+                  CMAKE_PREFIX_PATH: ${{ env.Qt5_Dir }}
+
+            - name: Build
+              run: cmake --build '${{ github.workspace }}'/build --parallel 8
