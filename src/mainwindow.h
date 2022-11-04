@@ -93,6 +93,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    void updateButtonPressed();
 
 signals:
     void joystickRefreshRequested();

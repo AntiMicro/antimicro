@@ -161,6 +161,7 @@ MainWindow::MainWindow(QMap<SDL_JoystickID, InputDevice*> *joysticks,
     connect(ui->actionGitHubPage, SIGNAL(triggered()), this, SLOT(openGitHubPage()));
     connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(openMainSettingsDialog()));
     connect(ui->actionWiki, SIGNAL(triggered()), this, SLOT(openWikiPage()));
+    connect(ui->updateButton, &QPushButton::pressed, this, &MainWindow::updateButtonPressed);
 
 #ifdef USE_SDL_2
     connect(ui->actionGameController_Mapping, SIGNAL(triggered()), this, SLOT(openGameControllerMappingWindow()));
@@ -1172,6 +1173,11 @@ void MainWindow::changeStartSetNumber(unsigned int startSetNumber, unsigned int 
             }
         }
     }
+}
+
+void MainWindow::updateButtonPressed() {
+    qInfo() << "Opening antimicrox website";
+    QDesktopServices::openUrl(QUrl("https://github.com/antiMicroX/antimicrox/"));
 }
 
 /**
