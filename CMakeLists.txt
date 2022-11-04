@@ -18,6 +18,8 @@
 cmake_minimum_required(VERSION 3.0)
 project(antimicro)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
+
 if(WIN32)
     # Cause cmake to fail if Qt location is not specified.
     if(NOT CMAKE_PREFIX_PATH)
@@ -587,59 +589,10 @@ if(UNIX)
     endif(USE_SDL_2)
 elseif (WIN32)
     if(USE_SDL_2)
-        set(SDL2_LIBRARY "")
-        set(SDL2_LIBRARY_DIR "")
-        set(SDL2_INCLUDE_DIR "")
-        set(SDL2_DLL_LOCATION_DIR "")
-
-        if (MSYS OR MINGW)
-            find_package(PkgConfig QUIET)
-            if(PKG_CONFIG_FOUND)
-                #include(FindPkgConfig)
-
-                pkg_check_modules(SDL2 QUIET sdl2)
-                if(SDL2_FOUND)
-                    #find_path(SDL2_INCLUDE_DIR "SDL2/SDL.h" HINTS ${SDL2_INCLUDE_DIRS})
-
-                    set(SDL2_LIBRARY ${SDL2_LIBRARIES})
-                    set(SDL2_LIBRARY_DIR ${SDL2_LIBRARY_DIRS})
-                    set(SDL2_INCLUDE_DIR ${SDL2_INCLUDE_DIRS})
-                    unset(SDL2_DLL_LOCATION_DIR)
-                    find_path(SDL2_DLL_LOCATION_DIR "SDL2.dll" HINTS "${SDL2_LIBRARY_DIRS}/../bin")
-                    #set(SDL2_DLL_LOCATION_DIR "${SDL2_LIBRARY_DIRS}/../bin")
-
-                    list(APPEND LIBS ${SDL2_LIBRARIES})
-                endif(SDL2_FOUND)
-            endif(PKG_CONFIG_FOUND)
-        endif(MSYS OR MINGW)
-
-        if (NOT SDL2_LIBRARY)
-            # Perform extra voodoo to get proper library paths and include
-            # proper headers.
-	    file(GLOB SDL2_BASE_DIR "${PROJECT_SOURCE_DIR}/SDL2-*.*.*/")
-
-	    if (SDL2_BASE_DIR)
-                unset(SDL2_LIBRARY)
-
-                if(TARGET_ARCH STREQUAL "x86_64")
-                    set(SDL2_LIBRARY_DIR "${SDL2_BASE_DIR}/x86_64-w64-mingw32/lib")
-                    set(SDL2_INCLUDE_DIR "${SDL2_BASE_DIR}/x86_64-w64-mingw32/include")
-                    set(SDL2_DLL_LOCATION_DIR "${SDL2_BASE_DIR}/x86_64-w64-mingw32/bin")
-
-                    find_library(SDL2_LIBRARY SDL2 ${SDL2_LIBRARY_DIR})
-                    list(APPEND LIBS ${SDL2_LIBRARY})
-                    include_directories(${SDL2_INCLUDE_DIR})
-                else()
-                    set(SDL2_LIBRARY_DIR "${SDL2_BASE_DIR}/i686-w64-mingw32/lib")
-                    set(SDL2_INCLUDE_DIR "${SDL2_BASE_DIR}/i686-w64-mingw32/include")
-                    set(SDL2_DLL_LOCATION_DIR "${SDL2_BASE_DIR}/i686-w64-mingw32/bin")
-
-                    find_library(SDL2_LIBRARY SDL2 ${SDL2_LIBRARY_DIR})
-                    list(APPEND LIBS ${SDL2_LIBRARY})
-                    include_directories(${SDL2_INCLUDE_DIR})
-                endif(TARGET_ARCH STREQUAL "x86_64")
-	    endif(SDL2_BASE_DIR)  
-        endif(NOT SDL2_LIBRARY)
+        find_package(SDL2 REQUIRED)
+        include_directories(${SDL2_INCLUDE_DIRS})
+        message("SDL2 include dir: ${SDL2_INCLUDE_DIRS}")
+        list(APPEND LIBS ${SDL2_LIBRARIES})
 
         add_definitions(-DUNICODE -D_UNICODE)
     endif(USE_SDL_2)
@@ -784,24 +737,24 @@ if(WIN32)
       ${ICU_IN_DLL}
       ${ICU_UC_DLL}
       )
-     
+
     # Copy relevant DLL files depending on the chosen architecture.
     if(TARGET_ARCH STREQUAL "x86_64")
       find_library( GCC_DLL "libgcc_s_seh-1.dll" )
-      
+
       list(APPEND EXTRA_DLL_FILES
         ${GCC_DLL}
         "${SDL2_BASE_DIR}/x86_64-w64-mingw32/bin/SDL2.dll"
         )
     else()
       find_library( GCC_DLL "libgcc_s_dw2-1.dll" )
-      
+
       list(APPEND EXTRA_DLL_FILES
 	${GCC_DLL}
         "${SDL2_BASE_DIR}/i686-w64-mingw32/bin/SDL2.dll"
         )
     endif(TARGET_ARCH STREQUAL "x86_64")
-    
+
     # Not a DLL file, but needs to travel with SDL2.DLL
     list(APPEND EXTRA_DLL_FILES "${SDL2_BASE_DIR}/README-SDL.txt")
 
