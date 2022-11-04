@@ -1176,8 +1176,23 @@ void MainWindow::changeStartSetNumber(unsigned int startSetNumber, unsigned int 
 }
 
 void MainWindow::updateButtonPressed() {
+  QMessageBox *box = new QMessageBox(this);
+  box->setText(
+      tr("AntiMicro is no longer maintained anymore, it won't get any new "
+         "features or bug fixes. This is the last release of AntiMicro.\nIt is "
+         "recommended to migrate to new, currently developed version of this "
+         "app called AntiMicroX. It contains a lot of bug fixes and new "
+         "features like: showing battery status, mapping gamepad moves with "
+         "gyroscope, proper calibration and many more...\nPress Open to to open "
+         "AntiMicroX website."));
+  box->setWindowTitle(tr("Deprecation Notice"));
+  box->setStandardButtons(QMessageBox::Cancel | QMessageBox::Open);
+  int ret = box->exec();
+  if (ret == QMessageBox::Open) {
     qInfo() << "Opening antimicrox website";
-    QDesktopServices::openUrl(QUrl("https://github.com/antiMicroX/antimicrox/"));
+    QDesktopServices::openUrl(
+        QUrl("https://github.com/antiMicroX/antimicrox/"));
+  }
 }
 
 /**

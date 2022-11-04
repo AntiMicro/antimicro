@@ -171,8 +171,8 @@ QPushButton#namesPushButton[isDisplayingNames=&quot;true&quot;] {
     <item>
      <widget class="QPushButton" name="updateButton">
       <property name="text">
-       <string>Antimicro is no longer maintained and won't receive any more updates.
-Click here to get AntimicroX, an updated fork of this app.</string>
+       <string>AntiMicro is no longer maintained and won't receive any more updates.
+Click here to get AntiMicroX, an updated fork of this app.</string>
       </property>
       <property name="icon">
        <iconset theme="dialog-warning"/>
