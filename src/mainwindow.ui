@@ -175,7 +175,8 @@ QPushButton#namesPushButton[isDisplayingNames=&quot;true&quot;] {
 Click here to get AntiMicroX, an updated fork of this app.</string>
       </property>
       <property name="icon">
-       <iconset theme="dialog-warning"/>
+       <iconset resource="resources.qrc">
+        <normaloff>:/icons/16x16/actions/dialog-warning.png</normaloff>:/icons/16x16/actions/dialog-warning.png</iconset>
       </property>
      </widget>
     </item>
