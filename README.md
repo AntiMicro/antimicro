@@ -9,10 +9,10 @@ Installers can be downloaded from [release page](https://github.com/AntiMicroX/a
 
 In case of Windows you can just download `antimicrox-x.x.x-AMD64.exe` from [release page](https://github.com/AntiMicroX/antimicrox/releases/latest)
 
-## What happens to this repo?
+## What will happen to this repo?
 
-- Old issues will be triaged/cleaned up: https://github.com/AntiMicro/antimicro/issues/350
-- We will either bring `antimicrox` to feature parity and eventually replace `antimicro` with `antimicrox`, or somehow backport fixes. Participate in the discussion here: https://github.com/AntiMicro/antimicro/issues/351
+Old issues will be triaged/cleaned up: https://github.com/AntiMicro/antimicro/issues/350  
+And after releasing the last release this repo will be archived.
 
 ---
 
