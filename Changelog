@@ -1,5 +1,25 @@
 2016-11-05 Jeff Backus <jeff@jsbackus.com>
 
+Version 2.24 FINAL RELEASE
+
+This is the last release of AntiMicro. Since now this project will be no longer maintained. Development will continue in AntiMicroX https://github.com/AntiMicroX/antimicrox
+
+* Update used libraries (QT, SDL2)
+
+* Add migration note recommending AntiMicroX
+
+* Fix some Compilation errors
+
+* Improve finding SDL2 libraries
+
+* Implement basic CI
+
+* Update Chinese and French translation
+
+* Other minor improvements
+
+Full list: https://github.com/AntiMicro/antimicro/compare/2.23...2.24
+
 Version 2.23
 
 * Fixed portable version. (issue #37)
