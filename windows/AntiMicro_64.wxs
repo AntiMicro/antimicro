@@ -196,6 +196,7 @@
             <ComponentRef Id="QT5WIDGETS.DLL" />
             <ComponentRef Id="SDL2.DLL" />
             <ComponentRef Id="QWINDOWS.DLL" />
+            <ComponentRef Id="README_SDL.TXT" />
             <ComponentRef Id="README.MD" />
             <ComponentRef Id="GPL.TXT" />
             <ComponentRef Id="CHANGELOG" />
